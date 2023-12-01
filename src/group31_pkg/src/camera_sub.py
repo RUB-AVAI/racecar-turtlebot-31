@@ -10,8 +10,9 @@ from sensor_msgs.msg import Image
 TOPIC = "/camera"
 QUEUE_SIZE = 1
 SHOW_IMAGE = False
-SAVE_IMAGE = True
-SAVING_FPS = 5
+
+
+
 
 
 class ImageSubscriber(Node):
@@ -19,7 +20,6 @@ class ImageSubscriber(Node):
     def __init__(self):
         super().__init__('image_subscriber')
         self.subscription = self.create_subscription(Image, TOPIC, self.listener_callback, QUEUE_SIZE)
-        self.timer = self.create_timer(1.0 / SAVING_FPS, self.image_save_callback)
         self.subscription  # prevent unused variable warning
         self.bridge = CvBridge()
         self.frame = None
@@ -38,9 +38,7 @@ class ImageSubscriber(Node):
             if key == 27: # exit on ESC
                 exit()
     
-    def image_save_callback(self):
-        if self.frame:
-            cv2.imwrite("camera.png", self.frame)
+   
 
 
 

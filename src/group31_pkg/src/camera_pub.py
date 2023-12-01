@@ -8,14 +8,23 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 
 # YOLO model imports
-from pycoral.utils import edgetpu
+from pycoral.utils.edgetpu import make_interpreter, run_inference
 from pycoral.adapters import common, classify, detect
+import tflite_runtime.interpreter as tflite
+import os
+
+import time
 
 
 # Global Variables
 TOPIC = "/camera"
 QUEUE_SIZE = 1
 PERIOD = 1.0/10 #seconds
+
+
+SAVE_IMAGE = True
+IMSAVE_FPS = 5
+IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image.png"
  
 class CameraPublisher(Node):
     """
@@ -27,49 +36,53 @@ class CameraPublisher(Node):
 
     def __init__(self, capture):
         super().__init__("camera_publisher")
-
+        
         # initialize publisher
         self.publisher_ = self.create_publisher(Image, TOPIC, QUEUE_SIZE)
         self.timer = self.create_timer(PERIOD, self.timer_callback)
+
+        if SAVE_IMAGE:
+            self.timer = self.create_timer(1.0 / IMSAVE_FPS, self.image_save_callback)
+
 
         self.capture = capture
         self.bridge = CvBridge()
         self.i = 0
         
         #YOLO model
-        self.model = edgetpu.make_interpreter("model/cone-detector_float32.tflite")
+        self.model = make_interpreter("model/cone-detector_float32.tflite", device="usb")
         self.model.allocate_tensors()
+        print(self.model)
         
         # Get input and output tensors.
-        input_details = self.model.get_input_details()
-        output_details = self.model.get_output_details()
-
-        # Test the model on random input data.
-        input_shape = input_details[0]['shape']
-        input_data = np.array(np.random.random_sample(input_shape), dtype=np.float32)
-        self.model.set_tensor(input_details[0]['index'], input_data)
-
-        self.model.invoke()
-
-        # The function `get_tensor()` returns a copy of the tensor data.
-        # Use `tensor()` in order to get a pointer to the tensor.
-        output_data = self.model.get_tensor(output_details[0]['index'])
-        print(output_data)
-        print(output_data.shape)
-        exit()
+        self.input_details = self.model.get_input_details()
+        self.output_details = self.model.get_output_details()
+        
         
         
     def yolo(self, img:np.ndarray):
+        print("here")
         top_padding = 80  # You can adjust this as needed
         bottom_padding = 160 - top_padding
         img = np.pad(img, ((top_padding, bottom_padding), (0, 0), (0, 0)), 'constant')
+        img = np.ravel(img)
         
-        common.set_input(self.model, img)
-        self.model.invoke()
-        classes = detect.get_objects(self.model)
-        print(classes)
+        start_time = time.time() 
         
-        return classes
+        print(type(self.model), type(img))
+        run_inference(self.model, img)
+        #self.model.set_tensor(self.input_details[0]['index'], img)
+        #self.model.invoke()
+        print("there")
+        
+        end_time = time.time() 
+        execution_time = end_time - start_time  # Calculate the total execution time
+        print("Execution time: ", execution_time, "seconds")  
+        
+        output = self.model.get_tensor(self.output_details[0]['index'])
+        #print(output)
+        
+        return output
     
     def timer_callback(self):
         if self.capture.isOpened():
@@ -78,8 +91,8 @@ class CameraPublisher(Node):
 
             # potentially add boxes with yolo
             # TODO:
-            boxes = self.yolo(frame)
-            exit()
+            boxes = self.yolo(frame)  
+            #exit()
 
 
             if ret:
@@ -90,6 +103,11 @@ class CameraPublisher(Node):
         
         # image counter increment
         self.i += 1
+
+    
+    def image_save_callback(self):
+        ret, frame = self.capture.read()
+        cv2.imwrite(IMSAVE_PATH, frame)
 
 
 def main(args=None):
