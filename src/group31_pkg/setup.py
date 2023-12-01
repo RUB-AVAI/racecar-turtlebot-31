@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'lidar'
+package_name = 'group31_pkg'
 
 setup(
     name=package_name,
@@ -13,14 +13,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='ubuntu',
-    maintainer_email='ubuntu@todo.todo',
+    maintainer='jost',
+    maintainer_email='jost.gp@icloud.com',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'lidar_sub = lidar.lidar_sub:main'
+            'my_node = group31_pkg.my_node:main'
         ],
     },
 )

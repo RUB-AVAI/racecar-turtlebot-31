@@ -4,10 +4,12 @@ import matplotlib.pyplot as plt
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile, DurabilityPolicy, HistoryPolicy
+import os
 
 
 #global variables
 TOPIC = "/scan"
+IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
 QUEUE_SIZE = 10
 
 class LidarSubscriber(Node):
@@ -59,7 +61,7 @@ class LidarSubscriber(Node):
         self.ax.set_xlim([-limit, limit])
         self.ax.set_ylim([-limit, limit])
 
-        self.fig.savefig("lidar_visualisation.png")
+        self.fig.savefig(IMSAVE_PATH)
 
 
         
