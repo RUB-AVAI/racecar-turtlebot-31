@@ -1,0 +1,10 @@
+{
+  "package_name": "avai_messages",
+  "non_idl_tuples": [
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Vector3Sensor.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Motor.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Motors.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/VehicleLights.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Melody.msg"
+  ]
+}

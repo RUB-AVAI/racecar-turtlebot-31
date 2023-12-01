@@ -1,0 +1,13 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avai_messages/msg/Motors.msg
+// generated code does not contain a copyright notice
+
+#include "avai_messages/msg/Motor.idl"
+
+module avai_messages {
+  module msg {
+    struct Motors {
+      sequence<avai_messages::msg::Motor> motors;
+    };
+  };
+};

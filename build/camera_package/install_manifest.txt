@@ -1,0 +1,15 @@
+/home/ubuntu/turtlebot-avai/install/camera_package/share/ament_index/resource_index/package_run_dependencies/camera_package
+/home/ubuntu/turtlebot-avai/install/camera_package/share/ament_index/resource_index/parent_prefix_path/camera_package
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/environment/ament_prefix_path.sh
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/environment/ament_prefix_path.dsv
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/environment/path.sh
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/environment/path.dsv
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/local_setup.bash
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/local_setup.sh
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/local_setup.zsh
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/local_setup.dsv
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/package.dsv
+/home/ubuntu/turtlebot-avai/install/camera_package/share/ament_index/resource_index/packages/camera_package
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/cmake/camera_packageConfig.cmake
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/cmake/camera_packageConfig-version.cmake
+/home/ubuntu/turtlebot-avai/install/camera_package/share/camera_package/package.xml

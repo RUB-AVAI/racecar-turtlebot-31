@@ -1,0 +1,9 @@
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/uninstall.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/camera_package_uninstall.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/test.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/edit_cache.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/list_install_components.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/install.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/install/local.dir
+/home/ubuntu/turtlebot-avai/build/camera_package/CMakeFiles/install/strip.dir

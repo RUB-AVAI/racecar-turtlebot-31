@@ -1,0 +1,4 @@
+source;share/camera_package/local_setup.bash
+source;share/camera_package/local_setup.dsv
+source;share/camera_package/local_setup.sh
+source;share/camera_package/local_setup.zsh

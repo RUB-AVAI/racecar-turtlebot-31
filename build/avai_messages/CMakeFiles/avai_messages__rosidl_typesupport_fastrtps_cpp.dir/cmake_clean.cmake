@@ -1,0 +1,29 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.cpp.o"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.cpp.o.d"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motor__type_support.cpp.o"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motor__type_support.cpp.o.d"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motors__type_support.cpp.o"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motors__type_support.cpp.o.d"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp.o"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp.o.d"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.cpp.o"
+  "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.cpp.o.d"
+  "libavai_messages__rosidl_typesupport_fastrtps_cpp.pdb"
+  "libavai_messages__rosidl_typesupport_fastrtps_cpp.so"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motor__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motors__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/melody__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/motor__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/motors__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/vehicle_lights__rosidl_typesupport_fastrtps_cpp.hpp"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

@@ -1,0 +1,12 @@
+setup.py
+avai_messages/__init__.py
+avai_messages.egg-info/PKG-INFO
+avai_messages.egg-info/SOURCES.txt
+avai_messages.egg-info/dependency_links.txt
+avai_messages.egg-info/top_level.txt
+avai_messages/msg/__init__.py
+avai_messages/msg/_melody.py
+avai_messages/msg/_motor.py
+avai_messages/msg/_motors.py
+avai_messages/msg/_vector3_sensor.py
+avai_messages/msg/_vehicle_lights.py

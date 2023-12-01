@@ -1,0 +1,14 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avai_messages/msg/Motor.msg
+// generated code does not contain a copyright notice
+
+
+module avai_messages {
+  module msg {
+    struct Motor {
+      int64 position;
+
+      int16 velocity;
+    };
+  };
+};

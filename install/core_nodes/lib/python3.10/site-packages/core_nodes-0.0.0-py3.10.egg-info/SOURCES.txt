@@ -1,0 +1,16 @@
+package.xml
+setup.cfg
+setup.py
+../../build/core_nodes/core_nodes.egg-info/PKG-INFO
+../../build/core_nodes/core_nodes.egg-info/SOURCES.txt
+../../build/core_nodes/core_nodes.egg-info/dependency_links.txt
+../../build/core_nodes/core_nodes.egg-info/entry_points.txt
+../../build/core_nodes/core_nodes.egg-info/requires.txt
+../../build/core_nodes/core_nodes.egg-info/top_level.txt
+../../build/core_nodes/core_nodes.egg-info/zip-safe
+core_nodes/__init__.py
+core_nodes/opencr_node.py
+resource/core_nodes
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

@@ -1,0 +1,10 @@
+msg/Melody.idl
+msg/Melody.msg
+msg/Motor.idl
+msg/Motor.msg
+msg/Motors.idl
+msg/Motors.msg
+msg/Vector3Sensor.idl
+msg/Vector3Sensor.msg
+msg/VehicleLights.idl
+msg/VehicleLights.msg

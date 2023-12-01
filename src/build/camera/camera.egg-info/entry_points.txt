@@ -1,0 +1,4 @@
+[console_scripts]
+camera_node = camera.camera_node:main
+camera_sub = camera.camera_sub:main
+

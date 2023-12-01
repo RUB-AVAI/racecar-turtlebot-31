@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/camera_node.dir/src/camera_node.cpp.o -o camera_node 

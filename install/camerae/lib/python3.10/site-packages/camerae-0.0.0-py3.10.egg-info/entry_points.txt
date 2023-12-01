@@ -1,0 +1,3 @@
+[console_scripts]
+camera_node = camerae.camera_node:main
+

@@ -1,0 +1,4 @@
+source;share/avai_messages/local_setup.bash
+source;share/avai_messages/local_setup.dsv
+source;share/avai_messages/local_setup.sh
+source;share/avai_messages/local_setup.zsh
