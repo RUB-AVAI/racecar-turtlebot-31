@@ -9,10 +9,11 @@ from sensor_msgs.msg import Image
 
 # YOLO model imports
 from pycoral.utils.edgetpu import make_interpreter, run_inference
-from pycoral.adapters import common, classify, detect
-import tflite_runtime.interpreter as tflite
-import os
+from pycoral.adapters import common
+from pycoral.adapters.detect import get_objects
 
+
+import os
 import time
 
 
@@ -50,38 +51,38 @@ class CameraPublisher(Node):
         self.i = 0
         
         #YOLO model
-        self.model = make_interpreter("model/cone-detector_float32.tflite", device="usb")
+        self.model = make_interpreter("/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/best-int8_edgetpu.tflite", device="usb")
         self.model.allocate_tensors()
-        print(self.model)
         
-        # Get input and output tensors.
-        self.input_details = self.model.get_input_details()
         self.output_details = self.model.get_output_details()
+        self.threshhold = 110
+
         
         
         
     def yolo(self, img:np.ndarray):
-        print("here")
-        top_padding = 80  # You can adjust this as needed
-        bottom_padding = 160 - top_padding
-        img = np.pad(img, ((top_padding, bottom_padding), (0, 0), (0, 0)), 'constant')
-        img = np.ravel(img)
-        
-        start_time = time.time() 
-        
-        print(type(self.model), type(img))
-        run_inference(self.model, img)
-        #self.model.set_tensor(self.input_details[0]['index'], img)
-        #self.model.invoke()
-        print("there")
-        
-        end_time = time.time() 
-        execution_time = end_time - start_time  # Calculate the total execution time
-        print("Execution time: ", execution_time, "seconds")  
-        
+        img = img.astype(np.uint8)
+        img = np.pad(img, ((0, 160), (0, 0), (0, 0)), mode='constant')
+    
+        common.set_input(self.model, img)
+        self.model.invoke()   
+
         output = self.model.get_tensor(self.output_details[0]['index'])
-        #print(output)
+        output = np.squeeze(output)
         
+        mask = np.any(output[:, -3:] > self.threshhold, axis=1)
+        filtered_output = output[mask, :]
+        print(np.min(output), np.max(output))
+        if filtered_output.size == 0:
+            return np.asarray([])
+        
+        class_indices = np.argmax(filtered_output[:, -3:], axis=1).reshape(-1,1)
+        max_confidences = filtered_output[:, -3:].max(axis=1).reshape(-1,1)
+        coordinates = filtered_output[:, :4]
+
+        output = np.hstack((coordinates, class_indices, max_confidences))
+
+        #print(f"OUTPUT {output}")
         return output
     
     def timer_callback(self):
@@ -89,10 +90,11 @@ class CameraPublisher(Node):
             # read image data
             ret, frame = self.capture.read()
 
-            # potentially add boxes with yolo
-            # TODO:
+            start_time = time.time() 
             boxes = self.yolo(frame)  
-            #exit()
+            end_time = time.time() 
+            execution_time = end_time - start_time  # Calculate the total execution time
+            print("Execution time: ", execution_time, "seconds")  
 
 
             if ret:

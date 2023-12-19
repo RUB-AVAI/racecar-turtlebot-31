@@ -3,3 +3,5 @@
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Motors.idl
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/VehicleLights.idl
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Melody.idl
+/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/BoundingBox.idl
+/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/YoloOutput.idl

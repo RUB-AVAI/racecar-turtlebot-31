@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "../rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "../rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.c"
   "../rosidl_generator_py/avai_messages/msg/__init__.py"
+  "../rosidl_generator_py/avai_messages/msg/_bounding_box.py"
+  "../rosidl_generator_py/avai_messages/msg/_bounding_box_s.c"
   "../rosidl_generator_py/avai_messages/msg/_melody.py"
   "../rosidl_generator_py/avai_messages/msg/_melody_s.c"
   "../rosidl_generator_py/avai_messages/msg/_motor.py"
@@ -13,6 +15,8 @@ file(REMOVE_RECURSE
   "../rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c"
   "../rosidl_generator_py/avai_messages/msg/_vehicle_lights.py"
   "../rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c"
+  "../rosidl_generator_py/avai_messages/msg/_yolo_output.py"
+  "../rosidl_generator_py/avai_messages/msg/_yolo_output_s.c"
   "CMakeFiles/avai_messages__py"
 )
 

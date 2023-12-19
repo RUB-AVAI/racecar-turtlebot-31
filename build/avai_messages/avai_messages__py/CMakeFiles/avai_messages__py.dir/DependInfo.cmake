@@ -15,6 +15,8 @@ set(CMAKE_MULTIPLE_OUTPUT_PAIRS
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.c" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.c" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/__init__.py" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
+  "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_bounding_box.py" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
+  "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_melody.py" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_melody_s.c" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_motor.py" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
@@ -25,6 +27,8 @@ set(CMAKE_MULTIPLE_OUTPUT_PAIRS
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_vehicle_lights.py" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
+  "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_yolo_output.py" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
+  "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c" "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c"
   )
 
 

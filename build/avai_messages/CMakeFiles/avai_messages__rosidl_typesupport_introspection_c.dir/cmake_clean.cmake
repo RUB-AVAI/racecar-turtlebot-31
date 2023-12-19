@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.o"
+  "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.o.d"
   "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.c.o"
   "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.c.o.d"
   "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/motor__type_support.c.o"
@@ -9,8 +11,12 @@ file(REMOVE_RECURSE
   "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c.o.d"
   "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.c.o"
   "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.c.o.d"
+  "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.o"
+  "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.o.d"
   "libavai_messages__rosidl_typesupport_introspection_c.pdb"
   "libavai_messages__rosidl_typesupport_introspection_c.so"
+  "rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c"
   "rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__rosidl_typesupport_introspection_c.h"
   "rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.c"
   "rosidl_typesupport_introspection_c/avai_messages/msg/detail/motor__rosidl_typesupport_introspection_c.h"
@@ -21,6 +27,8 @@ file(REMOVE_RECURSE
   "rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c"
   "rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__rosidl_typesupport_introspection_c.h"
   "rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.c"
+  "rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c"
 )
 
 # Per-language clean rules from dependency scanning.

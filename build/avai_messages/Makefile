@@ -405,6 +405,30 @@ avai_messages__py/fast:
 	$(MAKE) $(MAKESILENT) -f avai_messages__py/CMakeFiles/avai_messages__py.dir/build.make avai_messages__py/CMakeFiles/avai_messages__py.dir/build
 .PHONY : avai_messages__py/fast
 
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.o: rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.o
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.o
+
+# target to build an object file
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.o
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.o
+
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.i: rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.i
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.i
+
+# target to preprocess a source file
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.i
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.i
+
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.s: rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.s
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.s
+
+# target to generate assembly for a file
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.s
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c.s
+
 rosidl_generator_c/avai_messages/msg/detail/melody__functions.o: rosidl_generator_c/avai_messages/msg/detail/melody__functions.c.o
 .PHONY : rosidl_generator_c/avai_messages/msg/detail/melody__functions.o
 
@@ -525,6 +549,30 @@ rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.c.s
 .PHONY : rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.c.s
 
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.o: rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.o
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.o
+
+# target to build an object file
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.o
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.o
+
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.i: rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.i
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.i
+
+# target to preprocess a source file
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.i
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.i
+
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.s: rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.s
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.s
+
+# target to generate assembly for a file
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.s
+.PHONY : rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.c.s
+
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.o: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.c.o
 .PHONY : rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.o
 
@@ -596,6 +644,30 @@ rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introsp
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c__pyext.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.c.s
 .PHONY : rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.c.s
+
+rosidl_generator_py/avai_messages/msg/_bounding_box_s.o: rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o
+.PHONY : rosidl_generator_py/avai_messages/msg/_bounding_box_s.o
+
+# target to build an object file
+rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o
+.PHONY : rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o
+
+rosidl_generator_py/avai_messages/msg/_bounding_box_s.i: rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.i
+.PHONY : rosidl_generator_py/avai_messages/msg/_bounding_box_s.i
+
+# target to preprocess a source file
+rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.i
+.PHONY : rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.i
+
+rosidl_generator_py/avai_messages/msg/_bounding_box_s.s: rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.s
+.PHONY : rosidl_generator_py/avai_messages/msg/_bounding_box_s.s
+
+# target to generate assembly for a file
+rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.s
+.PHONY : rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.s
 
 rosidl_generator_py/avai_messages/msg/_melody_s.o: rosidl_generator_py/avai_messages/msg/_melody_s.c.o
 .PHONY : rosidl_generator_py/avai_messages/msg/_melody_s.o
@@ -717,6 +789,54 @@ rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c.s
 .PHONY : rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c.s
 
+rosidl_generator_py/avai_messages/msg/_yolo_output_s.o: rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o
+.PHONY : rosidl_generator_py/avai_messages/msg/_yolo_output_s.o
+
+# target to build an object file
+rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o
+.PHONY : rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o
+
+rosidl_generator_py/avai_messages/msg/_yolo_output_s.i: rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.i
+.PHONY : rosidl_generator_py/avai_messages/msg/_yolo_output_s.i
+
+# target to preprocess a source file
+rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.i
+.PHONY : rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.i
+
+rosidl_generator_py/avai_messages/msg/_yolo_output_s.s: rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.s
+.PHONY : rosidl_generator_py/avai_messages/msg/_yolo_output_s.s
+
+# target to generate assembly for a file
+rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.s
+.PHONY : rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.s
+
+rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.o: rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.o
+
+# target to build an object file
+rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o
+
+rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.i: rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.i
+
+rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.s: rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.s
+
 rosidl_typesupport_c/avai_messages/msg/melody__type_support.o: rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp.o
 .PHONY : rosidl_typesupport_c/avai_messages/msg/melody__type_support.o
 
@@ -836,6 +956,54 @@ rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.s: rosidl_ty
 rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.cpp.s
 .PHONY : rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.cpp.s
+
+rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.o: rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.o
+
+# target to build an object file
+rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o
+
+rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.i: rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.i
+
+rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.s: rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.s
+
+rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.o: rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.o
+
+# target to build an object file
+rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.o
+
+rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.i: rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.i
+
+rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.s: rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.cpp.s
 
 rosidl_typesupport_cpp/avai_messages/msg/melody__type_support.o: rosidl_typesupport_cpp/avai_messages/msg/melody__type_support.cpp.o
 .PHONY : rosidl_typesupport_cpp/avai_messages/msg/melody__type_support.o
@@ -957,6 +1125,54 @@ rosidl_typesupport_cpp/avai_messages/msg/vehicle_lights__type_support.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai_messages/msg/vehicle_lights__type_support.cpp.s
 .PHONY : rosidl_typesupport_cpp/avai_messages/msg/vehicle_lights__type_support.cpp.s
 
+rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.o: rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.o
+
+# target to build an object file
+rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.o
+
+rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.i: rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.i
+
+rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.s: rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp.s
+
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.o: rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.o
+
+# target to build an object file
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.o
+
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.i: rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.i
+
+# target to preprocess a source file
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.i
+
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.s: rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.s
+
+# target to generate assembly for a file
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.cpp.s
+
 rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/melody__type_support_c.o: rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/melody__type_support_c.cpp.o
 .PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/melody__type_support_c.o
 
@@ -1076,6 +1292,54 @@ rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/vehicle_lights__type_supp
 rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/vehicle_lights__type_support_c.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/vehicle_lights__type_support_c.cpp.s
 .PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/vehicle_lights__type_support_c.cpp.s
+
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.o: rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.o
+
+# target to build an object file
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.o
+
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.i: rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.i
+
+# target to preprocess a source file
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.i
+
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.s: rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.s
+
+# target to generate assembly for a file
+rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.cpp.s
+
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.o: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.o
+
+# target to build an object file
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.o
+
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.i: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.i
+
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.s: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.cpp.s
 
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.o: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.cpp.o
 .PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.o
@@ -1197,6 +1461,54 @@ rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_li
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.cpp.s
 .PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.cpp.s
 
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.o: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.o
+
+# target to build an object file
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.o
+
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.i: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.i
+
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.s: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp.s
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.o: rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.o
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.o
+
+# target to build an object file
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.o
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.o
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.i: rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.i
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.i
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.i
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.s: rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.s
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.s
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.c.s
+
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.o: rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.c.o
 .PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.o
 
@@ -1316,6 +1628,54 @@ rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.c.s
 .PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.c.s
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.o: rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.o
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.o
+
+# target to build an object file
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.o
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.o
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.i: rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.i
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.i
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.i
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.s: rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.s
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.s
+.PHONY : rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.c.s
+
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.o: rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.o
+
+# target to build an object file
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.o
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.o
+
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.i: rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.i
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.i
+
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.s: rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.s
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.cpp.s
 
 rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/melody__type_support.o: rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/melody__type_support.cpp.o
 .PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/melody__type_support.o
@@ -1437,6 +1797,30 @@ rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/vehicle_lights__ty
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/vehicle_lights__type_support.cpp.s
 .PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/vehicle_lights__type_support.cpp.s
 
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.o: rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.o
+
+# target to build an object file
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.o
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.o
+
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.i: rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.i
+
+# target to preprocess a source file
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.i
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.i
+
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.s: rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.s
+
+# target to generate assembly for a file
+rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/build.make CMakeFiles/avai_messages__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.s
+.PHONY : rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1468,6 +1852,9 @@ help:
 	@echo "... avai_messages__rosidl_typesupport_introspection_c"
 	@echo "... avai_messages__rosidl_typesupport_introspection_c__pyext"
 	@echo "... avai_messages__rosidl_typesupport_introspection_cpp"
+	@echo "... rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.o"
+	@echo "... rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.i"
+	@echo "... rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.s"
 	@echo "... rosidl_generator_c/avai_messages/msg/detail/melody__functions.o"
 	@echo "... rosidl_generator_c/avai_messages/msg/detail/melody__functions.i"
 	@echo "... rosidl_generator_c/avai_messages/msg/detail/melody__functions.s"
@@ -1483,6 +1870,9 @@ help:
 	@echo "... rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.o"
 	@echo "... rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.i"
 	@echo "... rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.s"
+	@echo "... rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.o"
+	@echo "... rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.i"
+	@echo "... rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.s"
 	@echo "... rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.o"
 	@echo "... rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.i"
 	@echo "... rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.s"
@@ -1492,6 +1882,9 @@ help:
 	@echo "... rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.o"
 	@echo "... rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.i"
 	@echo "... rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.s"
+	@echo "... rosidl_generator_py/avai_messages/msg/_bounding_box_s.o"
+	@echo "... rosidl_generator_py/avai_messages/msg/_bounding_box_s.i"
+	@echo "... rosidl_generator_py/avai_messages/msg/_bounding_box_s.s"
 	@echo "... rosidl_generator_py/avai_messages/msg/_melody_s.o"
 	@echo "... rosidl_generator_py/avai_messages/msg/_melody_s.i"
 	@echo "... rosidl_generator_py/avai_messages/msg/_melody_s.s"
@@ -1507,6 +1900,12 @@ help:
 	@echo "... rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.o"
 	@echo "... rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.i"
 	@echo "... rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.s"
+	@echo "... rosidl_generator_py/avai_messages/msg/_yolo_output_s.o"
+	@echo "... rosidl_generator_py/avai_messages/msg/_yolo_output_s.i"
+	@echo "... rosidl_generator_py/avai_messages/msg/_yolo_output_s.s"
+	@echo "... rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.o"
+	@echo "... rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.i"
+	@echo "... rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.s"
 	@echo "... rosidl_typesupport_c/avai_messages/msg/melody__type_support.o"
 	@echo "... rosidl_typesupport_c/avai_messages/msg/melody__type_support.i"
 	@echo "... rosidl_typesupport_c/avai_messages/msg/melody__type_support.s"
@@ -1522,6 +1921,12 @@ help:
 	@echo "... rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.o"
 	@echo "... rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.i"
 	@echo "... rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.s"
+	@echo "... rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.o"
+	@echo "... rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.i"
+	@echo "... rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.s"
+	@echo "... rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.o"
+	@echo "... rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.i"
+	@echo "... rosidl_typesupport_cpp/avai_messages/msg/bounding_box__type_support.s"
 	@echo "... rosidl_typesupport_cpp/avai_messages/msg/melody__type_support.o"
 	@echo "... rosidl_typesupport_cpp/avai_messages/msg/melody__type_support.i"
 	@echo "... rosidl_typesupport_cpp/avai_messages/msg/melody__type_support.s"
@@ -1537,6 +1942,12 @@ help:
 	@echo "... rosidl_typesupport_cpp/avai_messages/msg/vehicle_lights__type_support.o"
 	@echo "... rosidl_typesupport_cpp/avai_messages/msg/vehicle_lights__type_support.i"
 	@echo "... rosidl_typesupport_cpp/avai_messages/msg/vehicle_lights__type_support.s"
+	@echo "... rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.o"
+	@echo "... rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.i"
+	@echo "... rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.s"
+	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.o"
+	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.i"
+	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/bounding_box__type_support_c.s"
 	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/melody__type_support_c.o"
 	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/melody__type_support_c.i"
 	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/melody__type_support_c.s"
@@ -1552,6 +1963,12 @@ help:
 	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/vehicle_lights__type_support_c.o"
 	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/vehicle_lights__type_support_c.i"
 	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/vehicle_lights__type_support_c.s"
+	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.o"
+	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.i"
+	@echo "... rosidl_typesupport_fastrtps_c/avai_messages/msg/detail/yolo_output__type_support_c.s"
+	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.o"
+	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.i"
+	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/bounding_box__type_support.s"
 	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.o"
 	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.i"
 	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/melody__type_support.s"
@@ -1567,6 +1984,12 @@ help:
 	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.o"
 	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.i"
 	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.s"
+	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.o"
+	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.i"
+	@echo "... rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.s"
+	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.o"
+	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.i"
+	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/bounding_box__type_support.s"
 	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.o"
 	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.i"
 	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.s"
@@ -1582,6 +2005,12 @@ help:
 	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.o"
 	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.i"
 	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/vehicle_lights__type_support.s"
+	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.o"
+	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.i"
+	@echo "... rosidl_typesupport_introspection_c/avai_messages/msg/detail/yolo_output__type_support.s"
+	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.o"
+	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.i"
+	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/bounding_box__type_support.s"
 	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/melody__type_support.o"
 	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/melody__type_support.i"
 	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/melody__type_support.s"
@@ -1597,6 +2026,9 @@ help:
 	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/vehicle_lights__type_support.o"
 	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/vehicle_lights__type_support.i"
 	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/vehicle_lights__type_support.s"
+	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.o"
+	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.i"
+	@echo "... rosidl_typesupport_introspection_cpp/avai_messages/msg/detail/yolo_output__type_support.s"
 .PHONY : help
 
 

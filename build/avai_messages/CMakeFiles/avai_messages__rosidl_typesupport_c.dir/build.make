@@ -80,6 +80,8 @@ rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: rosidl_
 rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/Motors.idl
 rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/VehicleLights.idl
 rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/Melody.idl
+rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/BoundingBox.idl
+rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/YoloOutput.idl
 rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -156,6 +158,12 @@ rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.cpp: rosidl_
 rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp: rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp
 
+rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp: rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp
+
+rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp: rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp
+
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/flags.make
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp.o: rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/compiler_depend.ts
@@ -226,13 +234,43 @@ CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_mes
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp -o CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp.s
 
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/flags.make
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o: rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o -MF CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o.d -o CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp
+
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp > CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.i
+
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp -o CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.s
+
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/flags.make
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o: rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o -MF CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o.d -o CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp
+
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp > CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.i
+
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp -o CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.s
+
 # Object files for target avai_messages__rosidl_typesupport_c
 avai_messages__rosidl_typesupport_c_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp.o" \
 "CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/motor__type_support.cpp.o" \
 "CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/motors__type_support.cpp.o" \
 "CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.cpp.o" \
-"CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp.o"
+"CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp.o" \
+"CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o" \
+"CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o"
 
 # External object files for target avai_messages__rosidl_typesupport_c
 avai_messages__rosidl_typesupport_c_EXTERNAL_OBJECTS =
@@ -242,6 +280,8 @@ libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_type
 libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/motors__type_support.cpp.o
 libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.cpp.o
 libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp.o
+libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp.o
+libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp.o
 libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/build.make
 libavai_messages__rosidl_typesupport_c.so: libavai_messages__rosidl_generator_c.so
 libavai_messages__rosidl_typesupport_c.so: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_c.so
@@ -254,7 +294,7 @@ libavai_messages__rosidl_typesupport_c.so: /opt/ros/humble/lib/libbuiltin_interf
 libavai_messages__rosidl_typesupport_c.so: /opt/ros/humble/lib/librosidl_runtime_c.so
 libavai_messages__rosidl_typesupport_c.so: /opt/ros/humble/lib/librcutils.so
 libavai_messages__rosidl_typesupport_c.so: CMakeFiles/avai_messages__rosidl_typesupport_c.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX shared library libavai_messages__rosidl_typesupport_c.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX shared library libavai_messages__rosidl_typesupport_c.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/avai_messages__rosidl_typesupport_c.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -265,11 +305,13 @@ CMakeFiles/avai_messages__rosidl_typesupport_c.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/avai_messages__rosidl_typesupport_c.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/avai_messages__rosidl_typesupport_c.dir/clean
 
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend: rosidl_typesupport_c/avai_messages/msg/bounding_box__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend: rosidl_typesupport_c/avai_messages/msg/melody__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend: rosidl_typesupport_c/avai_messages/msg/motor__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend: rosidl_typesupport_c/avai_messages/msg/motors__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend: rosidl_typesupport_c/avai_messages/msg/vector3_sensor__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend: rosidl_typesupport_c/avai_messages/msg/vehicle_lights__type_support.cpp
+CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend: rosidl_typesupport_c/avai_messages/msg/yolo_output__type_support.cpp
 	cd /home/ubuntu/turtlebot-avai/build/avai_messages && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/turtlebot-avai/src/avai_messages /home/ubuntu/turtlebot-avai/src/avai_messages /home/ubuntu/turtlebot-avai/build/avai_messages /home/ubuntu/turtlebot-avai/build/avai_messages /home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles/avai_messages__rosidl_typesupport_c.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/avai_messages__rosidl_typesupport_c.dir/depend
 

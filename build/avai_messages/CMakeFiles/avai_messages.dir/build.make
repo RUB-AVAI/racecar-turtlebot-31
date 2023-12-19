@@ -71,6 +71,8 @@ CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Moto
 CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Motors.msg
 CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/VehicleLights.msg
 CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Melody.msg
+CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/BoundingBox.msg
+CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/YoloOutput.msg
 CMakeFiles/avai_messages: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 CMakeFiles/avai_messages: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 CMakeFiles/avai_messages: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl

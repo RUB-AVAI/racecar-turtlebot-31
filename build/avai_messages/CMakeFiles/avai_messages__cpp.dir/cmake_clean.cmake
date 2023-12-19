@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
   "CMakeFiles/avai_messages__cpp"
+  "rosidl_generator_cpp/avai_messages/msg/bounding_box.hpp"
+  "rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__builder.hpp"
+  "rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__struct.hpp"
+  "rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__traits.hpp"
   "rosidl_generator_cpp/avai_messages/msg/detail/melody__builder.hpp"
   "rosidl_generator_cpp/avai_messages/msg/detail/melody__struct.hpp"
   "rosidl_generator_cpp/avai_messages/msg/detail/melody__traits.hpp"
@@ -15,11 +19,15 @@ file(REMOVE_RECURSE
   "rosidl_generator_cpp/avai_messages/msg/detail/vehicle_lights__builder.hpp"
   "rosidl_generator_cpp/avai_messages/msg/detail/vehicle_lights__struct.hpp"
   "rosidl_generator_cpp/avai_messages/msg/detail/vehicle_lights__traits.hpp"
+  "rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__builder.hpp"
+  "rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__struct.hpp"
+  "rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp"
   "rosidl_generator_cpp/avai_messages/msg/melody.hpp"
   "rosidl_generator_cpp/avai_messages/msg/motor.hpp"
   "rosidl_generator_cpp/avai_messages/msg/motors.hpp"
   "rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp"
   "rosidl_generator_cpp/avai_messages/msg/vehicle_lights.hpp"
+  "rosidl_generator_cpp/avai_messages/msg/yolo_output.hpp"
 )
 
 # Per-language clean rules from dependency scanning.

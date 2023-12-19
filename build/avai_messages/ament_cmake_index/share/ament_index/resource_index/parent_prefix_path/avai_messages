@@ -1,1 +1,1 @@
-/home/ubuntu/turtlebot-avai/install/core_nodes:/home/ubuntu/turtlebot-avai/install/avai_messages:/opt/ros/humble
+/home/ubuntu/turtlebot-avai/install/lidar:/home/ubuntu/turtlebot-avai/install/core_nodes:/home/ubuntu/turtlebot-avai/install/control_pub:/home/ubuntu/turtlebot-avai/install/camerae:/home/ubuntu/turtlebot-avai/install/camera_package:/home/ubuntu/turtlebot-avai/install/camera:/home/ubuntu/turtlebot-avai/install/avai_messages:/opt/ros/humble

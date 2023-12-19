@@ -3,45 +3,36 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-from rclpy.qos import ReliabilityPolicy, QoSProfile, DurabilityPolicy, HistoryPolicy
+# from avai_messages.msg import YoloOutput
 import os
 
 
 #global variables
-TOPIC = "/scan"
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
-QUEUE_SIZE = 10
 
 class LidarSubscriber(Node):
 
     def __init__(self):
         super().__init__('lidar_subscriber')
 
-        qos_profile = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT, depth=QUEUE_SIZE)
+        self.lidar_subscription = self.create_subscription(LaserScan, "/scan", self.lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
+        self.lidar_subscription  # prevent unused variable warning
 
-        self.subscription = self.create_subscription(LaserScan, TOPIC, self.listener_callback, rclpy.qos.qos_profile_sensor_data)
-        self.subscription  # prevent unused variable warning
+        # self.bounding_boxes_subscribtion = self.create_subscription()
 
         # figure 
         self.fig, self.ax = plt.subplots()
         plt.axis("equal")
+        self.ranges = np.zeros(360)
         
 
 
-
-    def listener_callback(self, msg):
-        # range min: 0.12 m
-        # range max: 3.5 m
-    
-        self.get_logger().info("Data Received")
-        intensities = np.array(msg.intensities)
-        ranges = np.array(msg.ranges)
-
-
+    def update_map(self):
         X = []
         Y = []
         
-        for angle, range in enumerate(ranges):
+        for angle, range in enumerate(self.ranges):
+            # change the angles, so the y axis aligns with the camera
             angle = (angle + 180) % 360
             angle = 360 - angle
             if range != 0:
@@ -60,12 +51,32 @@ class LidarSubscriber(Node):
         limit = 4
         self.ax.set_xlim([-limit, limit])
         self.ax.set_ylim([-limit, limit])
+        self.get_logger().info("Updated Lidar Map")
 
+
+    def save_map(self):
         self.fig.savefig(IMSAVE_PATH)
+        self.get_logger().info("Saved Lidar Map")
+
+
+    def lidar_listener_callback(self, msg):
+        # range min: 0.12 m
+        # range max: 3.5 m
+        # the ranges start on the right side of the turtlebot and continue clockwise (entry 270 is the front)
+    
+        self.get_logger().info("Lidar Data Received")
+        self.ranges = msg.ranges
+        self.update_map()
+        self.save_map()
+
+
+
 
 
         
 
+
+        
 
 
 

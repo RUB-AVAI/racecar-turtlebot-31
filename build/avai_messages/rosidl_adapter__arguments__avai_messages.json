@@ -5,6 +5,8 @@
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Motor.msg",
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Motors.msg",
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/VehicleLights.msg",
-    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Melody.msg"
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Melody.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/BoundingBox.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/YoloOutput.msg"
   ]
 }

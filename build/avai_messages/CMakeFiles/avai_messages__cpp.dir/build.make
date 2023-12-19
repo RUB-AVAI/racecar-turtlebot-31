@@ -86,6 +86,14 @@ CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/melody.hpp
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__builder.hpp
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__struct.hpp
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__traits.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/bounding_box.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__builder.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__struct.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__traits.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/yolo_output.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__builder.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__struct.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp
 
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/lib/rosidl_generator_cpp/rosidl_generator_cpp
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_generator_cpp/__init__.py
@@ -107,6 +115,8 @@ rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_m
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/Motors.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/VehicleLights.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/Melody.idl
+rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/BoundingBox.idl
+rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/YoloOutput.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -228,7 +238,35 @@ rosidl_generator_cpp/avai_messages/msg/detail/melody__struct.hpp: rosidl_generat
 rosidl_generator_cpp/avai_messages/msg/detail/melody__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/melody__traits.hpp
 
+rosidl_generator_cpp/avai_messages/msg/bounding_box.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/bounding_box.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__builder.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__builder.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__struct.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__struct.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__traits.hpp
+
+rosidl_generator_cpp/avai_messages/msg/yolo_output.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/yolo_output.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__builder.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__builder.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__struct.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__struct.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp
+
 avai_messages__cpp: CMakeFiles/avai_messages__cpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/bounding_box.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__builder.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__struct.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__traits.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__builder.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__struct.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__traits.hpp
@@ -244,11 +282,15 @@ avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/vector3_sensor
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/vehicle_lights__builder.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/vehicle_lights__struct.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/vehicle_lights__traits.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__builder.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__struct.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/melody.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/motor.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/motors.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/vehicle_lights.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/yolo_output.hpp
 avai_messages__cpp: CMakeFiles/avai_messages__cpp.dir/build.make
 .PHONY : avai_messages__cpp
 

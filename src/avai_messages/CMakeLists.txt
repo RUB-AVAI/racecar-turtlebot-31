@@ -43,6 +43,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Motors.msg"
   "msg/VehicleLights.msg"
   "msg/Melody.msg"
+  "msg/BoundingBox.msg"
+  "msg/YoloOutput.msg"
   DEPENDENCIES geometry_msgs std_msgs
 )
 

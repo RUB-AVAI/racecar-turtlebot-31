@@ -8,11 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o" "gcc" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o.d"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_melody_s.c" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_melody_s.c.o" "gcc" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_melody_s.c.o.d"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_motor_s.c" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_motor_s.c.o" "gcc" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_motor_s.c.o.d"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_motors_s.c" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_motors_s.c.o" "gcc" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_motors_s.c.o.d"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c.o" "gcc" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c.o.d"
   "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c.o" "gcc" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c.o.d"
+  "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o" "gcc" "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o.d"
   )
 
 # Targets to which this target links.

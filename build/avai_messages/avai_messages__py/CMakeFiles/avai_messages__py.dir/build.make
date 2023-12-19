@@ -74,12 +74,16 @@ avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_message
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_motors.py
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_vehicle_lights.py
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_melody.py
+avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_bounding_box.py
+avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_yolo_output.py
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/__init__.py
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_motor_s.c
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_motors_s.c
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c
 avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_melody_s.c
+avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_bounding_box_s.c
+avai_messages__py/CMakeFiles/avai_messages__py: rosidl_generator_py/avai_messages/msg/_yolo_output_s.c
 
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/lib/rosidl_generator_py/rosidl_generator_py
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_generator_py/__init__.py
@@ -99,6 +103,8 @@ rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtp
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: rosidl_adapter/avai_messages/msg/Motors.idl
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: rosidl_adapter/avai_messages/msg/VehicleLights.idl
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: rosidl_adapter/avai_messages/msg/Melody.idl
+rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: rosidl_adapter/avai_messages/msg/BoundingBox.idl
+rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: rosidl_adapter/avai_messages/msg/YoloOutput.idl
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -184,6 +190,12 @@ rosidl_generator_py/avai_messages/msg/_vehicle_lights.py: rosidl_generator_py/av
 rosidl_generator_py/avai_messages/msg/_melody.py: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/avai_messages/msg/_melody.py
 
+rosidl_generator_py/avai_messages/msg/_bounding_box.py: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/avai_messages/msg/_bounding_box.py
+
+rosidl_generator_py/avai_messages/msg/_yolo_output.py: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/avai_messages/msg/_yolo_output.py
+
 rosidl_generator_py/avai_messages/msg/__init__.py: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/avai_messages/msg/__init__.py
 
@@ -202,11 +214,19 @@ rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c: rosidl_generator_py/a
 rosidl_generator_py/avai_messages/msg/_melody_s.c: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/avai_messages/msg/_melody_s.c
 
+rosidl_generator_py/avai_messages/msg/_bounding_box_s.c: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/avai_messages/msg/_bounding_box_s.c
+
+rosidl_generator_py/avai_messages/msg/_yolo_output_s.c: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/avai_messages/msg/_yolo_output_s.c
+
 avai_messages__py: avai_messages__py/CMakeFiles/avai_messages__py
 avai_messages__py: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.c
 avai_messages__py: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_fastrtps_c.c
 avai_messages__py: rosidl_generator_py/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.c
 avai_messages__py: rosidl_generator_py/avai_messages/msg/__init__.py
+avai_messages__py: rosidl_generator_py/avai_messages/msg/_bounding_box.py
+avai_messages__py: rosidl_generator_py/avai_messages/msg/_bounding_box_s.c
 avai_messages__py: rosidl_generator_py/avai_messages/msg/_melody.py
 avai_messages__py: rosidl_generator_py/avai_messages/msg/_melody_s.c
 avai_messages__py: rosidl_generator_py/avai_messages/msg/_motor.py
@@ -217,6 +237,8 @@ avai_messages__py: rosidl_generator_py/avai_messages/msg/_vector3_sensor.py
 avai_messages__py: rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c
 avai_messages__py: rosidl_generator_py/avai_messages/msg/_vehicle_lights.py
 avai_messages__py: rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c
+avai_messages__py: rosidl_generator_py/avai_messages/msg/_yolo_output.py
+avai_messages__py: rosidl_generator_py/avai_messages/msg/_yolo_output_s.c
 avai_messages__py: avai_messages__py/CMakeFiles/avai_messages__py.dir/build.make
 .PHONY : avai_messages__py
 
