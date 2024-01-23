@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-# from avai_messages.msg import BoundingBox
+# from avai_messages.msg import YoloOutput
 import os
 
 
@@ -18,7 +18,7 @@ class LidarSubscriber(Node):
         self.lidar_subscription = self.create_subscription(LaserScan, "/scan", self.lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.lidar_subscription  # prevent unused variable warning
 
-        self.bounding_boxes_subscribtion = self.create_subscription()
+        # self.bounding_boxes_subscribtion = self.create_subscription()
 
         # figure 
         self.fig, self.ax = plt.subplots()
@@ -65,8 +65,9 @@ class LidarSubscriber(Node):
         # the ranges start on the right side of the turtlebot and continue clockwise (entry 270 is the front)
     
         self.get_logger().info("Lidar Data Received")
-        self.ranges(msg.ranges)
+        self.ranges = msg.ranges
         self.update_map()
+        self.save_map()
 
 
 

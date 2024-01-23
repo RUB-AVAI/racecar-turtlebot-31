@@ -1,31 +1,25 @@
 import cv2
 import rclpy
+import os
 import numpy as np
-from cv_bridge import CvBridge
 
 # ROS2 imports
 from rclpy.node import Node
-from sensor_msgs.msg import Image
+from avai_messages.msg import BoundingBox, YoloOutput
 
 # YOLO model imports
-from pycoral.utils.edgetpu import make_interpreter, run_inference
-from pycoral.adapters import common
-from pycoral.adapters.detect import get_objects
-
-
-import os
-import time
+import yolov5.models.common
 
 
 # Global Variables
-TOPIC = "/camera"
+TOPIC = "/cone_classification"
 QUEUE_SIZE = 1
 PERIOD = 1.0/10 #seconds
-
-
 SAVE_IMAGE = True
 IMSAVE_FPS = 5
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image.png"
+MODEL_PATH = "/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/best-int8_edgetpu.tflite"
+
  
 class CameraPublisher(Node):
     """
@@ -36,75 +30,62 @@ class CameraPublisher(Node):
     """
 
     def __init__(self, capture):
-        super().__init__("camera_publisher")
+        super().__init__("cone_publisher")
         
         # initialize publisher
-        self.publisher_ = self.create_publisher(Image, TOPIC, QUEUE_SIZE)
+        self.publisher_ = self.create_publisher(YoloOutput, TOPIC, QUEUE_SIZE)
         self.timer = self.create_timer(PERIOD, self.timer_callback)
 
         if SAVE_IMAGE:
             self.timer = self.create_timer(1.0 / IMSAVE_FPS, self.image_save_callback)
 
-
         self.capture = capture
-        self.bridge = CvBridge()
         self.i = 0
         
         #YOLO model
-        self.model = make_interpreter("/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/best-int8_edgetpu.tflite", device="usb")
-        self.model.allocate_tensors()
+        self.interpreter = yolov5.models.common.DetectMultiBackend(MODEL_PATH)
+        self.interpreter = yolov5.models.common.AutoShape(self.interpreter)
         
-        self.output_details = self.model.get_output_details()
-        self.threshhold = 110
+        
+    def yolo(self, input_img:np.ndarray):
+        raw_img = cv2.resize(input_img, (640, 640))
+        raw_img = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
+        detect = self.interpreter(raw_img)
 
+        # xmin, ymin, xmax, ymax, confidence, class, name
+        boxes = detect.pandas().xyxy[0].to_numpy()
+        boxes = boxes[:, 0:6]
         
+        output_boxes = []
+        for box in boxes:
+            output_boxes.append(
+                BoundingBox( 
+                    min_x=box[0],
+                    min_y=box[1],
+                    max_x=box[2],
+                    max_y=box[3],
+                    confidence=box[4],
+                    cone=box[5]
+                )
+            )
         
-        
-    def yolo(self, img:np.ndarray):
-        img = img.astype(np.uint8)
-        img = np.pad(img, ((0, 160), (0, 0), (0, 0)), mode='constant')
-    
-        common.set_input(self.model, img)
-        self.model.invoke()   
-
-        output = self.model.get_tensor(self.output_details[0]['index'])
-        output = np.squeeze(output)
-        
-        mask = np.any(output[:, -3:] > self.threshhold, axis=1)
-        filtered_output = output[mask, :]
-        print(np.min(output), np.max(output))
-        if filtered_output.size == 0:
-            return np.asarray([])
-        
-        class_indices = np.argmax(filtered_output[:, -3:], axis=1).reshape(-1,1)
-        max_confidences = filtered_output[:, -3:].max(axis=1).reshape(-1,1)
-        coordinates = filtered_output[:, :4]
-
-        output = np.hstack((coordinates, class_indices, max_confidences))
-
-        #print(f"OUTPUT {output}")
+        output = YoloOutput()
+        output.header.stamp = self.get_clock().now().to_msg()
+        output.header.frame_id = f"{self.i}"
+        output.bounding_boxes = output_boxes
         return output
     
     def timer_callback(self):
         if self.capture.isOpened():
             # read image data
             ret, frame = self.capture.read()
-
-            start_time = time.time() 
             boxes = self.yolo(frame)  
-            end_time = time.time() 
-            execution_time = end_time - start_time  # Calculate the total execution time
-            print("Execution time: ", execution_time, "seconds")  
-
 
             if ret:
-                msg = self.bridge.cv2_to_imgmsg(frame)
-                self.publisher_.publish(msg)
-            
+                self.publisher_.publish(boxes)
                 self.get_logger().info('%d Images Published' % self.i)
         
-        # image counter increment
-        self.i += 1
+        self.i += 1 # image counter increment
 
     
     def image_save_callback(self):

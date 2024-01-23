@@ -221,4 +221,10 @@ CMakeFiles/avai_messages__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/av
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/melody__type_support.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/melody__struct.h \
- /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/melody__functions.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/melody__functions.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/bounding_box__type_support.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/bounding_box__struct.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/yolo_output__type_support.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/yolo_output__struct.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.h

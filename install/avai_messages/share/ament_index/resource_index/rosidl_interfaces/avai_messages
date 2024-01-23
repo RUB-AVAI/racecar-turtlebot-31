@@ -1,3 +1,5 @@
+msg/BoundingBox.idl
+msg/BoundingBox.msg
 msg/Melody.idl
 msg/Melody.msg
 msg/Motor.idl
@@ -8,3 +10,5 @@ msg/Vector3Sensor.idl
 msg/Vector3Sensor.msg
 msg/VehicleLights.idl
 msg/VehicleLights.msg
+msg/YoloOutput.idl
+msg/YoloOutput.msg

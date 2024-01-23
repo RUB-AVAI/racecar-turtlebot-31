@@ -32,16 +32,18 @@ cdr_serialize(
   const avai_messages::msg::BoundingBox & ros_message,
   eprosima::fastcdr::Cdr & cdr)
 {
-  // Member: x
-  cdr << ros_message.x;
-  // Member: y
-  cdr << ros_message.y;
-  // Member: width
-  cdr << ros_message.width;
-  // Member: height
-  cdr << ros_message.height;
-  // Member: label
-  cdr << ros_message.label;
+  // Member: min_x
+  cdr << ros_message.min_x;
+  // Member: min_y
+  cdr << ros_message.min_y;
+  // Member: max_x
+  cdr << ros_message.max_x;
+  // Member: max_y
+  cdr << ros_message.max_y;
+  // Member: confidence
+  cdr << ros_message.confidence;
+  // Member: cone
+  cdr << ros_message.cone;
   return true;
 }
 
@@ -51,20 +53,23 @@ cdr_deserialize(
   eprosima::fastcdr::Cdr & cdr,
   avai_messages::msg::BoundingBox & ros_message)
 {
-  // Member: x
-  cdr >> ros_message.x;
+  // Member: min_x
+  cdr >> ros_message.min_x;
 
-  // Member: y
-  cdr >> ros_message.y;
+  // Member: min_y
+  cdr >> ros_message.min_y;
 
-  // Member: width
-  cdr >> ros_message.width;
+  // Member: max_x
+  cdr >> ros_message.max_x;
 
-  // Member: height
-  cdr >> ros_message.height;
+  // Member: max_y
+  cdr >> ros_message.max_y;
 
-  // Member: label
-  cdr >> ros_message.label;
+  // Member: confidence
+  cdr >> ros_message.confidence;
+
+  // Member: cone
+  cdr >> ros_message.cone;
 
   return true;
 }
@@ -82,33 +87,39 @@ get_serialized_size(
   (void)padding;
   (void)wchar_size;
 
-  // Member: x
+  // Member: min_x
   {
-    size_t item_size = sizeof(ros_message.x);
+    size_t item_size = sizeof(ros_message.min_x);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
-  // Member: y
+  // Member: min_y
   {
-    size_t item_size = sizeof(ros_message.y);
+    size_t item_size = sizeof(ros_message.min_y);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
-  // Member: width
+  // Member: max_x
   {
-    size_t item_size = sizeof(ros_message.width);
+    size_t item_size = sizeof(ros_message.max_x);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
-  // Member: height
+  // Member: max_y
   {
-    size_t item_size = sizeof(ros_message.height);
+    size_t item_size = sizeof(ros_message.max_y);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
-  // Member: label
+  // Member: confidence
   {
-    size_t item_size = sizeof(ros_message.label);
+    size_t item_size = sizeof(ros_message.confidence);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+  // Member: cone
+  {
+    size_t item_size = sizeof(ros_message.cone);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -134,39 +145,47 @@ max_serialized_size_BoundingBox(
   is_plain = true;
 
 
-  // Member: x
+  // Member: min_x
   {
     size_t array_size = 1;
 
-    current_alignment += array_size * sizeof(uint16_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Member: y
+  // Member: min_y
   {
     size_t array_size = 1;
 
-    current_alignment += array_size * sizeof(uint16_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Member: width
+  // Member: max_x
   {
     size_t array_size = 1;
 
-    current_alignment += array_size * sizeof(uint16_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Member: height
+  // Member: max_y
   {
     size_t array_size = 1;
 
-    current_alignment += array_size * sizeof(uint16_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Member: label
+  // Member: confidence
+  {
+    size_t array_size = 1;
+
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
+  // Member: cone
   {
     size_t array_size = 1;
 

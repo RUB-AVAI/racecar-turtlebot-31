@@ -1,5 +1,6 @@
-int16 x
-int16 y
-int16 width
-int16 height
-int16 label
+float64 min_x
+float64 min_y
+float64 max_x
+float64 max_y
+float64 confidence
+int16 cone

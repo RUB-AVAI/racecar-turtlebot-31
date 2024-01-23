@@ -1,3 +1,2 @@
 [console_scripts]
 opencr = core_nodes.opencr_node:main
-

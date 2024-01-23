@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-# from avai_messages.msg import YoloOutput
 import os
 
 
@@ -68,19 +67,6 @@ class LidarSubscriber(Node):
         self.ranges = msg.ranges
         self.update_map()
         self.save_map()
-
-
-
-
-
-        
-
-
-        
-
-
-
-        
 
 
 
