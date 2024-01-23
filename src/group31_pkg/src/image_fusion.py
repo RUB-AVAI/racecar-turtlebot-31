@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
-from avai_messages.msg import YoloOutput
+from avai_messages.msg import YoloOutput, BoundingBox
 from sensor_msgs.msg import LaserScan
 from sklearn.cluster import DBSCAN
 
@@ -25,10 +25,19 @@ class imageFusion(Node):
         ts = ApproximateTimeSynchronizer([self.cone_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
         ts.registerCallback(self.callback)
 
-        
+        self.bounding_box_confidence_threshold = 0.85
+
+
         self.camera_range = 62 # range of camera in degree (see slides in moodle: 03-Perception Arcitecture): 62.2
         self.lidar_front = 270 # front entry of the lidar sensor (from 0 to 360)
         self.covering = [int(self.lidar_front-(self.camera_range/2)), int(self.lidar_front+(self.camera_range/2))] # array containing the min and max positions in the lidar map that the camera perceives
+        self.buffer = [-0, 0]
+        self.cover = [self.covering[0]+self.buffer[0], self.covering[1]+self.buffer[1]]
+        self.img_size_x = 640
+        self.bin_size = self.img_size_x / self.camera_range
+        self.bin_borders = [self.bin_size*i for i in range(self.camera_range)]
+        
+        self.bins = []
 
         self.X, self.Y = [], []
 
@@ -40,6 +49,69 @@ class imageFusion(Node):
         # cluster parameters
         self.eps = 0.2
         self.min_samples = 2
+
+
+    def cut_lidar_data(self):
+        # for i in range(len(self.ranges)):
+            # if self.cover[0] > i or i > self.cover[1]:
+                # self.ranges[i] = 0
+        self.ranges = self.ranges[self.cover[0]:self.cover[1]+1]
+
+    """
+    def fuse(self):
+        for box in self.bounding_boxes:
+            if(box.confidence < self.bounding_box_confidence_threshold):
+                continue
+
+            # find the bins
+            bin_idx_left = int(np.floor(box.min_x / self.bin_size))
+            bin_idx_right = int(np.floor(box.max_x / self.bin_size))
+
+            bin = [-1 for _ in range(self.camera_range)]
+            for bin_idx in range(bin_idx_left, bin_idx_right + 1):
+                if(bin_idx >= 62):
+                    continue
+                bin[bin_idx] = box.cone
+            
+            self.bins.append(bin)
+        
+        bins_copy = [[] for _ in range(self.camera_range)]
+        for bin in self.bins:
+            for i, entry in enumerate(bin):
+                if entry == -1:
+                    continue
+                self.bins_copy[i].append(entry)
+        self.bins = bins_copy
+
+        print(self.bins)
+        exit()
+    """
+
+    def fuse(self): #TODO: add missing bin an end
+        bins = [[] for _ in range(self.camera_range)]
+        
+        for box in self.bounding_boxes:
+            if box.confidence >= self.bounding_box_confidence_threshold:
+                bin_idx_left = int(np.floor(box.min_x / self.bin_size))
+                bin_idx_right = int(np.floor(box.max_x / self.bin_size))
+                
+                for bin_idx in range(bin_idx_left, min(bin_idx_right + 1, 62)):
+                    bins[bin_idx].append(box.cone)
+
+        self.bins = [bin_entries if bin_entries else [-1] * len(bin_entries) for bin_entries in bins]
+
+    
+    def update_coordinates(self):
+        self.X, self.Y = [], []
+
+        for angle, (range_val, bin_val) in enumerate(zip(self.ranges, self.bins), start=self.cover[0]):
+            print(angle, range_val, bin_val)
+
+
+
+        exit()
+
+
 
 
     def convert_to_polar_with_identifiers(self, clusters):
@@ -155,14 +227,19 @@ class imageFusion(Node):
 
         self.bounding_boxes = msg_cones.bounding_boxes
         self.ranges = msg_lidar.ranges
+
+        self.cut_lidar_data()
+        self.fuse()
+        self.update_coordinates()
+        return
+
         self.get_coordinates()
 
         cluster = self.cluster(self.X, self.Y)
         ranges, identifier = self.convert_to_polar_with_identifiers(cluster)
-        for r, i in zip(ranges, identifier):
-            print(r, i)
-        
-        #print(self.ranges[self.covering[0]:self.covering[1]])
+        self.cut_lidar_data(ranges, identifier)
+        #for r, i in zip(ranges, identifier):
+        #    print(r, i)
 
         self.update_map()
         self.save_map()
