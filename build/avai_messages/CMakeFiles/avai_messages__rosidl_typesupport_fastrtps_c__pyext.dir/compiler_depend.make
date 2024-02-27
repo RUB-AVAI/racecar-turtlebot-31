@@ -261,8 +261,22 @@ CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_genera
   rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__functions.h \
   rosidl_generator_c/avai_messages/msg/detail/melody__type_support.h \
   rosidl_generator_c/avai_messages/msg/detail/melody__struct.h \
-  rosidl_generator_c/avai_messages/msg/detail/melody__functions.h
+  rosidl_generator_c/avai_messages/msg/detail/melody__functions.h \
+  rosidl_generator_c/avai_messages/msg/detail/bounding_box__type_support.h \
+  rosidl_generator_c/avai_messages/msg/detail/bounding_box__struct.h \
+  rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.h \
+  rosidl_generator_c/avai_messages/msg/detail/yolo_output__type_support.h \
+  rosidl_generator_c/avai_messages/msg/detail/yolo_output__struct.h \
+  rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.h
 
+
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.h:
+
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__struct.h:
+
+rosidl_generator_c/avai_messages/msg/detail/yolo_output__type_support.h:
+
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.h:
 
 rosidl_generator_c/avai_messages/msg/detail/melody__struct.h:
 
@@ -397,6 +411,8 @@ rosidl_generator_c/avai_messages/msg/detail/melody__type_support.h:
 /usr/include/aarch64-linux-gnu/bits/struct_rwlock.h:
 
 /usr/include/aarch64-linux-gnu/bits/pthread_stack_min-dynamic.h:
+
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__struct.h:
 
 /usr/include/python3.10/pythonrun.h:
 
@@ -569,6 +585,8 @@ rosidl_generator_c/avai_messages/msg/detail/motor__functions.h:
 /usr/lib/gcc/aarch64-linux-gnu/11/include/stdarg.h:
 
 /usr/include/aarch64-linux-gnu/bits/floatn-common.h:
+
+rosidl_generator_c/avai_messages/msg/detail/bounding_box__type_support.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/__locale_t.h:
 

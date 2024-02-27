@@ -16,6 +16,8 @@
 
 
 // Include directives for member types
+// Member 'header'
+#include "std_msgs/msg/detail/header__struct.hpp"
 // Member 'motors'
 #include "avai_messages/msg/detail/motor__struct.hpp"
 
@@ -38,22 +40,32 @@ struct Motors_
   using Type = Motors_<ContainerAllocator>;
 
   explicit Motors_(rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
+  : header(_init)
   {
     (void)_init;
   }
 
   explicit Motors_(const ContainerAllocator & _alloc, rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
+  : header(_alloc, _init)
   {
     (void)_init;
-    (void)_alloc;
   }
 
   // field types and members
+  using _header_type =
+    std_msgs::msg::Header_<ContainerAllocator>;
+  _header_type header;
   using _motors_type =
     std::vector<avai_messages::msg::Motor_<ContainerAllocator>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<avai_messages::msg::Motor_<ContainerAllocator>>>;
   _motors_type motors;
 
   // setters for named parameter idiom
+  Type & set__header(
+    const std_msgs::msg::Header_<ContainerAllocator> & _arg)
+  {
+    this->header = _arg;
+    return *this;
+  }
   Type & set__motors(
     const std::vector<avai_messages::msg::Motor_<ContainerAllocator>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<avai_messages::msg::Motor_<ContainerAllocator>>> & _arg)
   {
@@ -103,6 +115,9 @@ struct Motors_
   // comparison operators
   bool operator==(const Motors_ & other) const
   {
+    if (this->header != other.header) {
+      return false;
+    }
     if (this->motors != other.motors) {
       return false;
     }

@@ -44,7 +44,7 @@ class OpenCRNode(Node):
                 marr = []
                 marr.append(Motor(position=int(matcher.group(11))))
                 marr.append(Motor(position=int(matcher.group(12))))
-                motors = Motors(motors=marr)
+                motors = Motors(motors=marr,header=hdr)
                 global pub_motor
                 pub_motor.publish(motors)
                 global ctr

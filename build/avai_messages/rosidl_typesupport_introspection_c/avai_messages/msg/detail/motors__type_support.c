@@ -13,6 +13,10 @@
 
 
 // Include directives for member types
+// Member `header`
+#include "std_msgs/msg/header.h"
+// Member `header`
+#include "std_msgs/msg/detail/header__rosidl_typesupport_introspection_c.h"
 // Member `motors`
 #include "avai_messages/msg/motor.h"
 // Member `motors`
@@ -92,7 +96,24 @@ bool avai_messages__msg__Motors__rosidl_typesupport_introspection_c__resize_func
   return avai_messages__msg__Motor__Sequence__init(member, size);
 }
 
-static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_member_array[1] = {
+static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_member_array[2] = {
+  {
+    "header",  // name
+    rosidl_typesupport_introspection_c__ROS_TYPE_MESSAGE,  // type
+    0,  // upper bound of string
+    NULL,  // members of sub message (initialized later)
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(avai_messages__msg__Motors, header),  // bytes offset in struct
+    NULL,  // default value
+    NULL,  // size() function pointer
+    NULL,  // get_const(index) function pointer
+    NULL,  // get(index) function pointer
+    NULL,  // fetch(index, &value) function pointer
+    NULL,  // assign(index, value) function pointer
+    NULL  // resize(index) function pointer
+  },
   {
     "motors",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_MESSAGE,  // type
@@ -115,7 +136,7 @@ static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Mot
 static const rosidl_typesupport_introspection_c__MessageMembers avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_members = {
   "avai_messages__msg",  // message namespace
   "Motors",  // message name
-  1,  // number of fields
+  2,  // number of fields
   sizeof(avai_messages__msg__Motors),
   avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_member_array,  // message members
   avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_init_function,  // function to initialize message memory (memory has to be allocated)
@@ -134,6 +155,8 @@ ROSIDL_TYPESUPPORT_INTROSPECTION_C_EXPORT_avai_messages
 const rosidl_message_type_support_t *
 ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, avai_messages, msg, Motors)() {
   avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_member_array[0].members_ =
+    ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, std_msgs, msg, Header)();
+  avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_member_array[1].members_ =
     ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, avai_messages, msg, Motor)();
   if (!avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_type_support_handle.typesupport_identifier) {
     avai_messages__msg__Motors__rosidl_typesupport_introspection_c__Motors_message_type_support_handle.typesupport_identifier =

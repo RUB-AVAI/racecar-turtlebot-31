@@ -1,5 +1,5 @@
 # generated from rosidl_generator_py/resource/_idl.py.em
-# with input from avai_messages:msg/Motors.idl
+# with input from avai_messages:msg/YoloOutput.idl
 # generated code does not contain a copyright notice
 
 
@@ -10,8 +10,8 @@ import builtins  # noqa: E402, I100
 import rosidl_parser.definition  # noqa: E402, I100
 
 
-class Metaclass_Motors(type):
-    """Metaclass of message 'Motors'."""
+class Metaclass_YoloOutput(type):
+    """Metaclass of message 'YoloOutput'."""
 
     _CREATE_ROS_MESSAGE = None
     _CONVERT_FROM_PY = None
@@ -31,20 +31,20 @@ class Metaclass_Motors(type):
             import logging
             import traceback
             logger = logging.getLogger(
-                'avai_messages.msg.Motors')
+                'avai_messages.msg.YoloOutput')
             logger.debug(
                 'Failed to import needed modules for type support:\n' +
                 traceback.format_exc())
         else:
-            cls._CREATE_ROS_MESSAGE = module.create_ros_message_msg__msg__motors
-            cls._CONVERT_FROM_PY = module.convert_from_py_msg__msg__motors
-            cls._CONVERT_TO_PY = module.convert_to_py_msg__msg__motors
-            cls._TYPE_SUPPORT = module.type_support_msg__msg__motors
-            cls._DESTROY_ROS_MESSAGE = module.destroy_ros_message_msg__msg__motors
+            cls._CREATE_ROS_MESSAGE = module.create_ros_message_msg__msg__yolo_output
+            cls._CONVERT_FROM_PY = module.convert_from_py_msg__msg__yolo_output
+            cls._CONVERT_TO_PY = module.convert_to_py_msg__msg__yolo_output
+            cls._TYPE_SUPPORT = module.type_support_msg__msg__yolo_output
+            cls._DESTROY_ROS_MESSAGE = module.destroy_ros_message_msg__msg__yolo_output
 
-            from avai_messages.msg import Motor
-            if Motor.__class__._TYPE_SUPPORT is None:
-                Motor.__class__.__import_type_support__()
+            from avai_messages.msg import BoundingBox
+            if BoundingBox.__class__._TYPE_SUPPORT is None:
+                BoundingBox.__class__.__import_type_support__()
 
             from std_msgs.msg import Header
             if Header.__class__._TYPE_SUPPORT is None:
@@ -59,22 +59,22 @@ class Metaclass_Motors(type):
         }
 
 
-class Motors(metaclass=Metaclass_Motors):
-    """Message class 'Motors'."""
+class YoloOutput(metaclass=Metaclass_YoloOutput):
+    """Message class 'YoloOutput'."""
 
     __slots__ = [
         '_header',
-        '_motors',
+        '_bounding_boxes',
     ]
 
     _fields_and_field_types = {
         'header': 'std_msgs/Header',
-        'motors': 'sequence<avai_messages/Motor>',
+        'bounding_boxes': 'sequence<avai_messages/BoundingBox>',
     }
 
     SLOT_TYPES = (
         rosidl_parser.definition.NamespacedType(['std_msgs', 'msg'], 'Header'),  # noqa: E501
-        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.NamespacedType(['avai_messages', 'msg'], 'Motor')),  # noqa: E501
+        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.NamespacedType(['avai_messages', 'msg'], 'BoundingBox')),  # noqa: E501
     )
 
     def __init__(self, **kwargs):
@@ -83,7 +83,7 @@ class Motors(metaclass=Metaclass_Motors):
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
         from std_msgs.msg import Header
         self.header = kwargs.get('header', Header())
-        self.motors = kwargs.get('motors', [])
+        self.bounding_boxes = kwargs.get('bounding_boxes', [])
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -116,7 +116,7 @@ class Motors(metaclass=Metaclass_Motors):
             return False
         if self.header != other.header:
             return False
-        if self.motors != other.motors:
+        if self.bounding_boxes != other.bounding_boxes:
             return False
         return True
 
@@ -140,14 +140,14 @@ class Motors(metaclass=Metaclass_Motors):
         self._header = value
 
     @builtins.property
-    def motors(self):
-        """Message field 'motors'."""
-        return self._motors
+    def bounding_boxes(self):
+        """Message field 'bounding_boxes'."""
+        return self._bounding_boxes
 
-    @motors.setter
-    def motors(self, value):
+    @bounding_boxes.setter
+    def bounding_boxes(self, value):
         if __debug__:
-            from avai_messages.msg import Motor
+            from avai_messages.msg import BoundingBox
             from collections.abc import Sequence
             from collections.abc import Set
             from collections import UserList
@@ -158,7 +158,7 @@ class Motors(metaclass=Metaclass_Motors):
                   isinstance(value, UserList)) and
                  not isinstance(value, str) and
                  not isinstance(value, UserString) and
-                 all(isinstance(v, Motor) for v in value) and
+                 all(isinstance(v, BoundingBox) for v in value) and
                  True), \
-                "The 'motors' field must be a set or sequence and each value of type 'Motor'"
-        self._motors = value
+                "The 'bounding_boxes' field must be a set or sequence and each value of type 'BoundingBox'"
+        self._bounding_boxes = value

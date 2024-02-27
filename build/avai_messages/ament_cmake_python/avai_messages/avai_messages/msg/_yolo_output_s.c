@@ -1,5 +1,5 @@
 // generated from rosidl_generator_py/resource/_idl_support.c.em
-// with input from avai_messages:msg/Motors.idl
+// with input from avai_messages:msg/YoloOutput.idl
 // generated code does not contain a copyright notice
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <Python.h>
@@ -13,28 +13,28 @@
 # pragma GCC diagnostic pop
 #endif
 #include "rosidl_runtime_c/visibility_control.h"
-#include "avai_messages/msg/detail/motors__struct.h"
-#include "avai_messages/msg/detail/motors__functions.h"
+#include "avai_messages/msg/detail/yolo_output__struct.h"
+#include "avai_messages/msg/detail/yolo_output__functions.h"
 
 #include "rosidl_runtime_c/primitives_sequence.h"
 #include "rosidl_runtime_c/primitives_sequence_functions.h"
 
 // Nested array functions includes
-#include "avai_messages/msg/detail/motor__functions.h"
+#include "avai_messages/msg/detail/bounding_box__functions.h"
 // end nested array functions include
 ROSIDL_GENERATOR_C_IMPORT
 bool std_msgs__msg__header__convert_from_py(PyObject * _pymsg, void * _ros_message);
 ROSIDL_GENERATOR_C_IMPORT
 PyObject * std_msgs__msg__header__convert_to_py(void * raw_ros_message);
-bool avai_messages__msg__motor__convert_from_py(PyObject * _pymsg, void * _ros_message);
-PyObject * avai_messages__msg__motor__convert_to_py(void * raw_ros_message);
+bool avai_messages__msg__bounding_box__convert_from_py(PyObject * _pymsg, void * _ros_message);
+PyObject * avai_messages__msg__bounding_box__convert_to_py(void * raw_ros_message);
 
 ROSIDL_GENERATOR_C_EXPORT
-bool avai_messages__msg__motors__convert_from_py(PyObject * _pymsg, void * _ros_message)
+bool avai_messages__msg__yolo_output__convert_from_py(PyObject * _pymsg, void * _ros_message)
 {
   // check that the passed message is of the expected Python class
   {
-    char full_classname_dest[33];
+    char full_classname_dest[42];
     {
       char * class_name = NULL;
       char * module_name = NULL;
@@ -59,9 +59,9 @@ bool avai_messages__msg__motors__convert_from_py(PyObject * _pymsg, void * _ros_
       }
       snprintf(full_classname_dest, sizeof(full_classname_dest), "%s.%s", module_name, class_name);
     }
-    assert(strncmp("avai_messages.msg._motors.Motors", full_classname_dest, 32) == 0);
+    assert(strncmp("avai_messages.msg._yolo_output.YoloOutput", full_classname_dest, 41) == 0);
   }
-  avai_messages__msg__Motors * ros_message = _ros_message;
+  avai_messages__msg__YoloOutput * ros_message = _ros_message;
   {  // header
     PyObject * field = PyObject_GetAttrString(_pymsg, "header");
     if (!field) {
@@ -73,12 +73,12 @@ bool avai_messages__msg__motors__convert_from_py(PyObject * _pymsg, void * _ros_
     }
     Py_DECREF(field);
   }
-  {  // motors
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motors");
+  {  // bounding_boxes
+    PyObject * field = PyObject_GetAttrString(_pymsg, "bounding_boxes");
     if (!field) {
       return false;
     }
-    PyObject * seq_field = PySequence_Fast(field, "expected a sequence in 'motors'");
+    PyObject * seq_field = PySequence_Fast(field, "expected a sequence in 'bounding_boxes'");
     if (!seq_field) {
       Py_DECREF(field);
       return false;
@@ -89,15 +89,15 @@ bool avai_messages__msg__motors__convert_from_py(PyObject * _pymsg, void * _ros_
       Py_DECREF(field);
       return false;
     }
-    if (!avai_messages__msg__Motor__Sequence__init(&(ros_message->motors), size)) {
-      PyErr_SetString(PyExc_RuntimeError, "unable to create avai_messages__msg__Motor__Sequence ros_message");
+    if (!avai_messages__msg__BoundingBox__Sequence__init(&(ros_message->bounding_boxes), size)) {
+      PyErr_SetString(PyExc_RuntimeError, "unable to create avai_messages__msg__BoundingBox__Sequence ros_message");
       Py_DECREF(seq_field);
       Py_DECREF(field);
       return false;
     }
-    avai_messages__msg__Motor * dest = ros_message->motors.data;
+    avai_messages__msg__BoundingBox * dest = ros_message->bounding_boxes.data;
     for (Py_ssize_t i = 0; i < size; ++i) {
-      if (!avai_messages__msg__motor__convert_from_py(PySequence_Fast_GET_ITEM(seq_field, i), &dest[i])) {
+      if (!avai_messages__msg__bounding_box__convert_from_py(PySequence_Fast_GET_ITEM(seq_field, i), &dest[i])) {
         Py_DECREF(seq_field);
         Py_DECREF(field);
         return false;
@@ -111,14 +111,14 @@ bool avai_messages__msg__motors__convert_from_py(PyObject * _pymsg, void * _ros_
 }
 
 ROSIDL_GENERATOR_C_EXPORT
-PyObject * avai_messages__msg__motors__convert_to_py(void * raw_ros_message)
+PyObject * avai_messages__msg__yolo_output__convert_to_py(void * raw_ros_message)
 {
-  /* NOTE(esteve): Call constructor of Motors */
+  /* NOTE(esteve): Call constructor of YoloOutput */
   PyObject * _pymessage = NULL;
   {
-    PyObject * pymessage_module = PyImport_ImportModule("avai_messages.msg._motors");
+    PyObject * pymessage_module = PyImport_ImportModule("avai_messages.msg._yolo_output");
     assert(pymessage_module);
-    PyObject * pymessage_class = PyObject_GetAttrString(pymessage_module, "Motors");
+    PyObject * pymessage_class = PyObject_GetAttrString(pymessage_module, "YoloOutput");
     assert(pymessage_class);
     Py_DECREF(pymessage_module);
     _pymessage = PyObject_CallObject(pymessage_class, NULL);
@@ -127,7 +127,7 @@ PyObject * avai_messages__msg__motors__convert_to_py(void * raw_ros_message)
       return NULL;
     }
   }
-  avai_messages__msg__Motors * ros_message = (avai_messages__msg__Motors *)raw_ros_message;
+  avai_messages__msg__YoloOutput * ros_message = (avai_messages__msg__YoloOutput *)raw_ros_message;
   {  // header
     PyObject * field = NULL;
     field = std_msgs__msg__header__convert_to_py(&ros_message->header);
@@ -142,17 +142,17 @@ PyObject * avai_messages__msg__motors__convert_to_py(void * raw_ros_message)
       }
     }
   }
-  {  // motors
+  {  // bounding_boxes
     PyObject * field = NULL;
-    size_t size = ros_message->motors.size;
+    size_t size = ros_message->bounding_boxes.size;
     field = PyList_New(size);
     if (!field) {
       return NULL;
     }
-    avai_messages__msg__Motor * item;
+    avai_messages__msg__BoundingBox * item;
     for (size_t i = 0; i < size; ++i) {
-      item = &(ros_message->motors.data[i]);
-      PyObject * pyitem = avai_messages__msg__motor__convert_to_py(item);
+      item = &(ros_message->bounding_boxes.data[i]);
+      PyObject * pyitem = avai_messages__msg__bounding_box__convert_to_py(item);
       if (!pyitem) {
         Py_DECREF(field);
         return NULL;
@@ -163,7 +163,7 @@ PyObject * avai_messages__msg__motors__convert_to_py(void * raw_ros_message)
     }
     assert(PySequence_Check(field));
     {
-      int rc = PyObject_SetAttrString(_pymessage, "motors", field);
+      int rc = PyObject_SetAttrString(_pymessage, "bounding_boxes", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;

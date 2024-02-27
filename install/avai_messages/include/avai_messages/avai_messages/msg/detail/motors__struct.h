@@ -18,12 +18,15 @@ extern "C"
 // Constants defined in the message
 
 // Include directives for member types
+// Member 'header'
+#include "std_msgs/msg/detail/header__struct.h"
 // Member 'motors'
 #include "avai_messages/msg/detail/motor__struct.h"
 
 /// Struct defined in msg/Motors in the package avai_messages.
 typedef struct avai_messages__msg__Motors
 {
+  std_msgs__msg__Header header;
   avai_messages__msg__Motor__Sequence motors;
 } avai_messages__msg__Motors;
 

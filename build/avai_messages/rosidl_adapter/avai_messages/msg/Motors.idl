@@ -3,10 +3,13 @@
 // generated code does not contain a copyright notice
 
 #include "avai_messages/msg/Motor.idl"
+#include "std_msgs/msg/Header.idl"
 
 module avai_messages {
   module msg {
     struct Motors {
+      std_msgs::msg::Header header;
+
       sequence<avai_messages::msg::Motor> motors;
     };
   };

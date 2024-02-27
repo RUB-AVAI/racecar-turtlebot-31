@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-# from avai_messages.msg import YoloOutput
 import os
 
 
@@ -33,8 +32,8 @@ class LidarSubscriber(Node):
         
         for angle, range in enumerate(self.ranges):
             # change the angles, so the y axis aligns with the camera
-            angle = (angle + 180) % 360
-            angle = 360 - angle
+            # angle = (angle + 180) % 360
+            # angle = 360 - angle
             if range != 0:
                 radiant = angle / 360 * 2 * np.pi
                 x = np.sin(radiant) * range
@@ -68,19 +67,6 @@ class LidarSubscriber(Node):
         self.ranges = msg.ranges
         self.update_map()
         self.save_map()
-
-
-
-
-
-        
-
-
-        
-
-
-
-        
 
 
 

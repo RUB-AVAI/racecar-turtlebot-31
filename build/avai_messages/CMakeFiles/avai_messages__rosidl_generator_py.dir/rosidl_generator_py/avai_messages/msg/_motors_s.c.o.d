@@ -208,9 +208,12 @@ CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messa
  /usr/include/python3.10/numpy/__multiarray_api.h \
  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/visibility_control.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/motors__struct.h \
+ /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__struct.h \
+ /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/time__struct.h \
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/string.h \
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/motor__struct.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/motors__functions.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/rosidl_generator_c__visibility_control.h \
- /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence.h \
  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence_functions.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/motor__functions.h

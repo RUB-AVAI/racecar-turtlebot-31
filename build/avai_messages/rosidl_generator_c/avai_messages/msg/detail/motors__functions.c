@@ -12,6 +12,8 @@
 
 
 // Include directives for member types
+// Member `header`
+#include "std_msgs/msg/detail/header__functions.h"
 // Member `motors`
 #include "avai_messages/msg/detail/motor__functions.h"
 
@@ -19,6 +21,11 @@ bool
 avai_messages__msg__Motors__init(avai_messages__msg__Motors * msg)
 {
   if (!msg) {
+    return false;
+  }
+  // header
+  if (!std_msgs__msg__Header__init(&msg->header)) {
+    avai_messages__msg__Motors__fini(msg);
     return false;
   }
   // motors
@@ -35,6 +42,8 @@ avai_messages__msg__Motors__fini(avai_messages__msg__Motors * msg)
   if (!msg) {
     return;
   }
+  // header
+  std_msgs__msg__Header__fini(&msg->header);
   // motors
   avai_messages__msg__Motor__Sequence__fini(&msg->motors);
 }
@@ -43,6 +52,12 @@ bool
 avai_messages__msg__Motors__are_equal(const avai_messages__msg__Motors * lhs, const avai_messages__msg__Motors * rhs)
 {
   if (!lhs || !rhs) {
+    return false;
+  }
+  // header
+  if (!std_msgs__msg__Header__are_equal(
+      &(lhs->header), &(rhs->header)))
+  {
     return false;
   }
   // motors
@@ -60,6 +75,12 @@ avai_messages__msg__Motors__copy(
   avai_messages__msg__Motors * output)
 {
   if (!input || !output) {
+    return false;
+  }
+  // header
+  if (!std_msgs__msg__Header__copy(
+      &(input->header), &(output->header)))
+  {
     return false;
   }
   // motors

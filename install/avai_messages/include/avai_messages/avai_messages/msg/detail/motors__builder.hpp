@@ -24,13 +24,29 @@ namespace builder
 class Init_Motors_motors
 {
 public:
-  Init_Motors_motors()
-  : msg_(::rosidl_runtime_cpp::MessageInitialization::SKIP)
+  explicit Init_Motors_motors(::avai_messages::msg::Motors & msg)
+  : msg_(msg)
   {}
   ::avai_messages::msg::Motors motors(::avai_messages::msg::Motors::_motors_type arg)
   {
     msg_.motors = std::move(arg);
     return std::move(msg_);
+  }
+
+private:
+  ::avai_messages::msg::Motors msg_;
+};
+
+class Init_Motors_header
+{
+public:
+  Init_Motors_header()
+  : msg_(::rosidl_runtime_cpp::MessageInitialization::SKIP)
+  {}
+  Init_Motors_motors header(::avai_messages::msg::Motors::_header_type arg)
+  {
+    msg_.header = std::move(arg);
+    return Init_Motors_motors(msg_);
   }
 
 private:
@@ -48,7 +64,7 @@ template<>
 inline
 auto build<::avai_messages::msg::Motors>()
 {
-  return avai_messages::msg::builder::Init_Motors_motors();
+  return avai_messages::msg::builder::Init_Motors_header();
 }
 
 }  // namespace avai_messages

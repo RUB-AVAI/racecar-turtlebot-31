@@ -22,6 +22,10 @@
 // Nested array functions includes
 #include "avai_messages/msg/detail/motor__functions.h"
 // end nested array functions include
+ROSIDL_GENERATOR_C_IMPORT
+bool std_msgs__msg__header__convert_from_py(PyObject * _pymsg, void * _ros_message);
+ROSIDL_GENERATOR_C_IMPORT
+PyObject * std_msgs__msg__header__convert_to_py(void * raw_ros_message);
 bool avai_messages__msg__motor__convert_from_py(PyObject * _pymsg, void * _ros_message);
 PyObject * avai_messages__msg__motor__convert_to_py(void * raw_ros_message);
 
@@ -58,6 +62,17 @@ bool avai_messages__msg__motors__convert_from_py(PyObject * _pymsg, void * _ros_
     assert(strncmp("avai_messages.msg._motors.Motors", full_classname_dest, 32) == 0);
   }
   avai_messages__msg__Motors * ros_message = _ros_message;
+  {  // header
+    PyObject * field = PyObject_GetAttrString(_pymsg, "header");
+    if (!field) {
+      return false;
+    }
+    if (!std_msgs__msg__header__convert_from_py(field, &ros_message->header)) {
+      Py_DECREF(field);
+      return false;
+    }
+    Py_DECREF(field);
+  }
   {  // motors
     PyObject * field = PyObject_GetAttrString(_pymsg, "motors");
     if (!field) {
@@ -113,6 +128,20 @@ PyObject * avai_messages__msg__motors__convert_to_py(void * raw_ros_message)
     }
   }
   avai_messages__msg__Motors * ros_message = (avai_messages__msg__Motors *)raw_ros_message;
+  {  // header
+    PyObject * field = NULL;
+    field = std_msgs__msg__header__convert_to_py(&ros_message->header);
+    if (!field) {
+      return NULL;
+    }
+    {
+      int rc = PyObject_SetAttrString(_pymessage, "header", field);
+      Py_DECREF(field);
+      if (rc) {
+        return NULL;
+      }
+    }
+  }
   {  // motors
     PyObject * field = NULL;
     size_t size = ros_message->motors.size;
