@@ -15,10 +15,10 @@ import yolov5.models.common
 TOPIC = "/cone_classification"
 QUEUE_SIZE = 1
 
-PUBLISH = False
+PUBLISH = True
 
 SAVE_IMAGE_RAW = True
-SAVE_IMAGE_WITH_BOUNDING_BOXES = False
+SAVE_IMAGE_WITH_BOUNDING_BOXES = True
 
     
 

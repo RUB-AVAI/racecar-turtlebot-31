@@ -123,12 +123,10 @@ class LidarProcessingNode(Node):
             limit = 4
             self.ax.set_xlim([-limit, limit])
             self.ax.set_ylim([-limit, limit])
-            self.get_logger().info("Updated Lidar Map")
 
 
     def save_map(self):
         self.fig.savefig(IMSAVE_PATH)
-        self.get_logger().info("Saved Lidar Map")
 
 
     def lidar_listener_callback(self, msg):

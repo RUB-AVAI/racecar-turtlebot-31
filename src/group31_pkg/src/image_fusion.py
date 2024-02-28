@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
-from avai_messages.msg import YoloOutput, BoundingBox
+from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData
 from sensor_msgs.msg import LaserScan
 from sklearn.cluster import DBSCAN
 
@@ -15,12 +15,14 @@ QUEUE_SIZE = 1
 SHOW_IMAGE = False
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
 
-class imageFusion(Node):
+class DataFusionNode(Node):
     def __init__(self):
-        super().__init__('lidar_subscriber')
+        super().__init__('data_fusion_node')
         self.cone_subscription = Subscriber(self, YoloOutput, "/cone_classification")
 
         self.lidar_subscription = Subscriber(self, LaserScan, "/scan", qos_profile=rclpy.qos.qos_profile_sensor_data)
+
+        self.clustered_lidar_subscription = Subscriber(self, ClusteredLidarData)
 
         ts = ApproximateTimeSynchronizer([self.cone_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
         ts.registerCallback(self.callback)
@@ -151,7 +153,7 @@ class imageFusion(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    lidar_subscriber = imageFusion()
+    lidar_subscriber = DataFusionNode()
     rclpy.spin(lidar_subscriber)
 
     lidar_subscriber.destroy_node()
