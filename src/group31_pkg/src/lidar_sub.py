@@ -12,14 +12,15 @@ from sklearn.cluster import DBSCAN
 #global variables
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
 CLUSTER = True
+SAVE_VISUALISATION = True
 
 TOPIC = "/clusterered_lidar_data"
 QUEUE_SIZE = 1
 
-class LidarSubscriber(Node):
+class LidarProcessingNode(Node):
 
     def __init__(self):
-        super().__init__('lidar_subscriber')
+        super().__init__('lidar_processing_node')
 
         self.lidar_subscription = self.create_subscription(LaserScan, "/scan", self.lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.lidar_subscription  # prevent unused variable warning
@@ -33,11 +34,13 @@ class LidarSubscriber(Node):
         if CLUSTER:
             self.dbscan = DBSCAN(eps=self.eps, min_samples=self.min_samples)
 
+        if SAVE_VISUALISATION:
+            # figure 
+            self.fig, self.ax = plt.subplots()
+            plt.axis("equal")
 
-        # figure 
-        self.fig, self.ax = plt.subplots()
-        plt.axis("equal")
         self.ranges = np.zeros(360)
+        self.timestamp = None
         
         # lidar data: starts at the back and then rotates counter clockwise
         # front: 180
@@ -47,11 +50,16 @@ class LidarSubscriber(Node):
 
 
 
-    def update_map(self):
+    def process_data(self):
+        # updates the scatter plot and saves it at the specified location
         X = []
         Y = []
         
-        for angle, range in enumerate(self.ranges):
+        ranges = self.ranges
+        timestamp = self.timestamp
+
+        # convert ranges into cartesian coordinates
+        for angle, range in enumerate(ranges):
             if range != 0:
                 radiant = angle / 360 * 2 * np.pi
                 x = np.cos(radiant) * range
@@ -59,14 +67,18 @@ class LidarSubscriber(Node):
                 X.append(x)
                 Y.append(y)
         
-        # prepare plot 
-        self.ax.clear()
+        if SAVE_VISUALISATION:
+            # prepare plot 
+            self.ax.clear()
 
-        blindspot = plt.Circle((0, 0), 0.09, color="red", fill=False)
-        self.ax.add_patch(blindspot)
+            blindspot = plt.Circle((0, 0), 0.09, color="red", fill=False)
+            self.ax.add_patch(blindspot)
             
         if CLUSTER:
+            # convert the points into np array of shape (N, 2)
             lidar_points = np.asarray([X, Y]).transpose()
+
+            # cluster
             clusters = self.dbscan.fit_predict(lidar_points)
              # Extract the cluster labels
             unique_labels = np.unique(clusters)
@@ -89,24 +101,29 @@ class LidarSubscriber(Node):
             clusters = []
             for cluster in clustered_points:
                 X, Y = cluster
-                self.ax.scatter(X, Y, marker=".")
-                cluster.append(Cluster(x_positions=X, y_positions=Y))
+                if SAVE_VISUALISATION:
+                    # scatter each cluster individually so they get different colors
+                    self.ax.scatter(X, Y, marker=".")
+
+                # create a Cluster object for the publisher
+                clusters.append(Cluster(x_positions=X, y_positions=Y))
             
             # create and publish message
             msg = ClusteredLidarData()
             msg.clusters = clusters
-            msg.header.stamp = self.get_clock().now().to_msg()
-            msg.header.frame_id = f"{self.i}
+            msg.header.stamp = timestamp.to_msg()
+            msg.header.frame_id = f"{self.i}"
             self.i += 1
             self.publisher_.publish(msg)
             self.get_logger().info('%d Clusterered Lidar Data Published' % self.i)         
-        else:
+        elif SAVE_VISUALISATION:
             self.ax.scatter(X, Y, marker=".")
-            
-        limit = 4
-        self.ax.set_xlim([-limit, limit])
-        self.ax.set_ylim([-limit, limit])
-        self.get_logger().info("Updated Lidar Map")
+
+        if SAVE_VISUALISATION:    
+            limit = 4
+            self.ax.set_xlim([-limit, limit])
+            self.ax.set_ylim([-limit, limit])
+            self.get_logger().info("Updated Lidar Map")
 
 
     def save_map(self):
@@ -121,17 +138,19 @@ class LidarSubscriber(Node):
     
         self.get_logger().info("Lidar Data Received")
         self.ranges = msg.ranges
-        self.update_map()
-        self.save_map()
+        self.timestamp = self.get_clock().now()
+        self.process_data()
+        if SAVE_VISUALISATION:
+            self.save_map()
 
 
 def main(args=None):
     rclpy.init(args=args)
-    lidar_subscriber = LidarSubscriber()
-    rclpy.spin(lidar_subscriber)
+    lidar_processing_node = LidarProcessingNode()
+    rclpy.spin(lidar_processing_node)
 
 
-    lidar_subscriber.destroy_node()
+    lidar_processing_node.destroy_node()
     rclpy.shutdown()
 
 
