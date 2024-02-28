@@ -90,13 +90,13 @@ class LidarSubscriber(Node):
             for cluster in clustered_points:
                 X, Y = cluster
                 self.ax.scatter(X, Y, marker=".")
-                clusters.append(Cluster(x_positions=X, y_positions=Y))
+                cluster.append(Cluster(x_positions=X, y_positions=Y))
             
             # create and publish message
             msg = ClusteredLidarData()
             msg.clusters = clusters
             msg.header.stamp = self.get_clock().now().to_msg()
-            msg.header.frame_id = f"{self.i}"
+            msg.header.frame_id = f"{self.i}
             self.i += 1
             self.publisher_.publish(msg)
             self.get_logger().info('%d Clusterered Lidar Data Published' % self.i)         
