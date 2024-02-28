@@ -33,16 +33,13 @@ MODEL_PATH = "/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/best-int8_ed
 
 
 
-class CameraPublisher(Node):
+class CamImageProcessingNode(Node):
     """
-    Camera Publisher Class.
-
-    This class contains all methods to publish camera data and info in ROS 2 
-    topic in sensor_msgs.msg/Image format. 
+    
     """
 
     def __init__(self, capture):
-        super().__init__("cone_publisher")
+        super().__init__("CamImageProcessingNode")
 
         if SAVE_IMAGE_WITH_BOUNDING_BOXES and not PUBLISH:
             self.get_logger().error("cannot save images with bounding boxes without publishing")
@@ -52,6 +49,7 @@ class CameraPublisher(Node):
         self.capture = capture
         self.i = 0
         self.camera_frame = None
+        self.camera_frame_stamp = None
 
         self.current_yolo_frame = None
         self.current_yolo_output = None
@@ -88,12 +86,14 @@ class CameraPublisher(Node):
             # save image to variable
             if ret:
                 self.camera_frame = frame
+                self.camera_frame_stamp = self.get_clock().now()
             
     
     def publish(self):
+        # publish yolo output
         if self.camera_frame is not None:
-            boxes = self.yolo(self.camera_frame)
-            self.publisher_.publish(boxes)
+            yolo_output = self.yolo(self.camera_frame, self.camera_frame_stamp)
+            self.publisher_.publish(yolo_output)
             self.get_logger().info('%d Images Published' % self.i)
             self.i += 1 # image counter increment
         else:
@@ -101,6 +101,7 @@ class CameraPublisher(Node):
 
 
     def save_image_raw(self):
+        # save the raw image from the camera to the visualisations folder
         frame = self.camera_frame
         frame = self.add_vertical_lines(frame)
         if frame is not None:
@@ -110,6 +111,7 @@ class CameraPublisher(Node):
 
 
     def save_image_with_bounding_boxes(self):
+        # lay the bounding boxes over the camera image and save it to the visualisations folder
         image = self.current_yolo_frame
         detections = self.current_yolo_output
         if image is not None:
@@ -133,7 +135,7 @@ class CameraPublisher(Node):
             self.get_logger().warning("Found no yolo frame to save")
 
 
-    def yolo(self, input_img:np.ndarray):
+    def yolo(self, input_img:np.ndarray, timestamp):
         raw_img = cv2.resize(input_img, (640, 640))
         raw_img_bgb = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
         detect = self.interpreter(raw_img_bgb)
@@ -161,13 +163,13 @@ class CameraPublisher(Node):
 
         # create object to publish
         output = YoloOutput()
-        output.header.stamp = self.get_clock().now().to_msg()
+        output.header.stamp = timestamp.to_msg()
         output.header.frame_id = f"{self.i}"
         output.bounding_boxes = output_boxes
         return output
     
     def add_vertical_lines(self, img, num_lines = 61, classifications = None):
-
+        # adds vertical lines to an image 
         if classifications is None:
             classifications = [-1] * num_lines
         
@@ -193,11 +195,11 @@ def main(args=None):
     # init node
     rclpy.init(args=args)
 
-    camera_publisher = CameraPublisher(capture)
-    rclpy.spin(camera_publisher)
+    cam_image_processing_node = CamImageProcessingNode(capture)
+    rclpy.spin(cam_image_processing_node)
 
     # shut down node and releases everything
-    camera_publisher.destroy_node()
+    cam_image_processing_node.destroy_node()
     rclpy.shutdown()
     capture.release()
 
