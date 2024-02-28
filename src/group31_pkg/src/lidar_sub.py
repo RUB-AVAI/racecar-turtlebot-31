@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-from avai_messages.msg import ClusteredLidarData
+from avai_messages.msg import ClusteredLidarData, Cluster
 import os
 from sklearn.cluster import DBSCAN
 
@@ -25,6 +25,7 @@ class LidarSubscriber(Node):
         self.lidar_subscription  # prevent unused variable warning
 
         self.publisher_ = self.create_publisher(ClusteredLidarData, TOPIC, QUEUE_SIZE)
+        self.i = 0
 
         # cluster parameters
         self.eps = 0.1
@@ -85,19 +86,23 @@ class LidarSubscriber(Node):
                     clustered_points.append((X, Y))
             
 
-            msg = ClusteredLidarData()
-            msg.header.stamp = self.get_clock().now().to_msg()
-            msg.header.frame_id = f"{self.i}"
+            clusters = []
             for cluster in clustered_points:
                 X, Y = cluster
                 self.ax.scatter(X, Y, marker=".")
-                
+                cluster.append(Cluster(x_positions=X, y_positions=Y))
+            
+            # create and publish message
+            msg = ClusteredLidarData()
+            msg.clusters = clusters
+            msg.header.stamp = self.get_clock().now().to_msg()
+            msg.header.frame_id = f"{self.i}
+            self.i += 1
+            self.publisher_.publish(msg)
+            self.get_logger().info('%d Clusterered Lidar Data Published' % self.i)         
         else:
             self.ax.scatter(X, Y, marker=".")
             
-        
-        
-
         limit = 4
         self.ax.set_xlim([-limit, limit])
         self.ax.set_ylim([-limit, limit])
