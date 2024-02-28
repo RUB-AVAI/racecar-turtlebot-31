@@ -282,6 +282,10 @@ CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_message
   /usr/include/stdint.h \
   /usr/include/aarch64-linux-gnu/bits/wchar.h \
   /usr/include/aarch64-linux-gnu/bits/stdint-uintn.h \
+  /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__struct.h \
+  /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/time__struct.h \
+  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/string.h \
+  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence.h \
   rosidl_generator_c/avai_messages/msg/detail/motor__struct.h \
   /usr/include/assert.h \
   /usr/include/string.h \
@@ -303,6 +307,8 @@ CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_message
   /opt/ros/humble/include/rcutils/rcutils/visibility_control.h \
   /opt/ros/humble/include/rcutils/rcutils/visibility_control_macros.h \
   /opt/ros/humble/include/rcutils/rcutils/types/rcutils_ret.h \
+  /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__functions.h \
+  /opt/ros/humble/include/std_msgs/std_msgs/msg/rosidl_generator_c__visibility_control.h \
   rosidl_generator_c/avai_messages/msg/detail/motor__functions.h
 
 CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c.o: rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c \
@@ -556,17 +562,17 @@ rosidl_generator_c/avai_messages/msg/detail/vehicle_lights__struct.h:
 
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/rosidl_generator_c__visibility_control.h:
 
-/opt/ros/humble/include/std_msgs/std_msgs/msg/rosidl_generator_c__visibility_control.h:
-
-/opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__functions.h:
-
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/vector3__struct.h:
-
-/opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/time__struct.h:
 
 rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.h:
 
 rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c:
+
+/opt/ros/humble/include/std_msgs/std_msgs/msg/rosidl_generator_c__visibility_control.h:
+
+/opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__functions.h:
+
+/opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/time__struct.h:
 
 rosidl_generator_c/avai_messages/msg/detail/motors__struct.h:
 

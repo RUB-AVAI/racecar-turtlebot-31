@@ -25,14 +25,14 @@ class imageFusion(Node):
         ts = ApproximateTimeSynchronizer([self.cone_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
         ts.registerCallback(self.callback)
 
-        self.bounding_box_confidence_threshold = 0.85
+        self.bounding_box_confidence_threshold = 0.5
 
 
         self.camera_range = 62 # range of camera in degree (see slides in moodle: 03-Perception Arcitecture): 62.2
-        self.lidar_front = 270 # front entry of the lidar sensor (from 0 to 360)
+        self.lidar_front = 180 # front entry of the lidar sensor (from 0 to 360)
         self.covering = [int(self.lidar_front-(self.camera_range/2)), int(self.lidar_front+(self.camera_range/2))] # array containing the min and max positions in the lidar map that the camera perceives
         self.buffer = [-0, 0]
-        self.camera_fov = [self.covering[0]+self.buffer[0], self.covering[1]+self.buffer[1]]
+        self.camera_fov = [150, 210]
         self.img_size_x = 640
         self.bin_size = self.img_size_x / self.camera_range
         self.bin_borders = [self.bin_size*i for i in range(self.camera_range)]
@@ -40,14 +40,14 @@ class imageFusion(Node):
         self.bins = [[] for _ in range(self.camera_range)]
         self.coordinates = []
 
-        # figure 
-        self.fig, self.ax = plt.subplots()
-        plt.axis("equal")
-        self.ranges = np.zeros(360)
+        self.ranges_spherical = [0 for _ in range(360)]
+        self.ranges_cartesian = None
+        self.ranges_cartesian_without_zeros = None
 
         # cluster parameters
         self.eps = 0.1
         self.min_samples = 2 # try 4 or 8
+        self.dbscan = DBSCAN(eps=self.eps, min_samples=self.min_samples)
 
     def update_bins(self): #TODO: add missing bin an end
         """
@@ -71,7 +71,7 @@ class imageFusion(Node):
         pass
 
 
-    def cluster(self, X, Y):
+    def cluster(self, lidar_data):
         """
         Perform DBSCAN clustering on LIDAR data.
 
@@ -83,14 +83,16 @@ class imageFusion(Node):
         Returns:
         - clustered_points: List of lists, where each inner list contains points belonging to a cluster.
         """
-        lidar_data = list(zip(X, Y))
 
         # Create DBSCAN instance and fit to data
-        dbscan = DBSCAN(eps=self.eps, min_samples=self.min_samples)
-        clusters = dbscan.fit_predict(lidar_data)
+        clusters = self.dbscan.fit_predict(lidar_data)
+
+        print(clusters)
 
         # Extract the cluster labels
         unique_labels = np.unique(clusters)
+
+        print(unique_labels)
 
         # Convert clusters to a list (if it's a numpy array) to ensure integer values
         clusters = clusters.tolist()
@@ -109,21 +111,21 @@ class imageFusion(Node):
 
         return clustered_points        
 
-    def update_map(self):
-        self.ax.clear()
 
-        blindspot = plt.Circle((0, 0), 0.09, color="red", fill=False)
-        self.ax.add_patch(blindspot)
-        self.ax.scatter(self.X, self.Y, marker=".", color="black")
+    def spherical_to_cartesian(self, spherical_coordinates):
+        cartesian_coordinates = np.zeros((360, 2))
+        cartesian_coordinates_without_zeros = []
+        
+        for angle, range in enumerate(spherical_coordinates):
+            radiant = angle / 360 * 2 * np.pi
+            y = np.sin(radiant) * range
+            x = np.cos(radiant) * range
+            cartesian_coordinates[angle, 0] = x
+            cartesian_coordinates[angle, 1] = y
+            if range != 0:
+                cartesian_coordinates_without_zeros.append([x, y])
 
-        limit = 4
-        self.ax.set_xlim([-limit, limit])
-        self.ax.set_ylim([-limit, limit])
-        self.get_logger().info("Updated Lidar Map")
-
-    def save_map(self):
-        self.fig.savefig(IMSAVE_PATH)
-        self.get_logger().info("Saved Lidar Map")
+        return cartesian_coordinates, np.asarray(cartesian_coordinates_without_zeros)
 
     
     def callback(self, msg_cones, msg_lidar):
@@ -132,37 +134,19 @@ class imageFusion(Node):
         """
         # range min: 0.12 m
         # range max: 3.5 m
-        # the ranges start on the right side of the turtlebot and continue clockwise (entry 270 is the front)
+        # the ranges start on the right side of the turtlebot and continue clockwise (entry 180 is the front)
 
         self.get_logger().info(f'Received synchronized messages')
 
         self.bounding_boxes = msg_cones.bounding_boxes
-        self.ranges = msg_lidar.ranges[self.camera_fov[0]:self.camera_fov[1]+1] # takes only the ranges in the fov of the camera
-        print(self.camera_fov)
+
+        self.ranges_spherical = msg_lidar.ranges
+        self.ranges_cartesian, self.ranges_cartesian_without_zeros = self.spherical_to_cartesian(msg_lidar.ranges)
+        
+        clustering = self.cluster(self.ranges_cartesian_without_zeros)
+
+        print(clustering)
         exit()
-        self.update_bins()
-        # self.update_coordinates()
-        print(msg_lidar.ranges)
-        exit()
-        for (b, r) in zip(self.bins, self.ranges):
-            print(b, r)
-        exit()
-        for i in self.coordinates:
-            print(i)
-        exit()
-
-        self.get_coordinates()
-
-        cluster = self.cluster(self.X, self.Y)
-        ranges, identifier = self.convert_to_polar_with_identifiers(cluster)
-        self.cut_lidar_data(ranges, identifier)
-        #for r, i in zip(ranges, identifier):
-        #    print(r, i)
-
-        self.update_map()
-        self.save_map()
-
-
 
 
 def main(args=None):

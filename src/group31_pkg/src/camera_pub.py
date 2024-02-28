@@ -57,8 +57,9 @@ class CameraPublisher(Node):
         self.current_yolo_output = None
 
         #YOLO model
-        self.interpreter = yolov5.models.common.DetectMultiBackend(MODEL_PATH)
-        self.interpreter = yolov5.models.common.AutoShape(self.interpreter)
+        if PUBLISH:
+            self.interpreter = yolov5.models.common.DetectMultiBackend(MODEL_PATH)
+            self.interpreter = yolov5.models.common.AutoShape(self.interpreter)
         
         # initialize publisher
         self.publisher_ = self.create_publisher(YoloOutput, TOPIC, QUEUE_SIZE)
@@ -77,8 +78,6 @@ class CameraPublisher(Node):
         if SAVE_IMAGE_WITH_BOUNDING_BOXES:
             self.image_save_bb_callback = self.create_timer(1.0 / FPS_IMAGE_SAVING_BOUNDING_BOXES, self.save_image_with_bounding_boxes)
 
-        
-        
         
         
     def capture_image(self):
@@ -167,20 +166,23 @@ class CameraPublisher(Node):
         output.bounding_boxes = output_boxes
         return output
     
-    def add_vertical_lines(self, img, classifications = None):
+    def add_vertical_lines(self, img, num_lines = 61, classifications = None):
+
+        if classifications is None:
+            classifications = [-1] * num_lines
+        
+        colors = [(0, 0, 255), (255,140,0), (255, 255, 0), (0, 0, 0)] # blue orange yellow green
 
         height, width = img.shape[:2]
-
-        # Number of lines to draw
-        num_lines = 61
         
         # Calculate the spacing between lines
         spacing = width / (num_lines + 1)
         
         # Draw the lines
-        for i in range(1, num_lines + 1):
-            x = int(i * spacing)
-            cv2.line(img, (x, 0), (x, height), (0, 0, 255), 1)  # Red line
+        for i in range(num_lines):
+            x = int((i + 1) * spacing)
+            cv2.line(img, (x, 0), (x, height), colors[classifications[i]], 1)  # Red line
+
         
         return img
 

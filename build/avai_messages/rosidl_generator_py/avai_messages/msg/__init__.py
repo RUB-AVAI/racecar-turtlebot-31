@@ -1,4 +1,6 @@
 from avai_messages.msg._bounding_box import BoundingBox  # noqa: F401
+from avai_messages.msg._cluster import Cluster  # noqa: F401
+from avai_messages.msg._clustered_lidar_data import ClusteredLidarData  # noqa: F401
 from avai_messages.msg._melody import Melody  # noqa: F401
 from avai_messages.msg._motor import Motor  # noqa: F401
 from avai_messages.msg._motors import Motors  # noqa: F401

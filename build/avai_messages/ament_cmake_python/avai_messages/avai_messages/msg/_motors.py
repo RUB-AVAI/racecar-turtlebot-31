@@ -46,6 +46,10 @@ class Metaclass_Motors(type):
             if Motor.__class__._TYPE_SUPPORT is None:
                 Motor.__class__.__import_type_support__()
 
+            from std_msgs.msg import Header
+            if Header.__class__._TYPE_SUPPORT is None:
+                Header.__class__.__import_type_support__()
+
     @classmethod
     def __prepare__(cls, name, bases, **kwargs):
         # list constant names here so that they appear in the help text of
@@ -59,14 +63,17 @@ class Motors(metaclass=Metaclass_Motors):
     """Message class 'Motors'."""
 
     __slots__ = [
+        '_header',
         '_motors',
     ]
 
     _fields_and_field_types = {
+        'header': 'std_msgs/Header',
         'motors': 'sequence<avai_messages/Motor>',
     }
 
     SLOT_TYPES = (
+        rosidl_parser.definition.NamespacedType(['std_msgs', 'msg'], 'Header'),  # noqa: E501
         rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.NamespacedType(['avai_messages', 'msg'], 'Motor')),  # noqa: E501
     )
 
@@ -74,6 +81,8 @@ class Motors(metaclass=Metaclass_Motors):
         assert all('_' + key in self.__slots__ for key in kwargs.keys()), \
             'Invalid arguments passed to constructor: %s' % \
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
+        from std_msgs.msg import Header
+        self.header = kwargs.get('header', Header())
         self.motors = kwargs.get('motors', [])
 
     def __repr__(self):
@@ -105,6 +114,8 @@ class Motors(metaclass=Metaclass_Motors):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
+        if self.header != other.header:
+            return False
         if self.motors != other.motors:
             return False
         return True
@@ -113,6 +124,20 @@ class Motors(metaclass=Metaclass_Motors):
     def get_fields_and_field_types(cls):
         from copy import copy
         return copy(cls._fields_and_field_types)
+
+    @builtins.property
+    def header(self):
+        """Message field 'header'."""
+        return self._header
+
+    @header.setter
+    def header(self, value):
+        if __debug__:
+            from std_msgs.msg import Header
+            assert \
+                isinstance(value, Header), \
+                "The 'header' field must be a sub message of type 'Header'"
+        self._header = value
 
     @builtins.property
     def motors(self):

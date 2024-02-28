@@ -795,6 +795,8 @@ CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai
   /usr/include/c++/11/stdexcept \
   /opt/ros/humble/include/rosidl_runtime_cpp/rosidl_runtime_cpp/message_initialization.hpp \
   /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/message_initialization.h \
+  /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__struct.hpp \
+  /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/time__struct.hpp \
   rosidl_generator_cpp/avai_messages/msg/detail/motor__struct.hpp \
   /opt/ros/humble/include/rosidl_typesupport_cpp/rosidl_typesupport_cpp/identifier.hpp \
   /opt/ros/humble/include/rosidl_typesupport_cpp/rosidl_typesupport_cpp/visibility_control.h \
@@ -1411,11 +1413,11 @@ CMakeFiles/avai_messages__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/avai
 
 rosidl_typesupport_cpp/avai_messages/msg/yolo_output__type_support.cpp:
 
+rosidl_typesupport_cpp/avai_messages/msg/vector3_sensor__type_support.cpp:
+
 /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/time__struct.hpp:
 
 /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__struct.hpp:
-
-rosidl_typesupport_cpp/avai_messages/msg/vector3_sensor__type_support.cpp:
 
 rosidl_generator_cpp/avai_messages/msg/detail/vehicle_lights__struct.hpp:
 

@@ -45,6 +45,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Melody.msg"
   "msg/BoundingBox.msg"
   "msg/YoloOutput.msg"
+  "msg/Cluster.msg"
+  "msg/ClusteredLidarData.msg"
   DEPENDENCIES geometry_msgs std_msgs
 )
 

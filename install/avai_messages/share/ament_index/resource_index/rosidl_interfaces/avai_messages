@@ -1,5 +1,9 @@
 msg/BoundingBox.idl
 msg/BoundingBox.msg
+msg/Cluster.idl
+msg/Cluster.msg
+msg/ClusteredLidarData.idl
+msg/ClusteredLidarData.msg
 msg/Melody.idl
 msg/Melody.msg
 msg/Motor.idl

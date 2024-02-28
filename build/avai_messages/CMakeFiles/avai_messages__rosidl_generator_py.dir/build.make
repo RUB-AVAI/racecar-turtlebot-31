@@ -167,6 +167,34 @@ CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messa
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c -o CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.s
 
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o: CMakeFiles/avai_messages__rosidl_generator_py.dir/flags.make
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o: rosidl_generator_py/avai_messages/msg/_cluster_s.c
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o: CMakeFiles/avai_messages__rosidl_generator_py.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o -MF CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o.d -o CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_cluster_s.c
+
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_cluster_s.c > CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.i
+
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_cluster_s.c -o CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.s
+
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o: CMakeFiles/avai_messages__rosidl_generator_py.dir/flags.make
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o: rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o: CMakeFiles/avai_messages__rosidl_generator_py.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o -MF CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o.d -o CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c
+
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c > CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.i
+
+CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c -o CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.s
+
 # Object files for target avai_messages__rosidl_generator_py
 avai_messages__rosidl_generator_py_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c.o" \
@@ -175,7 +203,9 @@ avai_messages__rosidl_generator_py_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vehicle_lights_s.c.o" \
 "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_melody_s.c.o" \
 "CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o" \
-"CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o"
+"CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o" \
+"CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o" \
+"CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o"
 
 # External object files for target avai_messages__rosidl_generator_py
 avai_messages__rosidl_generator_py_EXTERNAL_OBJECTS =
@@ -187,6 +217,8 @@ rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMak
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_melody_s.c.o
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_bounding_box_s.c.o
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_yolo_output_s.c.o
+rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_cluster_s.c.o
+rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_clustered_lidar_data_s.c.o
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMakeFiles/avai_messages__rosidl_generator_py.dir/build.make
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: /usr/lib/aarch64-linux-gnu/libpython3.10.so
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: libavai_messages__rosidl_typesupport_c.so
@@ -204,7 +236,7 @@ rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: /opt
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: /opt/ros/humble/lib/librosidl_runtime_c.so
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: /opt/ros/humble/lib/librcutils.so
 rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so: CMakeFiles/avai_messages__rosidl_generator_py.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C shared library rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking C shared library rosidl_generator_py/avai_messages/libavai_messages__rosidl_generator_py.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/avai_messages__rosidl_generator_py.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

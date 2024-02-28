@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
+from avai_messages.msg import ClusteredLidarData
 import os
 from sklearn.cluster import DBSCAN
 
@@ -10,7 +11,10 @@ from sklearn.cluster import DBSCAN
 
 #global variables
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
-CLUSTER = False
+CLUSTER = True
+
+TOPIC = "/clusterered_lidar_data"
+QUEUE_SIZE = 1
 
 class LidarSubscriber(Node):
 
@@ -19,6 +23,8 @@ class LidarSubscriber(Node):
 
         self.lidar_subscription = self.create_subscription(LaserScan, "/scan", self.lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.lidar_subscription  # prevent unused variable warning
+
+        self.publisher_ = self.create_publisher(ClusteredLidarData, TOPIC, QUEUE_SIZE)
 
         # cluster parameters
         self.eps = 0.1
@@ -78,6 +84,10 @@ class LidarSubscriber(Node):
                             Y.append(lidar_points[i, 1])
                     clustered_points.append((X, Y))
             
+
+            msg = ClusteredLidarData()
+            msg.header.stamp = self.get_clock().now().to_msg()
+            msg.header.frame_id = f"{self.i}"
             for cluster in clustered_points:
                 X, Y = cluster
                 self.ax.scatter(X, Y, marker=".")

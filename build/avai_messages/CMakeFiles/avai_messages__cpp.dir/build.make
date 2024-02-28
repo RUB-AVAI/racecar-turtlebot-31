@@ -94,6 +94,14 @@ CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/yolo_outpu
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__builder.hpp
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__struct.hpp
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/cluster.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/cluster__builder.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/cluster__struct.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/cluster__traits.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/clustered_lidar_data.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__builder.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__struct.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__traits.hpp
 
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/lib/rosidl_generator_cpp/rosidl_generator_cpp
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_generator_cpp/__init__.py
@@ -117,6 +125,8 @@ rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_m
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/Melody.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/BoundingBox.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/YoloOutput.idl
+rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/Cluster.idl
+rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/ClusteredLidarData.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -262,11 +272,43 @@ rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__struct.hpp: rosidl_ge
 rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__traits.hpp
 
+rosidl_generator_cpp/avai_messages/msg/cluster.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/cluster.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/cluster__builder.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/cluster__builder.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/cluster__struct.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/cluster__struct.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/cluster__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/cluster__traits.hpp
+
+rosidl_generator_cpp/avai_messages/msg/clustered_lidar_data.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/clustered_lidar_data.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__builder.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__builder.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__struct.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__struct.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__traits.hpp
+
 avai_messages__cpp: CMakeFiles/avai_messages__cpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/bounding_box.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/cluster.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/clustered_lidar_data.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__builder.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__struct.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/bounding_box__traits.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/cluster__builder.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/cluster__struct.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/cluster__traits.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__builder.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__struct.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__traits.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__builder.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__struct.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/melody__traits.hpp
