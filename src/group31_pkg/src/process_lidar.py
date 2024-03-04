@@ -12,7 +12,7 @@ from sklearn.cluster import DBSCAN
 #global variables
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
 CLUSTER = True
-SAVE_VISUALISATION = True
+SAVE_VISUALISATION = False
 
 TOPIC = "/clusterered_lidar_data"
 QUEUE_SIZE = 1
