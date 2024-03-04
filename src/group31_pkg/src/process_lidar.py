@@ -47,6 +47,8 @@ class LidarProcessingNode(Node):
         # back: 0
         # right: 90
         # left: 270
+        # range min: 0.12 m
+        # range max: 3.5 m
 
 
 
@@ -130,10 +132,6 @@ class LidarProcessingNode(Node):
 
 
     def lidar_listener_callback(self, msg):
-        # range min: 0.12 m
-        # range max: 3.5 m
-        # the ranges start on the right side of the turtlebot and continue clockwise (entry 270 is the front)
-    
         self.get_logger().info("Lidar Data Received")
         self.ranges = msg.ranges
         self.timestamp = self.get_clock().now()
