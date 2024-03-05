@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 from rclpy.node import Node
 from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData
 
+#camera fov:
+FOV = (150, 210)
+
 class DataFusionNode(Node):
     def __init__(self):
         super().__init__('data_fusion_node')
@@ -25,16 +28,21 @@ class DataFusionNode(Node):
 
     def clustered_lidar_listener_callback(self, msg):
         self.get_logger().info("Clustered Lidar Data Received")
-        self.yolo_msgs_idx += 1
-        self.yolo_msgs[self.yolo_msgs_idx % self.buffer_size] = msg
+        self.cluster_msgs_idx += 1
+        self.cluster_msgs[self.cluster_msgs_idx % self.buffer_size] = msg
         
 
     def yolo_output_listener_callback(self, msg):
         self.get_logger().info("Yolo Output Received")
-        self.cluster_msgs_idx += 1
-        self.cluster_msgs[self.cluster_msgs_idx % self.buffer_size] = msg
+        self.yolo_msgs_idx += 1
+        self.yolo_msgs[self.yolo_msgs_idx % self.buffer_size] = msg
 
         y, c = self.merge_by_timestamp()
+        if y is not None:
+            fused_msgs = self.fuse_data(y, c)
+            for f in fused_msgs:
+                 print(f[0].cone, f[1])
+            exit()
 
 
     def position_listener_callback(self, msg):
@@ -49,18 +57,39 @@ class DataFusionNode(Node):
         yolo_timestamp = get_timestamp_as_float(yolo_msg)
 
         # find nearest cluster message
-        cluster_msg = None
         for i in range(self.buffer_size):
              msg = self.cluster_msgs[(self.cluster_msgs_idx - i) % self.buffer_size]
+             if msg is None:
+                  return None, None
              timestamp = get_timestamp_as_float(msg)
              if timestamp <= yolo_timestamp:
-                  cluster_msg = msg
-                  break
+                return yolo_msg, msg
         
-        return yolo_msg, cluster_msg
+        return None, None
     
     def fuse_data(self, yolo_msg, cluster_msg):
-         pass
+        clusters_in_fov = []
+        for cluster in cluster_msg.clusters:
+             if (150 <= cluster.angles[0] and cluster.angles[0] <= 210) or (150 <= cluster.angles[-1] and cluster.angles[-1] <= 210):
+                  clusters_in_fov.append(cluster)
+        
+        fused_msgs = []
+        for box in yolo_msg.bounding_boxes:
+             for cluster in clusters_in_fov:
+                  print(cluster.angles)
+                  cluster_left = (cluster.angles[-1] - 180) / 30
+                  cluster_right = (cluster.angles[0] - 180) / 30
+                  box_left = (box.min_x - 320) / 640
+                  box_right = (box.max_x - 320) / 640
+
+                  print(cluster_left, cluster_right, box_left, box_right)
+                #   if(box.min_x <= cluster_center_y and cluster_center_y  <= box.max_x):
+                #        fused_msgs.append((box, cluster))
+             exit()
+        return fused_msgs
+                       
+        
+        
         
 
 
