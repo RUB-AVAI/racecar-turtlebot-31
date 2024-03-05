@@ -20,6 +20,8 @@ extern "C"
 // Include directives for member types
 // Member 'x_positions'
 // Member 'y_positions'
+// Member 'angles'
+// Member 'ranges'
 #include "rosidl_runtime_c/primitives_sequence.h"
 
 /// Struct defined in msg/Cluster in the package avai_messages.
@@ -27,7 +29,8 @@ typedef struct avai_messages__msg__Cluster
 {
   rosidl_runtime_c__double__Sequence x_positions;
   rosidl_runtime_c__double__Sequence y_positions;
-  int16_t label;
+  rosidl_runtime_c__int16__Sequence angles;
+  rosidl_runtime_c__double__Sequence ranges;
 } avai_messages__msg__Cluster;
 
 // Struct for a sequence of avai_messages__msg__Cluster.

@@ -127,7 +127,97 @@ void resize_function__Cluster__y_positions(void * untyped_member, size_t size)
   member->resize(size);
 }
 
-static const ::rosidl_typesupport_introspection_cpp::MessageMember Cluster_message_member_array[3] = {
+size_t size_function__Cluster__angles(const void * untyped_member)
+{
+  const auto * member = reinterpret_cast<const std::vector<int16_t> *>(untyped_member);
+  return member->size();
+}
+
+const void * get_const_function__Cluster__angles(const void * untyped_member, size_t index)
+{
+  const auto & member =
+    *reinterpret_cast<const std::vector<int16_t> *>(untyped_member);
+  return &member[index];
+}
+
+void * get_function__Cluster__angles(void * untyped_member, size_t index)
+{
+  auto & member =
+    *reinterpret_cast<std::vector<int16_t> *>(untyped_member);
+  return &member[index];
+}
+
+void fetch_function__Cluster__angles(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const auto & item = *reinterpret_cast<const int16_t *>(
+    get_const_function__Cluster__angles(untyped_member, index));
+  auto & value = *reinterpret_cast<int16_t *>(untyped_value);
+  value = item;
+}
+
+void assign_function__Cluster__angles(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  auto & item = *reinterpret_cast<int16_t *>(
+    get_function__Cluster__angles(untyped_member, index));
+  const auto & value = *reinterpret_cast<const int16_t *>(untyped_value);
+  item = value;
+}
+
+void resize_function__Cluster__angles(void * untyped_member, size_t size)
+{
+  auto * member =
+    reinterpret_cast<std::vector<int16_t> *>(untyped_member);
+  member->resize(size);
+}
+
+size_t size_function__Cluster__ranges(const void * untyped_member)
+{
+  const auto * member = reinterpret_cast<const std::vector<double> *>(untyped_member);
+  return member->size();
+}
+
+const void * get_const_function__Cluster__ranges(const void * untyped_member, size_t index)
+{
+  const auto & member =
+    *reinterpret_cast<const std::vector<double> *>(untyped_member);
+  return &member[index];
+}
+
+void * get_function__Cluster__ranges(void * untyped_member, size_t index)
+{
+  auto & member =
+    *reinterpret_cast<std::vector<double> *>(untyped_member);
+  return &member[index];
+}
+
+void fetch_function__Cluster__ranges(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const auto & item = *reinterpret_cast<const double *>(
+    get_const_function__Cluster__ranges(untyped_member, index));
+  auto & value = *reinterpret_cast<double *>(untyped_value);
+  value = item;
+}
+
+void assign_function__Cluster__ranges(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  auto & item = *reinterpret_cast<double *>(
+    get_function__Cluster__ranges(untyped_member, index));
+  const auto & value = *reinterpret_cast<const double *>(untyped_value);
+  item = value;
+}
+
+void resize_function__Cluster__ranges(void * untyped_member, size_t size)
+{
+  auto * member =
+    reinterpret_cast<std::vector<double> *>(untyped_member);
+  member->resize(size);
+}
+
+static const ::rosidl_typesupport_introspection_cpp::MessageMember Cluster_message_member_array[4] = {
   {
     "x_positions",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
@@ -163,28 +253,45 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember Cluster_messa
     resize_function__Cluster__y_positions  // resize(index) function pointer
   },
   {
-    "label",  // name
+    "angles",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_INT16,  // type
     0,  // upper bound of string
     nullptr,  // members of sub message
-    false,  // is array
+    true,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(avai_messages::msg::Cluster, label),  // bytes offset in struct
+    offsetof(avai_messages::msg::Cluster, angles),  // bytes offset in struct
     nullptr,  // default value
-    nullptr,  // size() function pointer
-    nullptr,  // get_const(index) function pointer
-    nullptr,  // get(index) function pointer
-    nullptr,  // fetch(index, &value) function pointer
-    nullptr,  // assign(index, value) function pointer
-    nullptr  // resize(index) function pointer
+    size_function__Cluster__angles,  // size() function pointer
+    get_const_function__Cluster__angles,  // get_const(index) function pointer
+    get_function__Cluster__angles,  // get(index) function pointer
+    fetch_function__Cluster__angles,  // fetch(index, &value) function pointer
+    assign_function__Cluster__angles,  // assign(index, value) function pointer
+    resize_function__Cluster__angles  // resize(index) function pointer
+  },
+  {
+    "ranges",  // name
+    ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
+    0,  // upper bound of string
+    nullptr,  // members of sub message
+    true,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(avai_messages::msg::Cluster, ranges),  // bytes offset in struct
+    nullptr,  // default value
+    size_function__Cluster__ranges,  // size() function pointer
+    get_const_function__Cluster__ranges,  // get_const(index) function pointer
+    get_function__Cluster__ranges,  // get(index) function pointer
+    fetch_function__Cluster__ranges,  // fetch(index, &value) function pointer
+    assign_function__Cluster__ranges,  // assign(index, value) function pointer
+    resize_function__Cluster__ranges  // resize(index) function pointer
   }
 };
 
 static const ::rosidl_typesupport_introspection_cpp::MessageMembers Cluster_message_members = {
   "avai_messages::msg",  // message namespace
   "Cluster",  // message name
-  3,  // number of fields
+  4,  // number of fields
   sizeof(avai_messages::msg::Cluster),
   Cluster_message_member_array,  // message members
   Cluster_init_function,  // function to initialize message memory (memory has to be allocated)

@@ -10,11 +10,12 @@ setup.py
 ../../build/group31_pkg/group31_pkg.egg-info/zip-safe
 resource/group31_pkg
 src/__init__.py
-src/camera_pub.py
-src/camera_sub.py
+src/data_fusion.py
 src/image_fusion.py
-src/lidar_sub.py
-src/my_node.py
+src/navigation_node.py
+src/process_cam_image.py
+src/process_lidar.py
+src/utils.py
 test/test_copyright.py
 test/test_flake8.py
 test/test_pep257.py

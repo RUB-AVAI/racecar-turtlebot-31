@@ -21,16 +21,32 @@ namespace msg
 namespace builder
 {
 
-class Init_Cluster_label
+class Init_Cluster_ranges
 {
 public:
-  explicit Init_Cluster_label(::avai_messages::msg::Cluster & msg)
+  explicit Init_Cluster_ranges(::avai_messages::msg::Cluster & msg)
   : msg_(msg)
   {}
-  ::avai_messages::msg::Cluster label(::avai_messages::msg::Cluster::_label_type arg)
+  ::avai_messages::msg::Cluster ranges(::avai_messages::msg::Cluster::_ranges_type arg)
   {
-    msg_.label = std::move(arg);
+    msg_.ranges = std::move(arg);
     return std::move(msg_);
+  }
+
+private:
+  ::avai_messages::msg::Cluster msg_;
+};
+
+class Init_Cluster_angles
+{
+public:
+  explicit Init_Cluster_angles(::avai_messages::msg::Cluster & msg)
+  : msg_(msg)
+  {}
+  Init_Cluster_ranges angles(::avai_messages::msg::Cluster::_angles_type arg)
+  {
+    msg_.angles = std::move(arg);
+    return Init_Cluster_ranges(msg_);
   }
 
 private:
@@ -43,10 +59,10 @@ public:
   explicit Init_Cluster_y_positions(::avai_messages::msg::Cluster & msg)
   : msg_(msg)
   {}
-  Init_Cluster_label y_positions(::avai_messages::msg::Cluster::_y_positions_type arg)
+  Init_Cluster_angles y_positions(::avai_messages::msg::Cluster::_y_positions_type arg)
   {
     msg_.y_positions = std::move(arg);
-    return Init_Cluster_label(msg_);
+    return Init_Cluster_angles(msg_);
   }
 
 private:

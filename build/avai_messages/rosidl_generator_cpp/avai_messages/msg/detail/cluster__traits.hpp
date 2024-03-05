@@ -61,10 +61,39 @@ inline void to_flow_style_yaml(
     out << ", ";
   }
 
-  // member: label
+  // member: angles
   {
-    out << "label: ";
-    rosidl_generator_traits::value_to_yaml(msg.label, out);
+    if (msg.angles.size() == 0) {
+      out << "angles: []";
+    } else {
+      out << "angles: [";
+      size_t pending_items = msg.angles.size();
+      for (auto item : msg.angles) {
+        rosidl_generator_traits::value_to_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
+    out << ", ";
+  }
+
+  // member: ranges
+  {
+    if (msg.ranges.size() == 0) {
+      out << "ranges: []";
+    } else {
+      out << "ranges: [";
+      size_t pending_items = msg.ranges.size();
+      for (auto item : msg.ranges) {
+        rosidl_generator_traits::value_to_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
   }
   out << "}";
 }  // NOLINT(readability/fn_size)
@@ -113,14 +142,44 @@ inline void to_block_style_yaml(
     }
   }
 
-  // member: label
+  // member: angles
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "label: ";
-    rosidl_generator_traits::value_to_yaml(msg.label, out);
-    out << "\n";
+    if (msg.angles.size() == 0) {
+      out << "angles: []\n";
+    } else {
+      out << "angles:\n";
+      for (auto item : msg.angles) {
+        if (indentation > 0) {
+          out << std::string(indentation, ' ');
+        }
+        out << "- ";
+        rosidl_generator_traits::value_to_yaml(item, out);
+        out << "\n";
+      }
+    }
+  }
+
+  // member: ranges
+  {
+    if (indentation > 0) {
+      out << std::string(indentation, ' ');
+    }
+    if (msg.ranges.size() == 0) {
+      out << "ranges: []\n";
+    } else {
+      out << "ranges:\n";
+      for (auto item : msg.ranges) {
+        if (indentation > 0) {
+          out << std::string(indentation, ' ');
+        }
+        out << "- ";
+        rosidl_generator_traits::value_to_yaml(item, out);
+        out << "\n";
+      }
+    }
   }
 }  // NOLINT(readability/fn_size)
 

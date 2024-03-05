@@ -40,8 +40,14 @@ cdr_serialize(
   {
     cdr << ros_message.y_positions;
   }
-  // Member: label
-  cdr << ros_message.label;
+  // Member: angles
+  {
+    cdr << ros_message.angles;
+  }
+  // Member: ranges
+  {
+    cdr << ros_message.ranges;
+  }
   return true;
 }
 
@@ -61,8 +67,15 @@ cdr_deserialize(
     cdr >> ros_message.y_positions;
   }
 
-  // Member: label
-  cdr >> ros_message.label;
+  // Member: angles
+  {
+    cdr >> ros_message.angles;
+  }
+
+  // Member: ranges
+  {
+    cdr >> ros_message.ranges;
+  }
 
   return true;
 }
@@ -100,10 +113,24 @@ get_serialized_size(
     current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
-  // Member: label
+  // Member: angles
   {
-    size_t item_size = sizeof(ros_message.label);
-    current_alignment += item_size +
+    size_t array_size = ros_message.angles.size();
+
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    size_t item_size = sizeof(ros_message.angles[0]);
+    current_alignment += array_size * item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+  // Member: ranges
+  {
+    size_t array_size = ros_message.ranges.size();
+
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    size_t item_size = sizeof(ros_message.ranges[0]);
+    current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
@@ -152,12 +179,28 @@ max_serialized_size_Cluster(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Member: label
+  // Member: angles
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     current_alignment += array_size * sizeof(uint16_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
+  }
+
+  // Member: ranges
+  {
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
   return current_alignment - initial_alignment;

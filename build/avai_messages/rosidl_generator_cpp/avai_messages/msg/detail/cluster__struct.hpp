@@ -35,21 +35,13 @@ struct Cluster_
 
   explicit Cluster_(rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
   {
-    if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
-      rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
-    {
-      this->label = 0;
-    }
+    (void)_init;
   }
 
   explicit Cluster_(const ContainerAllocator & _alloc, rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
   {
+    (void)_init;
     (void)_alloc;
-    if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
-      rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
-    {
-      this->label = 0;
-    }
   }
 
   // field types and members
@@ -59,9 +51,12 @@ struct Cluster_
   using _y_positions_type =
     std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>>;
   _y_positions_type y_positions;
-  using _label_type =
-    int16_t;
-  _label_type label;
+  using _angles_type =
+    std::vector<int16_t, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<int16_t>>;
+  _angles_type angles;
+  using _ranges_type =
+    std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>>;
+  _ranges_type ranges;
 
   // setters for named parameter idiom
   Type & set__x_positions(
@@ -76,10 +71,16 @@ struct Cluster_
     this->y_positions = _arg;
     return *this;
   }
-  Type & set__label(
-    const int16_t & _arg)
+  Type & set__angles(
+    const std::vector<int16_t, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<int16_t>> & _arg)
   {
-    this->label = _arg;
+    this->angles = _arg;
+    return *this;
+  }
+  Type & set__ranges(
+    const std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>> & _arg)
+  {
+    this->ranges = _arg;
     return *this;
   }
 
@@ -131,7 +132,10 @@ struct Cluster_
     if (this->y_positions != other.y_positions) {
       return false;
     }
-    if (this->label != other.label) {
+    if (this->angles != other.angles) {
+      return false;
+    }
+    if (this->ranges != other.ranges) {
       return false;
     }
     return true;

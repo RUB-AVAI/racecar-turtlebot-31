@@ -269,4 +269,10 @@ CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_genera
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/yolo_output__type_support.h
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/yolo_output__struct.h
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cluster__type_support.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cluster__struct.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cluster__functions.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__type_support.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__struct.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__functions.h
 

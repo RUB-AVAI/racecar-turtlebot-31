@@ -34,8 +34,8 @@ extern "C"
 {
 #endif
 
-#include "rosidl_runtime_c/primitives_sequence.h"  // x_positions, y_positions
-#include "rosidl_runtime_c/primitives_sequence_functions.h"  // x_positions, y_positions
+#include "rosidl_runtime_c/primitives_sequence.h"  // angles, ranges, x_positions, y_positions
+#include "rosidl_runtime_c/primitives_sequence_functions.h"  // angles, ranges, x_positions, y_positions
 
 // forward declare type support functions
 
@@ -67,9 +67,20 @@ static bool _Cluster__cdr_serialize(
     cdr.serializeArray(array_ptr, size);
   }
 
-  // Field name: label
+  // Field name: angles
   {
-    cdr << ros_message->label;
+    size_t size = ros_message->angles.size;
+    auto array_ptr = ros_message->angles.data;
+    cdr << static_cast<uint32_t>(size);
+    cdr.serializeArray(array_ptr, size);
+  }
+
+  // Field name: ranges
+  {
+    size_t size = ros_message->ranges.size;
+    auto array_ptr = ros_message->ranges.data;
+    cdr << static_cast<uint32_t>(size);
+    cdr.serializeArray(array_ptr, size);
   }
 
   return true;
@@ -116,9 +127,36 @@ static bool _Cluster__cdr_deserialize(
     cdr.deserializeArray(array_ptr, size);
   }
 
-  // Field name: label
+  // Field name: angles
   {
-    cdr >> ros_message->label;
+    uint32_t cdrSize;
+    cdr >> cdrSize;
+    size_t size = static_cast<size_t>(cdrSize);
+    if (ros_message->angles.data) {
+      rosidl_runtime_c__int16__Sequence__fini(&ros_message->angles);
+    }
+    if (!rosidl_runtime_c__int16__Sequence__init(&ros_message->angles, size)) {
+      fprintf(stderr, "failed to create array for field 'angles'");
+      return false;
+    }
+    auto array_ptr = ros_message->angles.data;
+    cdr.deserializeArray(array_ptr, size);
+  }
+
+  // Field name: ranges
+  {
+    uint32_t cdrSize;
+    cdr >> cdrSize;
+    size_t size = static_cast<size_t>(cdrSize);
+    if (ros_message->ranges.data) {
+      rosidl_runtime_c__double__Sequence__fini(&ros_message->ranges);
+    }
+    if (!rosidl_runtime_c__double__Sequence__init(&ros_message->ranges, size)) {
+      fprintf(stderr, "failed to create array for field 'ranges'");
+      return false;
+    }
+    auto array_ptr = ros_message->ranges.data;
+    cdr.deserializeArray(array_ptr, size);
   }
 
   return true;
@@ -160,10 +198,26 @@ size_t get_serialized_size_avai_messages__msg__Cluster(
     current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
-  // field.name label
+  // field.name angles
   {
-    size_t item_size = sizeof(ros_message->label);
-    current_alignment += item_size +
+    size_t array_size = ros_message->angles.size;
+    auto array_ptr = ros_message->angles.data;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    (void)array_ptr;
+    size_t item_size = sizeof(array_ptr[0]);
+    current_alignment += array_size * item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+  // field.name ranges
+  {
+    size_t array_size = ros_message->ranges.size;
+    auto array_ptr = ros_message->ranges.data;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    (void)array_ptr;
+    size_t item_size = sizeof(array_ptr[0]);
+    current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
@@ -215,12 +269,27 @@ size_t max_serialized_size_avai_messages__msg__Cluster(
     current_alignment += array_size * sizeof(uint64_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
-  // member: label
+  // member: angles
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     current_alignment += array_size * sizeof(uint16_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
+  }
+  // member: ranges
+  {
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
   return current_alignment - initial_alignment;

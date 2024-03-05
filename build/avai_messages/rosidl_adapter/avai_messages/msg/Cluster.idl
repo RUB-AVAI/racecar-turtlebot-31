@@ -10,7 +10,9 @@ module avai_messages {
 
       sequence<double> y_positions;
 
-      int16 label;
+      sequence<int16> angles;
+
+      sequence<double> ranges;
     };
   };
 };

@@ -6,6 +6,8 @@ avai_messages.egg-info/dependency_links.txt
 avai_messages.egg-info/top_level.txt
 avai_messages/msg/__init__.py
 avai_messages/msg/_bounding_box.py
+avai_messages/msg/_cluster.py
+avai_messages/msg/_clustered_lidar_data.py
 avai_messages/msg/_melody.py
 avai_messages/msg/_motor.py
 avai_messages/msg/_motors.py

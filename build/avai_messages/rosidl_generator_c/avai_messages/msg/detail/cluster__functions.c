@@ -14,6 +14,8 @@
 // Include directives for member types
 // Member `x_positions`
 // Member `y_positions`
+// Member `angles`
+// Member `ranges`
 #include "rosidl_runtime_c/primitives_sequence_functions.h"
 
 bool
@@ -32,7 +34,16 @@ avai_messages__msg__Cluster__init(avai_messages__msg__Cluster * msg)
     avai_messages__msg__Cluster__fini(msg);
     return false;
   }
-  // label
+  // angles
+  if (!rosidl_runtime_c__int16__Sequence__init(&msg->angles, 0)) {
+    avai_messages__msg__Cluster__fini(msg);
+    return false;
+  }
+  // ranges
+  if (!rosidl_runtime_c__double__Sequence__init(&msg->ranges, 0)) {
+    avai_messages__msg__Cluster__fini(msg);
+    return false;
+  }
   return true;
 }
 
@@ -46,7 +57,10 @@ avai_messages__msg__Cluster__fini(avai_messages__msg__Cluster * msg)
   rosidl_runtime_c__double__Sequence__fini(&msg->x_positions);
   // y_positions
   rosidl_runtime_c__double__Sequence__fini(&msg->y_positions);
-  // label
+  // angles
+  rosidl_runtime_c__int16__Sequence__fini(&msg->angles);
+  // ranges
+  rosidl_runtime_c__double__Sequence__fini(&msg->ranges);
 }
 
 bool
@@ -67,8 +81,16 @@ avai_messages__msg__Cluster__are_equal(const avai_messages__msg__Cluster * lhs, 
   {
     return false;
   }
-  // label
-  if (lhs->label != rhs->label) {
+  // angles
+  if (!rosidl_runtime_c__int16__Sequence__are_equal(
+      &(lhs->angles), &(rhs->angles)))
+  {
+    return false;
+  }
+  // ranges
+  if (!rosidl_runtime_c__double__Sequence__are_equal(
+      &(lhs->ranges), &(rhs->ranges)))
+  {
     return false;
   }
   return true;
@@ -94,8 +116,18 @@ avai_messages__msg__Cluster__copy(
   {
     return false;
   }
-  // label
-  output->label = input->label;
+  // angles
+  if (!rosidl_runtime_c__int16__Sequence__copy(
+      &(input->angles), &(output->angles)))
+  {
+    return false;
+  }
+  // ranges
+  if (!rosidl_runtime_c__double__Sequence__copy(
+      &(input->ranges), &(output->ranges)))
+  {
+    return false;
+  }
   return true;
 }
 
