@@ -56,6 +56,8 @@ class LidarProcessingNode(Node):
         # updates the scatter plot and saves it at the specified location
         X = []
         Y = []
+        A_unclustered = []
+        R_unclustered = []
         
         ranges = self.ranges
         timestamp = self.timestamp
@@ -68,6 +70,8 @@ class LidarProcessingNode(Node):
                 y = np.sin(radiant) * range
                 X.append(x)
                 Y.append(y)
+                A_unclustered.append(angle)
+                R_unclustered.append(range)
         
         if SAVE_VISUALISATION:
             # prepare plot 
@@ -93,22 +97,26 @@ class LidarProcessingNode(Node):
                 if label != -1:  # Skip noise points
                     X = []
                     Y = []
+                    A = []
+                    R = []
                     for i, cluster_label in enumerate(clusters):
                         if cluster_label == label:
                             X.append(lidar_points[i, 0])
                             Y.append(lidar_points[i, 1])
-                    clustered_points.append((X, Y))
+                            A.append(A_unclustered[i])
+                            R.append(R_unclustered[i])
+                    clustered_points.append((X, Y, A, R))
             
 
             clusters = []
             for cluster in clustered_points:
-                X, Y = cluster
+                X, Y, A, R = cluster
                 if SAVE_VISUALISATION:
                     # scatter each cluster individually so they get different colors
                     self.ax.scatter(X, Y, marker=".")
 
                 # create a Cluster object for the publisher
-                clusters.append(Cluster(x_positions=X, y_positions=Y))
+                clusters.append(Cluster(x_positions=X, y_positions=Y, angles=A, ranges=R))
             
             # create and publish message
             msg = ClusteredLidarData()
