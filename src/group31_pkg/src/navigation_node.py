@@ -17,17 +17,18 @@ class NavigationNode(Node):
         ts = ApproximateTimeSynchronizer([self.motor_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
         ts.registerCallback(self.drive)
         
-        self.publisher_ = self.create_publisher(Motors, '/motor_velocity', 10)
+        self.position_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
         
         self.WHEEL_DISTANCE = 160 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         self.LAMBDA = 40
-        self.LAMBDA_TAR = 2.5
+        self.LAMBDA_TAR = 1.0
+        
         self.MAX_VELOCITY = 255
         self.TARGET_RADIUS = 25
-        self.TARGET_X = 1000
-        self.TARGET_Y = 1000
+        self.TARGET_X = 500
+        self.TARGET_Y = 0
         
         self.x = 0
         self.y = 0
@@ -36,27 +37,29 @@ class NavigationNode(Node):
         self.x_all = []
         self.y_all = []
         
-        #TODO: get lidar data and make data on same scale
-        self.PSI_OBS = np.deg2rad(list(range(180, -1, -1)) + list(range(181, 360, 1)))
-        print(range(180, 0) + range(270, 360))
-        exit()
+        self.PSI_OBS = list(range(180, -1, -1)) + list(range(181, 360, 1))
+        self.PSI_OBS = [x - 180 for x in self.PSI_OBS]
+        self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
-        self.beta_1 = 0
-        self.beta_2 = 0
-        self.sigma = 0
+        self.beta_1 = 150
+        self.beta_2 = 250
+        self.sigma = 2*np.pi
         
         self.counter = 0 # Counts number of callback calls
 
 
-    def getDeltaPhi(self, lidar_data, lam, phi, psi):
+    def getDeltaPhi(self):
         """
         Returns the new direction of robot
         """
         f_obs = 0
-        for psi_obs_i, lidar_data_i in (self.PSI_OBS, lidar_data):
-            f_obs += self.f_obs_i(psi_obs_i, lidar_data_i)
-        return self.f_tar(lam, phi, psi) + f_obs
+        for psi_obs_i, range in zip(self.PSI_OBS, self.ranges):
+            if range == 0.0:
+                continue
+            range *= 1000 # from meter to millimeter
+            f_obs += self.f_obs_i(psi_obs_i, range)
+        return self.f_tar() + f_obs
 
     
     def f_tar(self):
@@ -72,7 +75,7 @@ class NavigationNode(Node):
         return -self.LAMBDA_TAR * np.sin(self.phi - self.psi)
     
     
-    def f_obs_i(self, psi_obs, lidar_data_i):
+    def f_obs_i(self, psi_obs, range):
         """
         Creates repellors at the locations of obstacles
         
@@ -81,7 +84,7 @@ class NavigationNode(Node):
         
         Returns influence of psi_obs
         """
-        lambda_ops_i = self.lambda_obs(lidar_data_i)
+        lambda_ops_i = self.lambda_obs(range)
         exp_arg = (psi_obs**2)/(2*self.sigma**2)
         return lambda_ops_i*(psi_obs)*np.exp(-exp_arg)
     
@@ -149,9 +152,11 @@ class NavigationNode(Node):
         
         if self.counter == 0:
             self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position         
-        else:                  
+        else:
+            self.ranges = msg_lidar.ranges
             self.getDirection()
             delta_phi = self.f_tar()
+            #delta_phi = self.getDeltaPhi()
             v = self.getVelocity(delta_phi)
             #self.setVelocity(v+self.LAMBDA, -v+self.LAMBDA)
             self.setVelocity(0, 0)
@@ -171,7 +176,6 @@ class NavigationNode(Node):
             
         
         self.counter += 1
-        #print(msg_lidar.ranges)
 
 
 
@@ -186,17 +190,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
-
-"""
-def drive(x, y, phi, end_x, end_y):
-     X_ARR, Y_ARR = [], []
-     while True:
-        #robot.step(timestep)
-        psi = getDirection(x, y, end_x, end_y)
-        delta_phi = getDeltaPhi(LAMBDA_TAR, phi, psi)
-        v = getVelocity(delta_phi)
-        setVelocity(-v+LAMBDA, v+LAMBDA)
-        x, y, phi = updateMovement(x, y, phi)
-        X_ARR.append(x), Y_ARR.append(y)
-"""
