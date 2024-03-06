@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
-from avai_messages.msg import Motors, Motor
+from avai_messages.msg import Motors, Motor, Position
 from sensor_msgs.msg import LaserScan
 
 
@@ -17,22 +17,24 @@ class NavigationNode(Node):
         ts = ApproximateTimeSynchronizer([self.motor_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
         ts.registerCallback(self.drive)
         
-        self.position_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
+        self.motor_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
+        
+        self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
         
         self.WHEEL_DISTANCE = 160 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
-        self.LAMBDA = 40
-        self.LAMBDA_TAR = 1.0
+        self.LAMBDA = 10
+        self.LAMBDA_TAR = 2.5
         
-        self.MAX_VELOCITY = 255
+        self.MAX_VELOCITY = 120
         self.TARGET_RADIUS = 25
         self.TARGET_X = 500
         self.TARGET_Y = 0
         
         self.x = 0
         self.y = 0
-        self.phi = np.pi/2
+        self.phi = 0
         
         self.x_all = []
         self.y_all = []
@@ -104,14 +106,16 @@ class NavigationNode(Node):
     
     
     def getVelocity(self, deltaPhi):
-        velocity = (deltaPhi * (self.WHEEL_DISTANCE/2))/16
+        velocity = (deltaPhi * 0.5 * self.WHEEL_DISTANCE)/self.CURRENT_TIME_STEP
         if np.abs(self.LAMBDA) >= self.MAX_VELOCITY:
             return 0
         elif velocity > self.MAX_VELOCITY - self.LAMBDA:
             return self.MAX_VELOCITY - self.LAMBDA
         elif velocity < -self.MAX_VELOCITY + self.LAMBDA:
             return -self.MAX_VELOCITY + self.LAMBDA
-        return velocity
+        
+        self.v_l = max(int(velocity+self.LAMBDA),0)
+        self.v_r = max(int(-velocity+self.LAMBDA),0)
     
        
     def setVelocity(self, v_l, v_r):
@@ -120,10 +124,11 @@ class NavigationNode(Node):
         """
         new_motor_command = Motors()
         new_motor_command.motors = [
-            Motor(position=1, velocity=int(v_l)), 
-            Motor(position=1, velocity=int(v_r))
+            Motor(position=1, velocity=v_l), 
+            Motor(position=1, velocity=v_r)
         ]
-        self.publisher_.publish(new_motor_command)
+        #self.get_logger().info(f'Published velocities')
+        self.motor_publisher.publish(new_motor_command)
 
 
     def updateMovement(self):
@@ -140,27 +145,40 @@ class NavigationNode(Node):
         self.TOTAL_LEFT_MOVED = self.LEFT_MOVED
         left_now_moved = left_now_ticks * ((2*np.pi*self.WHEEL_RADIUS)/self.NUM_TICKS)
         
-        self.phi = (self.phi + (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE) % (2*np.pi)
+        self.phi = (self.phi + (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE)# % (2*np.pi)
         
         c = (left_now_moved + right_now_moved) / 2
         self.x = self.x - c * np.cos(self.phi)
         self.y = self.y + c * np.sin(self.phi)
+        
+        #Publish the current position
+        current_position = Position()
+        current_position.header.stamp = self.get_clock().now().to_msg()
+        current_position.x_position = self.x
+        current_position.y_position = self.y
+        current_position.facing_direction = np.rad2deg(self.phi) % 360
+        
+        #self.get_logger().info(f'Published position')
+        self.position_publisher.publish(current_position)
 
 
     def drive(self, msg_motor, msg_lidar):
         #self.get_logger().info(f'Received synchronized messages')
         
         if self.counter == 0:
-            self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position         
+            self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position  
+            self.LAST_TIMESTEP = float(str(msg_motor.header.stamp.sec) + '.' + str(msg_motor.header.stamp.nanosec))         
         else:
+            TIMESTEP = float(str(msg_motor.header.stamp.sec) + '.' + str(msg_motor.header.stamp.nanosec))
+            self.CURRENT_TIME_STEP = TIMESTEP - self.LAST_TIMESTEP
+            self.LAST_TIMESTEP = TIMESTEP
+            
             self.ranges = msg_lidar.ranges
             self.getDirection()
             delta_phi = self.f_tar()
-            #delta_phi = self.getDeltaPhi()
-            v = self.getVelocity(delta_phi)
-            #self.setVelocity(v+self.LAMBDA, -v+self.LAMBDA)
-            self.setVelocity(0, 0)
-            
+            self.getVelocity(delta_phi)
+            self.setVelocity(self.v_l, self.v_r)
+            #self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
             self.updateMovement()
             self.x_all.append(self.x)
@@ -172,7 +190,7 @@ class NavigationNode(Node):
                 plt.plot(self.x_all, self.y_all)
                 plt.savefig('test.png')
                 exit()
-            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{v+self.LAMBDA}, V_R:{-v+self.LAMBDA}")
+            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}")
             
         
         self.counter += 1

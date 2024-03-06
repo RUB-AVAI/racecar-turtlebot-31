@@ -4,7 +4,7 @@ import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
-from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData
+from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position
 
 #camera fov:
 FOV = (148, 212)
@@ -15,7 +15,7 @@ class DataFusionNode(Node):
 
         self.clustered_lidar_subscription = self.create_subscription(ClusteredLidarData, "/clusterered_lidar_data", self.clustered_lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.yolo_output_subscription = self.create_subscription(YoloOutput, "/cone_classification", self.yolo_output_listener_callback, rclpy.qos.qos_profile_sensor_data)
-
+        self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
 
         self.buffer_size = 100
         self.yolo_msgs = [None] * self.buffer_size
@@ -24,6 +24,11 @@ class DataFusionNode(Node):
         self.cluster_msgs_idx = -1
         self.pos_msgs = [None] * self.buffer_size
         self.pos_msgs_idx = -1
+        
+        self.default_position = Position()
+        self.default_position.x_position=0 # in mm
+        self.default_position.y_position=0 # in mm
+        self.default_position.facing_direction=0 # in degrees
     
 
     def clustered_lidar_listener_callback(self, msg):
