@@ -21,16 +21,32 @@ namespace msg
 namespace builder
 {
 
+class Init_Cluster_label
+{
+public:
+  explicit Init_Cluster_label(::avai_messages::msg::Cluster & msg)
+  : msg_(msg)
+  {}
+  ::avai_messages::msg::Cluster label(::avai_messages::msg::Cluster::_label_type arg)
+  {
+    msg_.label = std::move(arg);
+    return std::move(msg_);
+  }
+
+private:
+  ::avai_messages::msg::Cluster msg_;
+};
+
 class Init_Cluster_ranges
 {
 public:
   explicit Init_Cluster_ranges(::avai_messages::msg::Cluster & msg)
   : msg_(msg)
   {}
-  ::avai_messages::msg::Cluster ranges(::avai_messages::msg::Cluster::_ranges_type arg)
+  Init_Cluster_label ranges(::avai_messages::msg::Cluster::_ranges_type arg)
   {
     msg_.ranges = std::move(arg);
-    return std::move(msg_);
+    return Init_Cluster_label(msg_);
   }
 
 private:

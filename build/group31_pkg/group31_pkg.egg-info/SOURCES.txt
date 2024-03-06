@@ -15,6 +15,7 @@ src/image_fusion.py
 src/navigation_node.py
 src/process_cam_image.py
 src/process_lidar.py
+src/receive_image.py
 src/utils.py
 test/test_copyright.py
 test/test_flake8.py

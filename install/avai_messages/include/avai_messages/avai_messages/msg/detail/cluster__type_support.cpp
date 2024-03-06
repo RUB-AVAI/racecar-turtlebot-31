@@ -217,7 +217,7 @@ void resize_function__Cluster__ranges(void * untyped_member, size_t size)
   member->resize(size);
 }
 
-static const ::rosidl_typesupport_introspection_cpp::MessageMember Cluster_message_member_array[4] = {
+static const ::rosidl_typesupport_introspection_cpp::MessageMember Cluster_message_member_array[5] = {
   {
     "x_positions",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
@@ -285,13 +285,30 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember Cluster_messa
     fetch_function__Cluster__ranges,  // fetch(index, &value) function pointer
     assign_function__Cluster__ranges,  // assign(index, value) function pointer
     resize_function__Cluster__ranges  // resize(index) function pointer
+  },
+  {
+    "label",  // name
+    ::rosidl_typesupport_introspection_cpp::ROS_TYPE_INT16,  // type
+    0,  // upper bound of string
+    nullptr,  // members of sub message
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(avai_messages::msg::Cluster, label),  // bytes offset in struct
+    nullptr,  // default value
+    nullptr,  // size() function pointer
+    nullptr,  // get_const(index) function pointer
+    nullptr,  // get(index) function pointer
+    nullptr,  // fetch(index, &value) function pointer
+    nullptr,  // assign(index, value) function pointer
+    nullptr  // resize(index) function pointer
   }
 };
 
 static const ::rosidl_typesupport_introspection_cpp::MessageMembers Cluster_message_members = {
   "avai_messages::msg",  // message namespace
   "Cluster",  // message name
-  4,  // number of fields
+  5,  // number of fields
   sizeof(avai_messages::msg::Cluster),
   Cluster_message_member_array,  // message members
   Cluster_init_function,  // function to initialize message memory (memory has to be allocated)

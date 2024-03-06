@@ -67,6 +67,7 @@ class Cluster(metaclass=Metaclass_Cluster):
         '_y_positions',
         '_angles',
         '_ranges',
+        '_label',
     ]
 
     _fields_and_field_types = {
@@ -74,6 +75,7 @@ class Cluster(metaclass=Metaclass_Cluster):
         'y_positions': 'sequence<double>',
         'angles': 'sequence<int16>',
         'ranges': 'sequence<double>',
+        'label': 'int16',
     }
 
     SLOT_TYPES = (
@@ -81,6 +83,7 @@ class Cluster(metaclass=Metaclass_Cluster):
         rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('double')),  # noqa: E501
         rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('int16')),  # noqa: E501
         rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('double')),  # noqa: E501
+        rosidl_parser.definition.BasicType('int16'),  # noqa: E501
     )
 
     def __init__(self, **kwargs):
@@ -91,6 +94,7 @@ class Cluster(metaclass=Metaclass_Cluster):
         self.y_positions = array.array('d', kwargs.get('y_positions', []))
         self.angles = array.array('h', kwargs.get('angles', []))
         self.ranges = array.array('d', kwargs.get('ranges', []))
+        self.label = kwargs.get('label', int())
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -128,6 +132,8 @@ class Cluster(metaclass=Metaclass_Cluster):
         if self.angles != other.angles:
             return False
         if self.ranges != other.ranges:
+            return False
+        if self.label != other.label:
             return False
         return True
 
@@ -247,3 +253,18 @@ class Cluster(metaclass=Metaclass_Cluster):
                  all(not (val < -1.7976931348623157e+308 or val > 1.7976931348623157e+308) or math.isinf(val) for val in value)), \
                 "The 'ranges' field must be a set or sequence and each value of type 'float' and each double in [-179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000, 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000]"
         self._ranges = array.array('d', value)
+
+    @builtins.property
+    def label(self):
+        """Message field 'label'."""
+        return self._label
+
+    @label.setter
+    def label(self, value):
+        if __debug__:
+            assert \
+                isinstance(value, int), \
+                "The 'label' field must be of type 'int'"
+            assert value >= -32768 and value < 32768, \
+                "The 'label' field must be an integer in [-32768, 32767]"
+        self._label = value

@@ -31,6 +31,7 @@ typedef struct avai_messages__msg__Cluster
   rosidl_runtime_c__double__Sequence y_positions;
   rosidl_runtime_c__int16__Sequence angles;
   rosidl_runtime_c__double__Sequence ranges;
+  int16_t label;
 } avai_messages__msg__Cluster;
 
 // Struct for a sequence of avai_messages__msg__Cluster.

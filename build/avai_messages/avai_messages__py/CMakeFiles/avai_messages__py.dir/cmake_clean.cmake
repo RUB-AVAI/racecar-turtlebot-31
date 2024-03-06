@@ -15,6 +15,8 @@ file(REMOVE_RECURSE
   "../rosidl_generator_py/avai_messages/msg/_motor_s.c"
   "../rosidl_generator_py/avai_messages/msg/_motors.py"
   "../rosidl_generator_py/avai_messages/msg/_motors_s.c"
+  "../rosidl_generator_py/avai_messages/msg/_position.py"
+  "../rosidl_generator_py/avai_messages/msg/_position_s.c"
   "../rosidl_generator_py/avai_messages/msg/_vector3_sensor.py"
   "../rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c"
   "../rosidl_generator_py/avai_messages/msg/_vehicle_lights.py"

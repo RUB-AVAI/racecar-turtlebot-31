@@ -13,6 +13,8 @@ module avai_messages {
       sequence<int16> angles;
 
       sequence<double> ranges;
+
+      int16 label;
     };
   };
 };

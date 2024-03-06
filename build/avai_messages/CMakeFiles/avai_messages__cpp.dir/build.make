@@ -102,6 +102,10 @@ CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/clustered_
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__builder.hpp
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__struct.hpp
 CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__traits.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/position.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/position__builder.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/position__struct.hpp
+CMakeFiles/avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/position__traits.hpp
 
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/lib/rosidl_generator_cpp/rosidl_generator_cpp
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_generator_cpp/__init__.py
@@ -127,6 +131,7 @@ rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_m
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/YoloOutput.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/Cluster.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/ClusteredLidarData.idl
+rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: rosidl_adapter/avai_messages/msg/Position.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -296,6 +301,18 @@ rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__struct.hpp: 
 rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/clustered_lidar_data__traits.hpp
 
+rosidl_generator_cpp/avai_messages/msg/position.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/position.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/position__builder.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/position__builder.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/position__struct.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/position__struct.hpp
+
+rosidl_generator_cpp/avai_messages/msg/detail/position__traits.hpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/avai_messages/msg/detail/position__traits.hpp
+
 avai_messages__cpp: CMakeFiles/avai_messages__cpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/bounding_box.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/cluster.hpp
@@ -318,6 +335,9 @@ avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/motor__traits.
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/motors__builder.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/motors__struct.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/motors__traits.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/position__builder.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/position__struct.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/position__traits.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/vector3_sensor__builder.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/vector3_sensor__struct.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/vector3_sensor__traits.hpp
@@ -330,6 +350,7 @@ avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/detail/yolo_output__t
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/melody.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/motor.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/motors.hpp
+avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/position.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/vector3_sensor.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/vehicle_lights.hpp
 avai_messages__cpp: rosidl_generator_cpp/avai_messages/msg/yolo_output.hpp

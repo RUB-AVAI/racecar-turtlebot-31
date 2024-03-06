@@ -48,6 +48,8 @@ cdr_serialize(
   {
     cdr << ros_message.ranges;
   }
+  // Member: label
+  cdr << ros_message.label;
   return true;
 }
 
@@ -76,6 +78,9 @@ cdr_deserialize(
   {
     cdr >> ros_message.ranges;
   }
+
+  // Member: label
+  cdr >> ros_message.label;
 
   return true;
 }
@@ -131,6 +136,12 @@ get_serialized_size(
       eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
     size_t item_size = sizeof(ros_message.ranges[0]);
     current_alignment += array_size * item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+  // Member: label
+  {
+    size_t item_size = sizeof(ros_message.label);
+    current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
@@ -201,6 +212,14 @@ max_serialized_size_Cluster(
 
     current_alignment += array_size * sizeof(uint64_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
+  // Member: label
+  {
+    size_t array_size = 1;
+
+    current_alignment += array_size * sizeof(uint16_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
   }
 
   return current_alignment - initial_alignment;

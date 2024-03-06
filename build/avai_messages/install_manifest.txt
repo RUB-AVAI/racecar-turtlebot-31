@@ -7,6 +7,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/clustered_lidar_data__struct.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__struct.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/cluster__functions.h
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__functions.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__type_support.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__functions.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__functions.c
@@ -16,9 +17,12 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/bounding_box__functions.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__functions.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/cluster__struct.h
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__type_support.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__struct.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/melody__struct.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/clustered_lidar_data__type_support.h
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__functions.c
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__struct.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vehicle_lights__functions.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/clustered_lidar_data__functions.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/yolo_output__type_support.h
@@ -39,6 +43,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/cluster__functions.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vehicle_lights__type_support.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/motor.h
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/position.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/yolo_output.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/bounding_box.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/clustered_lidar_data.h
@@ -53,6 +58,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__rosidl_typesupport_fastrtps_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vehicle_lights__rosidl_typesupport_fastrtps_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/yolo_output__rosidl_typesupport_fastrtps_c.h
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__rosidl_typesupport_fastrtps_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_fastrtps_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__rosidl_typesupport_fastrtps_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/clustered_lidar_data__rosidl_typesupport_fastrtps_c.h
@@ -70,7 +76,9 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/clustered_lidar_data__struct.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__struct.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__struct.hpp
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__traits.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vehicle_lights__builder.hpp
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__builder.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/melody__traits.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__builder.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/yolo_output__builder.hpp
@@ -85,9 +93,11 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/cluster__builder.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__builder.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__struct.hpp
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__struct.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__traits.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vehicle_lights__traits.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/melody.hpp
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/position.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/bounding_box.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/clustered_lidar_data.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/motors.hpp
@@ -102,6 +112,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vehicle_lights__rosidl_typesupport_fastrtps_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/bounding_box__rosidl_typesupport_fastrtps_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__rosidl_typesupport_fastrtps_cpp.hpp
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__rosidl_typesupport_fastrtps_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__rosidl_typesupport_fastrtps_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/yolo_output__rosidl_typesupport_fastrtps_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
@@ -113,6 +124,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/melody__type_support.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/cluster__rosidl_typesupport_introspection_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__type_support.c
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__rosidl_typesupport_introspection_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/cluster__type_support.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__rosidl_typesupport_introspection_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vehicle_lights__rosidl_typesupport_introspection_c.h
@@ -123,6 +135,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/yolo_output__rosidl_typesupport_introspection_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__rosidl_typesupport_introspection_c.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__type_support.c
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__type_support.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__type_support.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/rosidl_typesupport_introspection_c__visibility_control.h
 /home/ubuntu/turtlebot-avai/install/avai_messages/lib/libavai_messages__rosidl_typesupport_introspection_c.so
@@ -133,11 +146,13 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/clustered_lidar_data__rosidl_typesupport_introspection_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__type_support.cpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motor__rosidl_typesupport_introspection_cpp.hpp
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__rosidl_typesupport_introspection_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/bounding_box__type_support.cpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/vector3_sensor__type_support.cpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/yolo_output__rosidl_typesupport_introspection_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/melody__type_support.cpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__type_support.cpp
+/home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/position__type_support.cpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/yolo_output__type_support.cpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/cluster__rosidl_typesupport_introspection_cpp.hpp
 /home/ubuntu/turtlebot-avai/install/avai_messages/include/avai_messages/avai_messages/msg/detail/motors__rosidl_typesupport_introspection_cpp.hpp
@@ -156,7 +171,9 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/_avai_messages_s.ep.rosidl_typesupport_introspection_c.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/_avai_messages_s.ep.rosidl_typesupport_c.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/msg/_motor_s.c
+/home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/msg/_position.py
 /home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/msg/_motors.py
+/home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/msg/_position_s.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/msg/_vehicle_lights.py
 /home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/msg/_yolo_output_s.c
 /home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages/msg/_clustered_lidar_data_s.c
@@ -193,6 +210,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/YoloOutput.idl
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/Cluster.idl
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/ClusteredLidarData.idl
+/home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/Position.idl
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/Vector3Sensor.msg
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/Motor.msg
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/Motors.msg
@@ -202,6 +220,7 @@
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/YoloOutput.msg
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/Cluster.msg
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/ClusteredLidarData.msg
+/home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/msg/Position.msg
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/ament_index/resource_index/package_run_dependencies/avai_messages
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/ament_index/resource_index/parent_prefix_path/avai_messages
 /home/ubuntu/turtlebot-avai/install/avai_messages/share/avai_messages/environment/ament_prefix_path.sh

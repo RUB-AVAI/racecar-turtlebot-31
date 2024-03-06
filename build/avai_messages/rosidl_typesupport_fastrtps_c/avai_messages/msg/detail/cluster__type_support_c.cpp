@@ -83,6 +83,11 @@ static bool _Cluster__cdr_serialize(
     cdr.serializeArray(array_ptr, size);
   }
 
+  // Field name: label
+  {
+    cdr << ros_message->label;
+  }
+
   return true;
 }
 
@@ -159,6 +164,11 @@ static bool _Cluster__cdr_deserialize(
     cdr.deserializeArray(array_ptr, size);
   }
 
+  // Field name: label
+  {
+    cdr >> ros_message->label;
+  }
+
   return true;
 }  // NOLINT(readability/fn_size)
 
@@ -218,6 +228,12 @@ size_t get_serialized_size_avai_messages__msg__Cluster(
     (void)array_ptr;
     size_t item_size = sizeof(array_ptr[0]);
     current_alignment += array_size * item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+  // field.name label
+  {
+    size_t item_size = sizeof(ros_message->label);
+    current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
@@ -290,6 +306,13 @@ size_t max_serialized_size_avai_messages__msg__Cluster(
 
     current_alignment += array_size * sizeof(uint64_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+  // member: label
+  {
+    size_t array_size = 1;
+
+    current_alignment += array_size * sizeof(uint16_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint16_t));
   }
 
   return current_alignment - initial_alignment;

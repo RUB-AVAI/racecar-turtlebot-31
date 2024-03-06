@@ -35,13 +35,21 @@ struct Cluster_
 
   explicit Cluster_(rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
   {
-    (void)_init;
+    if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
+      rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
+    {
+      this->label = 0;
+    }
   }
 
   explicit Cluster_(const ContainerAllocator & _alloc, rosidl_runtime_cpp::MessageInitialization _init = rosidl_runtime_cpp::MessageInitialization::ALL)
   {
-    (void)_init;
     (void)_alloc;
+    if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
+      rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
+    {
+      this->label = 0;
+    }
   }
 
   // field types and members
@@ -57,6 +65,9 @@ struct Cluster_
   using _ranges_type =
     std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>>;
   _ranges_type ranges;
+  using _label_type =
+    int16_t;
+  _label_type label;
 
   // setters for named parameter idiom
   Type & set__x_positions(
@@ -81,6 +92,12 @@ struct Cluster_
     const std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>> & _arg)
   {
     this->ranges = _arg;
+    return *this;
+  }
+  Type & set__label(
+    const int16_t & _arg)
+  {
+    this->label = _arg;
     return *this;
   }
 
@@ -136,6 +153,9 @@ struct Cluster_
       return false;
     }
     if (this->ranges != other.ranges) {
+      return false;
+    }
+    if (this->label != other.label) {
       return false;
     }
     return true;

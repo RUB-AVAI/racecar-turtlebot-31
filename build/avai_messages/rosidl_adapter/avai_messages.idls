@@ -7,3 +7,4 @@
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/YoloOutput.idl
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Cluster.idl
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/ClusteredLidarData.idl
+/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Position.idl

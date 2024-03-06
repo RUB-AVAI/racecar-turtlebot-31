@@ -44,6 +44,7 @@ avai_messages__msg__Cluster__init(avai_messages__msg__Cluster * msg)
     avai_messages__msg__Cluster__fini(msg);
     return false;
   }
+  // label
   return true;
 }
 
@@ -61,6 +62,7 @@ avai_messages__msg__Cluster__fini(avai_messages__msg__Cluster * msg)
   rosidl_runtime_c__int16__Sequence__fini(&msg->angles);
   // ranges
   rosidl_runtime_c__double__Sequence__fini(&msg->ranges);
+  // label
 }
 
 bool
@@ -91,6 +93,10 @@ avai_messages__msg__Cluster__are_equal(const avai_messages__msg__Cluster * lhs, 
   if (!rosidl_runtime_c__double__Sequence__are_equal(
       &(lhs->ranges), &(rhs->ranges)))
   {
+    return false;
+  }
+  // label
+  if (lhs->label != rhs->label) {
     return false;
   }
   return true;
@@ -128,6 +134,8 @@ avai_messages__msg__Cluster__copy(
   {
     return false;
   }
+  // label
+  output->label = input->label;
   return true;
 }
 

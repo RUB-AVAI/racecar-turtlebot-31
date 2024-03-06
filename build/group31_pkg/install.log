@@ -1,5 +1,6 @@
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/process_lidar.py
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/navigation_node.py
+/home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/receive_image.py
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/process_cam_image.py
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/image_fusion.py
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/utils.py
@@ -7,6 +8,7 @@
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/data_fusion.py
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/__pycache__/process_lidar.cpython-310.pyc
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/__pycache__/navigation_node.cpython-310.pyc
+/home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/__pycache__/receive_image.cpython-310.pyc
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/__pycache__/process_cam_image.cpython-310.pyc
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/__pycache__/image_fusion.cpython-310.pyc
 /home/ubuntu/turtlebot-avai/install/group31_pkg/lib/python3.10/site-packages/src/__pycache__/utils.cpython-310.pyc

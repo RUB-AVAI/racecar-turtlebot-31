@@ -258,7 +258,7 @@ bool avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__resize_fun
   return rosidl_runtime_c__double__Sequence__init(member, size);
 }
 
-static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__Cluster_message_member_array[4] = {
+static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__Cluster_message_member_array[5] = {
   {
     "x_positions",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
@@ -326,13 +326,30 @@ static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Clu
     avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__fetch_function__Cluster__ranges,  // fetch(index, &value) function pointer
     avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__assign_function__Cluster__ranges,  // assign(index, value) function pointer
     avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__resize_function__Cluster__ranges  // resize(index) function pointer
+  },
+  {
+    "label",  // name
+    rosidl_typesupport_introspection_c__ROS_TYPE_INT16,  // type
+    0,  // upper bound of string
+    NULL,  // members of sub message
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(avai_messages__msg__Cluster, label),  // bytes offset in struct
+    NULL,  // default value
+    NULL,  // size() function pointer
+    NULL,  // get_const(index) function pointer
+    NULL,  // get(index) function pointer
+    NULL,  // fetch(index, &value) function pointer
+    NULL,  // assign(index, value) function pointer
+    NULL  // resize(index) function pointer
   }
 };
 
 static const rosidl_typesupport_introspection_c__MessageMembers avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__Cluster_message_members = {
   "avai_messages__msg",  // message namespace
   "Cluster",  // message name
-  4,  // number of fields
+  5,  // number of fields
   sizeof(avai_messages__msg__Cluster),
   avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__Cluster_message_member_array,  // message members
   avai_messages__msg__Cluster__rosidl_typesupport_introspection_c__Cluster_init_function,  // function to initialize message memory (memory has to be allocated)

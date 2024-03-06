@@ -7,6 +7,8 @@
 
 # Member 'x_positions'
 # Member 'y_positions'
+# Member 'angles'
+# Member 'ranges'
 import array  # noqa: E402, I100
 
 import builtins  # noqa: E402, I100
@@ -63,19 +65,22 @@ class Cluster(metaclass=Metaclass_Cluster):
     __slots__ = [
         '_x_positions',
         '_y_positions',
-        '_label',
+        '_angles',
+        '_ranges',
     ]
 
     _fields_and_field_types = {
         'x_positions': 'sequence<double>',
         'y_positions': 'sequence<double>',
-        'label': 'int16',
+        'angles': 'sequence<int16>',
+        'ranges': 'sequence<double>',
     }
 
     SLOT_TYPES = (
         rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('double')),  # noqa: E501
         rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('double')),  # noqa: E501
-        rosidl_parser.definition.BasicType('int16'),  # noqa: E501
+        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('int16')),  # noqa: E501
+        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('double')),  # noqa: E501
     )
 
     def __init__(self, **kwargs):
@@ -84,7 +89,8 @@ class Cluster(metaclass=Metaclass_Cluster):
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
         self.x_positions = array.array('d', kwargs.get('x_positions', []))
         self.y_positions = array.array('d', kwargs.get('y_positions', []))
-        self.label = kwargs.get('label', int())
+        self.angles = array.array('h', kwargs.get('angles', []))
+        self.ranges = array.array('d', kwargs.get('ranges', []))
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -119,7 +125,9 @@ class Cluster(metaclass=Metaclass_Cluster):
             return False
         if self.y_positions != other.y_positions:
             return False
-        if self.label != other.label:
+        if self.angles != other.angles:
+            return False
+        if self.ranges != other.ranges:
             return False
         return True
 
@@ -185,16 +193,57 @@ class Cluster(metaclass=Metaclass_Cluster):
         self._y_positions = array.array('d', value)
 
     @builtins.property
-    def label(self):
-        """Message field 'label'."""
-        return self._label
+    def angles(self):
+        """Message field 'angles'."""
+        return self._angles
 
-    @label.setter
-    def label(self, value):
+    @angles.setter
+    def angles(self, value):
+        if isinstance(value, array.array):
+            assert value.typecode == 'h', \
+                "The 'angles' array.array() must have the type code of 'h'"
+            self._angles = value
+            return
         if __debug__:
+            from collections.abc import Sequence
+            from collections.abc import Set
+            from collections import UserList
+            from collections import UserString
             assert \
-                isinstance(value, int), \
-                "The 'label' field must be of type 'int'"
-            assert value >= -32768 and value < 32768, \
-                "The 'label' field must be an integer in [-32768, 32767]"
-        self._label = value
+                ((isinstance(value, Sequence) or
+                  isinstance(value, Set) or
+                  isinstance(value, UserList)) and
+                 not isinstance(value, str) and
+                 not isinstance(value, UserString) and
+                 all(isinstance(v, int) for v in value) and
+                 all(val >= -32768 and val < 32768 for val in value)), \
+                "The 'angles' field must be a set or sequence and each value of type 'int' and each integer in [-32768, 32767]"
+        self._angles = array.array('h', value)
+
+    @builtins.property
+    def ranges(self):
+        """Message field 'ranges'."""
+        return self._ranges
+
+    @ranges.setter
+    def ranges(self, value):
+        if isinstance(value, array.array):
+            assert value.typecode == 'd', \
+                "The 'ranges' array.array() must have the type code of 'd'"
+            self._ranges = value
+            return
+        if __debug__:
+            from collections.abc import Sequence
+            from collections.abc import Set
+            from collections import UserList
+            from collections import UserString
+            assert \
+                ((isinstance(value, Sequence) or
+                  isinstance(value, Set) or
+                  isinstance(value, UserList)) and
+                 not isinstance(value, str) and
+                 not isinstance(value, UserString) and
+                 all(isinstance(v, float) for v in value) and
+                 all(not (val < -1.7976931348623157e+308 or val > 1.7976931348623157e+308) or math.isinf(val) for val in value)), \
+                "The 'ranges' field must be a set or sequence and each value of type 'float' and each double in [-179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000, 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000]"
+        self._ranges = array.array('d', value)
