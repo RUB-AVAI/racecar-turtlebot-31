@@ -24,13 +24,13 @@ class NavigationNode(Node):
         self.WHEEL_DISTANCE = 160 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
-        self.LAMBDA = 10
-        self.LAMBDA_TAR = 2.5
+        self.LAMBDA = 80
+        self.LAMBDA_TAR = 60
         
         self.MAX_VELOCITY = 120
         self.TARGET_RADIUS = 25
-        self.TARGET_X = 500
-        self.TARGET_Y = 0
+        self.TARGET_X = 0
+        self.TARGET_Y = 1000
         
         self.x = 0
         self.y = 0
@@ -106,16 +106,19 @@ class NavigationNode(Node):
     
     
     def getVelocity(self, deltaPhi):
-        velocity = (deltaPhi * 0.5 * self.WHEEL_DISTANCE)/self.CURRENT_TIME_STEP
-        if np.abs(self.LAMBDA) >= self.MAX_VELOCITY:
-            return 0
-        elif velocity > self.MAX_VELOCITY - self.LAMBDA:
-            return self.MAX_VELOCITY - self.LAMBDA
-        elif velocity < -self.MAX_VELOCITY + self.LAMBDA:
-            return -self.MAX_VELOCITY + self.LAMBDA
+        velocity = int((deltaPhi * (self.WHEEL_DISTANCE/2))/50)
         
-        self.v_l = max(int(velocity+self.LAMBDA),0)
-        self.v_r = max(int(-velocity+self.LAMBDA),0)
+        if np.abs(self.LAMBDA) >= self.MAX_VELOCITY:
+            print("The constant forward velocity self.LAMBDA can't be larger then the maxium_velocity self.MAX_VELOCITY!")
+            exit()
+
+        self.v_l = int(velocity+self.LAMBDA)
+        self.v_l = max(self.v_l, 0)
+        self.v_l = min(self.v_l, self.MAX_VELOCITY)
+        
+        self.v_r = int(-velocity+self.LAMBDA)
+        self.v_r = max(self.v_r, 0)
+        self.v_r = min( self.v_r, self.MAX_VELOCITY)
     
        
     def setVelocity(self, v_l, v_r):
@@ -176,9 +179,10 @@ class NavigationNode(Node):
             self.ranges = msg_lidar.ranges
             self.getDirection()
             delta_phi = self.f_tar()
+            #delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
-            self.setVelocity(self.v_l, self.v_r)
-            #self.setVelocity(0, 0)
+            #self.setVelocity(self.v_l, self.v_r)
+            self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
             self.updateMovement()
             self.x_all.append(self.x)

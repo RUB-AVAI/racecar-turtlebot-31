@@ -12,7 +12,7 @@ from sklearn.cluster import DBSCAN
 #global variables
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
 CLUSTER = True
-SAVE_VISUALISATION = False
+SAVE_VISUALISATION = True
 
 TOPIC = "/clusterered_lidar_data"
 QUEUE_SIZE = 1
@@ -133,6 +133,7 @@ class LidarProcessingNode(Node):
             limit = 4
             self.ax.set_xlim([-limit, limit])
             self.ax.set_ylim([-limit, limit])
+            self.ax.set_box_aspect(1)
 
 
     def save_map(self):

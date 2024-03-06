@@ -115,10 +115,6 @@ class DataFusionNode(Node):
         return labeled_clusters
                        
         
-        
-        
-
-
 
 
 def main(args=None):
