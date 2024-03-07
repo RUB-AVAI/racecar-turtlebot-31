@@ -54,6 +54,7 @@ class CamImageProcessingNode(Node):
         self.i = 0
         self.camera_frame = None
         self.camera_frame_stamp = None
+        self.bridge = CvBridge()
 
         self.current_yolo_frame = None
         self.current_yolo_output = None
