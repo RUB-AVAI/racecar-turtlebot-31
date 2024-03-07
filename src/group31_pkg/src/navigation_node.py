@@ -25,6 +25,7 @@ class NavigationNode(Node):
         self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
         
         self.WHEEL_DISTANCE = 160 #mm
+        self.ROBOT_RADIUS = 89 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         self.LAMBDA = 100
@@ -35,8 +36,10 @@ class NavigationNode(Node):
         self.TARGET_X = 0
         self.TARGET_Y = 0
         
-        self.TARGETS_X = [0, 1000, 1000, 0]
-        self.TARGETS_Y = [1000, 1000, 0, 0]
+        #self.TARGETS_X = [0, 1000, 1000, 0]
+        #self.TARGETS_Y = [1000, 1000, 0, 0]
+        self.TARGETS_X = [-1000]
+        self.TARGETS_Y = [0]
         
         
         self.TARGET_X = self.TARGETS_X.pop(0)
@@ -55,9 +58,8 @@ class NavigationNode(Node):
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
-        self.beta_1 = 50
-        self.beta_2 = 80
-        self.sigma = 2*np.pi
+        self.beta_1 = 20
+        self.beta_2 = 40
         
         self.counter = 0 # Counts number of callback calls
 
@@ -101,7 +103,8 @@ class NavigationNode(Node):
         Returns influence of psi_obs
         """
         lambda_ops_i = self.lambda_obs(range)
-        exp_arg = (-psi_obs**2)/(2*self.sigma**2)
+        sigma = self.sigma(range)
+        exp_arg = (-psi_obs**2)/(2*sigma**2)
         return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
     
     
@@ -110,6 +113,11 @@ class NavigationNode(Node):
         weight function
         """
         return self.beta_1 * np.exp(-d/self.beta_2)
+    
+    
+    def sigma(self, d):
+        return np.arctan(np.tan(1/2) + (self.ROBOT_RADIUS / (self.ROBOT_RADIUS+d)))
+        
     
 
     def getDirection(self):
@@ -120,7 +128,7 @@ class NavigationNode(Node):
     
     
     def getVelocity(self, deltaPhi):
-        velocity = int((deltaPhi * (self.WHEEL_DISTANCE/2))/50)
+        velocity = int((deltaPhi * (self.WHEEL_DISTANCE/2))/60)
         
         if np.abs(self.LAMBDA) >= self.MAX_VELOCITY:
             print("The constant forward velocity self.LAMBDA can't be larger then the maxium_velocity self.MAX_VELOCITY!")
