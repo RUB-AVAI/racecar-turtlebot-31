@@ -54,14 +54,9 @@ class NavigationNode(Node):
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
-<<<<<<< HEAD
         self.beta_1 = 40
         self.beta_2 = 40
-=======
-        self.beta_1 = 150
-        self.beta_2 = 250
-        self.sigma = 2*np.pi
->>>>>>> eadb04e4fad2cd8c5ac089b0748398e1068e0116
+
         
         self.counter = 0 # Counts number of callback calls
 
@@ -75,14 +70,9 @@ class NavigationNode(Node):
             if range == 0.0:
                 continue
             range *= 1000 # from meter to millimeter
-<<<<<<< HEAD
             print(psi_obs_i, np.rad2deg(psi_obs_i), range, self.f_obs_i(psi_obs_i, range))
             f_obs += self.f_obs_i(psi_obs_i, range)
         print(self.f_tar(), f_obs, self.f_tar() + f_obs)
-=======
-            print(psi_obs_i, np.rad2deg(psi_obs_i), range)
-            f_obs += self.f_obs_i(psi_obs_i, range)
->>>>>>> eadb04e4fad2cd8c5ac089b0748398e1068e0116
         exit()
         return self.f_tar() + f_obs
 
@@ -110,14 +100,10 @@ class NavigationNode(Node):
         Returns influence of psi_obs
         """
         lambda_ops_i = self.lambda_obs(range)
-<<<<<<< HEAD
         sigma = self.sigma(range)
         exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
         return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
-=======
-        exp_arg = (-psi_obs**2)/(2*self.sigma**2)
-        return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
->>>>>>> eadb04e4fad2cd8c5ac089b0748398e1068e0116
+
     
     
     def lambda_obs(self, d):
