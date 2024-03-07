@@ -49,13 +49,14 @@ class NavigationNode(Node):
         self.x_all = []
         self.y_all = []
         
-        self.PSI_OBS = list(range(180, -1, -1)) + list(range(181, 360, 1))
-        self.PSI_OBS = [x - 180 for x in self.PSI_OBS]
+        #self.PSI_OBS = list(range(180, -1, -1)) + list(range(181, 360, 1))
+        self.PSI_OBS = list(range(-180, 0, 1)) + list(range(0, 180, 1))
+        self.PSI_OBS = [-x for x in self.PSI_OBS]
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
-        self.beta_1 = 150
-        self.beta_2 = 250
+        self.beta_1 = 50
+        self.beta_2 = 80
         self.sigma = 2*np.pi
         
         self.counter = 0 # Counts number of callback calls
@@ -70,9 +71,10 @@ class NavigationNode(Node):
             if range == 0.0:
                 continue
             range *= 1000 # from meter to millimeter
-            print(psi_obs_i, np.rad2deg(psi_obs_i), range)
+            #print(psi_obs_i, np.rad2deg(psi_obs_i), range, self.f_obs_i(psi_obs_i, range))
             f_obs += self.f_obs_i(psi_obs_i, range)
-        exit()
+        #print(self.f_tar(), f_obs, self.f_tar() + f_obs)
+        #exit()
         return self.f_tar() + f_obs
 
     
@@ -193,14 +195,14 @@ class NavigationNode(Node):
             #delta_phi = self.f_tar()
             delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
-            #self.setVelocity(self.v_l, self.v_r)
-            self.setVelocity(0, 0)
+            self.setVelocity(self.v_l, self.v_r)
+            #self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
             self.updateMovement()
             self.x_all.append(self.x)
             self.y_all.append(self.y)
             
-            
+            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
             if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
                 if not self.TARGETS_X:
                     self.setVelocity(0, 0)
@@ -210,7 +212,6 @@ class NavigationNode(Node):
                 else:
                     self.TARGET_X = self.TARGETS_X.pop(0)
                     self.TARGET_Y = self.TARGETS_Y.pop(0)
-            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
             
         
         self.counter += 1
