@@ -25,6 +25,7 @@ class NavigationNode(Node):
         self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
         
         self.WHEEL_DISTANCE = 160 #mm
+        self.RADIUS_ROBOT = 89 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         self.LAMBDA = 100
@@ -35,8 +36,11 @@ class NavigationNode(Node):
         self.TARGET_X = 0
         self.TARGET_Y = 0
         
-        self.TARGETS_X = [0, 1000, 1000, 0]
-        self.TARGETS_Y = [1000, 1000, 0, 0]
+        #self.TARGETS_X = [0, 1000, 1000, 0]
+        #self.TARGETS_Y = [1000, 1000, 0, 0]
+        
+        self.TARGETS_X = [-1000]
+        self.TARGETS_Y = [0]
         
         
         self.TARGET_X = self.TARGETS_X.pop(0)
@@ -49,14 +53,13 @@ class NavigationNode(Node):
         self.x_all = []
         self.y_all = []
         
-        #self.PSI_OBS = list(range(180, 0, -1)) + list(range(181, 361, 1))
         self.PSI_OBS = list(range(0, 180, 1)) + list(range(360, 180, -1))
         self.PSI_OBS = [x - 180 for x in self.PSI_OBS]
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
         self.beta_1 = 40
-        self.beta_2 = 40
+        self.beta_2 = 80
 
         
         self.counter = 0 # Counts number of callback calls
@@ -71,10 +74,7 @@ class NavigationNode(Node):
             if range == 0.0:
                 continue
             range *= 1000 # from meter to millimeter
-            print(psi_obs_i, np.rad2deg(psi_obs_i), range, self.f_obs_i(psi_obs_i, range))
             f_obs += self.f_obs_i(psi_obs_i, range)
-        print(self.f_tar(), f_obs, self.f_tar() + f_obs)
-        exit()
         return self.f_tar() + f_obs
 
     
@@ -112,6 +112,10 @@ class NavigationNode(Node):
         weight function
         """
         return self.beta_1 * np.exp(-d/self.beta_2)
+    
+    
+    def sigma(self, d):
+        return np.arctan(np.tan(1/2) + (self.RADIUS_ROBOT / (self.RADIUS_ROBOT) + d))
     
 
     def getDirection(self):
@@ -197,8 +201,8 @@ class NavigationNode(Node):
             #delta_phi = self.f_tar()
             delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
-            #self.setVelocity(self.v_l, self.v_r)
-            self.setVelocity(0, 0)
+            self.setVelocity(self.v_l, self.v_r)
+            #self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
             self.updateMovement()
             self.x_all.append(self.x)

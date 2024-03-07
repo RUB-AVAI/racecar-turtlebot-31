@@ -33,7 +33,7 @@ class DataFusionNode(Node):
         self.default_position = Position()
         self.default_position.x_position=0.0 # in mm
         self.default_position.y_position=0.0 # in mm
-        self.default_position.facing_direction=90.0 # in degrees
+        self.default_position.facing_direction=0.0 # in degrees
     
 
     def clustered_lidar_listener_callback(self, msg):
