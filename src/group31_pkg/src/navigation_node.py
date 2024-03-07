@@ -58,7 +58,7 @@ class NavigationNode(Node):
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
-        self.beta_1 = 20
+        self.beta_1 = 40
         self.beta_2 = 40
         
         self.counter = 0 # Counts number of callback calls
@@ -73,10 +73,10 @@ class NavigationNode(Node):
             if range == 0.0:
                 continue
             range *= 1000 # from meter to millimeter
-            #print(psi_obs_i, np.rad2deg(psi_obs_i), range, self.f_obs_i(psi_obs_i, range))
+            print(psi_obs_i, np.rad2deg(psi_obs_i), range, self.f_obs_i(psi_obs_i, range))
             f_obs += self.f_obs_i(psi_obs_i, range)
-        #print(self.f_tar(), f_obs, self.f_tar() + f_obs)
-        #exit()
+        print(self.f_tar(), f_obs, self.f_tar() + f_obs)
+        exit()
         return self.f_tar() + f_obs
 
     
@@ -104,8 +104,8 @@ class NavigationNode(Node):
         """
         lambda_ops_i = self.lambda_obs(range)
         sigma = self.sigma(range)
-        exp_arg = (-psi_obs**2)/(2*sigma**2)
-        return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
+        exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
+        return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
     
     
     def lambda_obs(self, d):
@@ -203,8 +203,8 @@ class NavigationNode(Node):
             #delta_phi = self.f_tar()
             delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
-            self.setVelocity(self.v_l, self.v_r)
-            #self.setVelocity(0, 0)
+            #self.setVelocity(self.v_l, self.v_r)
+            self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
             self.updateMovement()
             self.x_all.append(self.x)
