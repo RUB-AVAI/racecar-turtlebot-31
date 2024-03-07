@@ -101,7 +101,6 @@ class Map:
         self.ax.set_ylim([0, self.size])
         self.ax.set_box_aspect(1)
         self.fig.savefig(IMSAVE_PATH)
-        self.data = np.zeros(self.dim) - 1
         
 
 
