@@ -29,7 +29,7 @@ class LidarProcessingNode(Node):
         self.i = 0
 
         # cluster parameters
-        self.eps = 0.1
+        self.eps = 0.1 * 1000 # in millimeters
         self.min_samples = 2 # try 4 or 8
         if CLUSTER:
             self.dbscan = DBSCAN(eps=self.eps, min_samples=self.min_samples)
@@ -77,7 +77,7 @@ class LidarProcessingNode(Node):
             # prepare plot 
             self.ax.clear()
 
-            blindspot = plt.Circle((0, 0), 0.09, color="red", fill=False)
+            blindspot = plt.Circle((0, 0), 90, color="red", fill=False)
             self.ax.add_patch(blindspot)
             
         if CLUSTER:
@@ -85,7 +85,10 @@ class LidarProcessingNode(Node):
             lidar_points = np.asarray([X, Y]).transpose()
 
             # cluster
-            clusters = self.dbscan.fit_predict(lidar_points)
+            if len(lidar_points) > 0:
+                clusters = self.dbscan.fit_predict(lidar_points)
+            else:
+                clusters = []
              # Extract the cluster labels
             unique_labels = np.unique(clusters)
 
@@ -130,7 +133,7 @@ class LidarProcessingNode(Node):
             self.ax.scatter(X, Y, marker=".")
 
         if SAVE_VISUALISATION:    
-            limit = 4
+            limit = 4000 # mm
             self.ax.set_xlim([-limit, limit])
             self.ax.set_ylim([-limit, limit])
             self.ax.set_box_aspect(1)
@@ -142,7 +145,7 @@ class LidarProcessingNode(Node):
 
     def lidar_listener_callback(self, msg):
         self.get_logger().info("Lidar Data Received")
-        self.ranges = msg.ranges
+        self.ranges = np.array(msg.ranges) * 1000 #convert ranges from meters to millimeters
         self.timestamp = self.get_clock().now()
         self.process_data()
         if SAVE_VISUALISATION:

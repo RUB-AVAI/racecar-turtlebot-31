@@ -25,7 +25,6 @@ class NavigationNode(Node):
         self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
         
         self.WHEEL_DISTANCE = 160 #mm
-        self.ROBOT_RADIUS = 89 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         self.LAMBDA = 100
@@ -36,10 +35,8 @@ class NavigationNode(Node):
         self.TARGET_X = 0
         self.TARGET_Y = 0
         
-        #self.TARGETS_X = [0, 1000, 1000, 0]
-        #self.TARGETS_Y = [1000, 1000, 0, 0]
-        self.TARGETS_X = [-10000]
-        self.TARGETS_Y = [0]
+        self.TARGETS_X = [0, 1000, 1000, 0]
+        self.TARGETS_Y = [1000, 1000, 0, 0]
         
         
         self.TARGET_X = self.TARGETS_X.pop(0)
@@ -52,14 +49,19 @@ class NavigationNode(Node):
         self.x_all = []
         self.y_all = []
         
-        #self.PSI_OBS = list(range(180, -1, -1)) + list(range(181, 360, 1))
-        self.PSI_OBS = list(range(-180, 0, 1)) + list(range(0, 180, 1))
-        self.PSI_OBS = [-x for x in self.PSI_OBS]
+        self.PSI_OBS = list(range(180, -1, -1)) + list(range(181, 360, 1))
+        self.PSI_OBS = [x - 180 for x in self.PSI_OBS]
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
+<<<<<<< HEAD
         self.beta_1 = 40
         self.beta_2 = 40
+=======
+        self.beta_1 = 150
+        self.beta_2 = 250
+        self.sigma = 2*np.pi
+>>>>>>> eadb04e4fad2cd8c5ac089b0748398e1068e0116
         
         self.counter = 0 # Counts number of callback calls
 
@@ -73,9 +75,14 @@ class NavigationNode(Node):
             if range == 0.0:
                 continue
             range *= 1000 # from meter to millimeter
+<<<<<<< HEAD
             print(psi_obs_i, np.rad2deg(psi_obs_i), range, self.f_obs_i(psi_obs_i, range))
             f_obs += self.f_obs_i(psi_obs_i, range)
         print(self.f_tar(), f_obs, self.f_tar() + f_obs)
+=======
+            print(psi_obs_i, np.rad2deg(psi_obs_i), range)
+            f_obs += self.f_obs_i(psi_obs_i, range)
+>>>>>>> eadb04e4fad2cd8c5ac089b0748398e1068e0116
         exit()
         return self.f_tar() + f_obs
 
@@ -103,9 +110,14 @@ class NavigationNode(Node):
         Returns influence of psi_obs
         """
         lambda_ops_i = self.lambda_obs(range)
+<<<<<<< HEAD
         sigma = self.sigma(range)
         exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
         return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
+=======
+        exp_arg = (-psi_obs**2)/(2*self.sigma**2)
+        return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
+>>>>>>> eadb04e4fad2cd8c5ac089b0748398e1068e0116
     
     
     def lambda_obs(self, d):
@@ -113,11 +125,6 @@ class NavigationNode(Node):
         weight function
         """
         return self.beta_1 * np.exp(-d/self.beta_2)
-    
-    
-    def sigma(self, d):
-        return np.arctan(np.tan(1/2) + (self.ROBOT_RADIUS / (self.ROBOT_RADIUS+d)))
-        
     
 
     def getDirection(self):
@@ -128,7 +135,7 @@ class NavigationNode(Node):
     
     
     def getVelocity(self, deltaPhi):
-        velocity = int((deltaPhi * (self.WHEEL_DISTANCE/2))/60)
+        velocity = int((deltaPhi * (self.WHEEL_DISTANCE/2))/50)
         
         if np.abs(self.LAMBDA) >= self.MAX_VELOCITY:
             print("The constant forward velocity self.LAMBDA can't be larger then the maxium_velocity self.MAX_VELOCITY!")
@@ -210,7 +217,7 @@ class NavigationNode(Node):
             self.x_all.append(self.x)
             self.y_all.append(self.y)
             
-            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
+            
             if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
                 if not self.TARGETS_X:
                     self.setVelocity(0, 0)
@@ -220,6 +227,7 @@ class NavigationNode(Node):
                 else:
                     self.TARGET_X = self.TARGETS_X.pop(0)
                     self.TARGET_Y = self.TARGETS_Y.pop(0)
+            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
             
         
         self.counter += 1

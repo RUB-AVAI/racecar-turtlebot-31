@@ -8,6 +8,8 @@ from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Posit
 
 #camera fov:
 FOV = (148, 212)
+CLUSTER = 0
+POSITION = 1
 
 class DataFusionNode(Node):
     def __init__(self):
@@ -47,9 +49,11 @@ class DataFusionNode(Node):
     
         self.update_map(msg)
         
-        current_pos = self.pos_msgs[self.pos_msgs_idx]
+        current_pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
+        if current_pos is None:
+            current_pos = self.default_position
+            
         self.map.save_plot(current_pos.x_position, current_pos.y_position)
-        exit()
 
 
     def position_listener_callback(self, msg):
@@ -58,60 +62,56 @@ class DataFusionNode(Node):
             self.pos_msgs[self.pos_msgs_idx % self.buffer_size] = msg
     
     
-    def match_cluster(self, yolo_msg):
-        """Because of the inference of the yolo model, the yolo messages arrive later than the cluster messages. Therefore this function takes 
-         searches the buffer for a Cluster message with the corresponding timestamp
+    def match_message(self, yolo_msg, type):
+        """Because of the inference of the yolo model, the yolo messages arrive later than the other messages. Therefore this function  
+         searches the buffer for a message with the corresponding timestamp.
+         The type argument specifies to look for cluster or position
 
         Returns:
             Cluster: Returns the matching Cluster message or None if no matching message was found
         """
+        
+        if type != CLUSTER and type != POSITION:
+            raise KeyError()
+            
         # because of the inference of the yolo model, we search the other messages for the appropriate timestamp
-        epsilon = 1 #TODO: make more precise
         yolo_timestamp = get_timestamp_as_float(yolo_msg)
 
         # find nearest cluster message
+        prev_distance = np.inf
+        prev_msg = None
         for i in range(self.buffer_size):
-             msg = self.cluster_msgs[(self.cluster_msgs_idx - i) % self.buffer_size]
+             if type==  CLUSTER:
+                 msg = self.cluster_msgs[(self.cluster_msgs_idx - i) % self.buffer_size]
+             elif type==POSITION:
+                 msg = self.pos_msgs[(self.pos_msgs_idx - i) % self.buffer_size]
              if msg is None:
-                  return None
+                 break
              timestamp = get_timestamp_as_float(msg)
-             if timestamp <= yolo_timestamp:
-                return msg
+             
+             distance = np.abs(timestamp - yolo_timestamp)
+             if(i>0):
+                 if distance > prev_distance:
+                     return prev_msg
+                 else:
+                     prev_distance = distance
+                     prev_msg = msg
         
-        return None
+        return prev_msg
     
-    
-    def match_position(self, yolo_msg):
-        """Because of the inference of the yolo model, the yolo messages arrive later than the cluster messages. Therefore this function takes 
-         searches the buffer for a Position message with the corresponding timestamp
-
-        Args:
-            yolo_msg (_type_): _description_
-        
-        Returns:
-            Position: Returns the found Position message or None if no matching message was found
-        """
-        epsilon = 1 #TODO: make more precise
-        yolo_timestamp = get_timestamp_as_float(yolo_msg)
-
-        # find nearest cluster message
-        for i in range(self.buffer_size):
-            msg = self.pos_msgs[(self.pos_msgs_idx - i) % self.buffer_size]
-            if msg is None:
-                return None
-            timestamp = get_timestamp_as_float(msg)
-            if timestamp <= yolo_timestamp:
-                return msg
-        
-        return None
-        
     
     def update_map(self, yolo_msg = None):
         if yolo_msg is None:
             yolo_msg = self.yolo_msgs[self.yolo_msgs_idx]
         
-        cluster_msg = self.match_cluster(yolo_msg)
-        position_msg = self.match_position(yolo_msg)
+        
+        # find the cluster message and position messages from the buffer that fit the yolo message best
+        cluster_msg = self.match_message(yolo_msg, CLUSTER)
+        position_msg = self.match_message(yolo_msg, POSITION)
+        
+        # when no navigation node is running, the position is not published. therefore we assume the turtlebot is at position (0,0)
+        if position_msg is None:
+            position_msg = self.default_position
         
         if cluster_msg is None or position_msg is None:
             self.get_logger().warning("Found no message to match to yolo message timestamp")
@@ -123,18 +123,10 @@ class DataFusionNode(Node):
             # compute x and y position of cluster
             cone_x_pos, cone_y_pos = estimate_cone_position(cluster)
             
+            
             self.map.set(position_msg.x_position, position_msg.y_position, position_msg.facing_direction, 
                          cone_x_pos, cone_y_pos, label)
             
-            
-            
-            
-            
-            
-        
-    
-    
-    
     def fuse_data(self, yolo_msg, cluster_msg):
         """This function fuses the information of the clusters and the output of the yolo model. It tries to match the clusters found by the lidar
         to the bounding boxes generated by the yolo model.
@@ -150,7 +142,6 @@ class DataFusionNode(Node):
         for cluster in cluster_msg.clusters:
              if (FOV[0] <= cluster.angles[0] and cluster.angles[0] <= FOV[1]) or (FOV[0] <= cluster.angles[-1] and cluster.angles[-1] <= FOV[1]):
                   clusters_in_fov.append(cluster)
-                  print(cluster.angles)
         
         labeled_clusters = []
         for box in yolo_msg.bounding_boxes:
@@ -163,8 +154,6 @@ class DataFusionNode(Node):
                   range_cluster = (cluster_left, cluster_right)
                   range_box = (box_left, box_right)
                   
-                  print(range_cluster)
-                  print(range_box)
                   
                   if is_range_in_range(range_cluster, range_box):
                       labeled_clusters.append((cluster, box.cone))
