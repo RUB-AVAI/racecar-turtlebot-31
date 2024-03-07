@@ -1,3 +1,4 @@
+import os
 import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,6 +7,8 @@ from message_filters import ApproximateTimeSynchronizer, Subscriber
 from avai_messages.msg import Motors, Motor, Position
 from sensor_msgs.msg import LaserScan
 
+
+IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/route.png"
 
 class NavigationNode(Node):
     def __init__(self):
@@ -24,13 +27,20 @@ class NavigationNode(Node):
         self.WHEEL_DISTANCE = 160 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
-        self.LAMBDA = 80
-        self.LAMBDA_TAR = 60
+        self.LAMBDA = 100
+        self.LAMBDA_TAR = 30
         
-        self.MAX_VELOCITY = 120
+        self.MAX_VELOCITY = 255
         self.TARGET_RADIUS = 25
         self.TARGET_X = 0
-        self.TARGET_Y = 1000
+        self.TARGET_Y = 0
+        
+        self.TARGETS_X = [0, 1000, 1000, 0]
+        self.TARGETS_Y = [1000, 1000, 0, 0]
+        
+        
+        self.TARGET_X = self.TARGETS_X.pop(0)
+        self.TARGET_Y = self.TARGETS_Y.pop(0)
         
         self.x = 0
         self.y = 0
@@ -60,7 +70,9 @@ class NavigationNode(Node):
             if range == 0.0:
                 continue
             range *= 1000 # from meter to millimeter
+            print(psi_obs_i, np.rad2deg(psi_obs_i), range)
             f_obs += self.f_obs_i(psi_obs_i, range)
+        exit()
         return self.f_tar() + f_obs
 
     
@@ -87,8 +99,8 @@ class NavigationNode(Node):
         Returns influence of psi_obs
         """
         lambda_ops_i = self.lambda_obs(range)
-        exp_arg = (psi_obs**2)/(2*self.sigma**2)
-        return lambda_ops_i*(psi_obs)*np.exp(-exp_arg)
+        exp_arg = (-psi_obs**2)/(2*self.sigma**2)
+        return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
     
     
     def lambda_obs(self, d):
@@ -113,11 +125,11 @@ class NavigationNode(Node):
             exit()
 
         self.v_l = int(velocity+self.LAMBDA)
-        self.v_l = max(self.v_l, 0)
+        self.v_l = max(self.v_l, 5)
         self.v_l = min(self.v_l, self.MAX_VELOCITY)
         
         self.v_r = int(-velocity+self.LAMBDA)
-        self.v_r = max(self.v_r, 0)
+        self.v_r = max(self.v_r, 5)
         self.v_r = min( self.v_r, self.MAX_VELOCITY)
     
        
@@ -148,7 +160,7 @@ class NavigationNode(Node):
         self.TOTAL_LEFT_MOVED = self.LEFT_MOVED
         left_now_moved = left_now_ticks * ((2*np.pi*self.WHEEL_RADIUS)/self.NUM_TICKS)
         
-        self.phi = (self.phi + (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE)# % (2*np.pi)
+        self.phi = (self.phi + (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE) % (2*np.pi)
         
         c = (left_now_moved + right_now_moved) / 2
         self.x = self.x - c * np.cos(self.phi)
@@ -178,8 +190,8 @@ class NavigationNode(Node):
             
             self.ranges = msg_lidar.ranges
             self.getDirection()
-            delta_phi = self.f_tar()
-            #delta_phi = self.getDeltaPhi()
+            #delta_phi = self.f_tar()
+            delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
             #self.setVelocity(self.v_l, self.v_r)
             self.setVelocity(0, 0)
@@ -190,11 +202,15 @@ class NavigationNode(Node):
             
             
             if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
-                self.setVelocity(0, 0)
-                plt.plot(self.x_all, self.y_all)
-                plt.savefig('test.png')
-                exit()
-            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}")
+                if not self.TARGETS_X:
+                    self.setVelocity(0, 0)
+                    plt.plot(self.y_all, self.x_all)
+                    plt.savefig(IMSAVE_PATH)
+                    exit()
+                else:
+                    self.TARGET_X = self.TARGETS_X.pop(0)
+                    self.TARGET_Y = self.TARGETS_Y.pop(0)
+            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
             
         
         self.counter += 1
