@@ -1,5 +1,5 @@
 import os
-from utils import get_timestamp_as_float, is_range_in_range
+from utils import get_timestamp_as_float, is_range_in_range, Map, estimate_cone_position
 import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
@@ -16,7 +16,10 @@ class DataFusionNode(Node):
         self.clustered_lidar_subscription = self.create_subscription(ClusteredLidarData, "/clusterered_lidar_data", self.clustered_lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.yolo_output_subscription = self.create_subscription(YoloOutput, "/cone_classification", self.yolo_output_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
-
+        
+        self.map = Map()
+        
+        
         self.buffer_size = 100
         self.yolo_msgs = [None] * self.buffer_size
         self.yolo_msgs_idx = 0
@@ -26,9 +29,9 @@ class DataFusionNode(Node):
         self.pos_msgs_idx = -1
         
         self.default_position = Position()
-        self.default_position.x_position=0 # in mm
-        self.default_position.y_position=0 # in mm
-        self.default_position.facing_direction=0 # in degrees
+        self.default_position.x_position=0.0 # in mm
+        self.default_position.y_position=0.0 # in mm
+        self.default_position.facing_direction=0.0 # in degrees
     
 
     def clustered_lidar_listener_callback(self, msg):
@@ -41,13 +44,11 @@ class DataFusionNode(Node):
         self.get_logger().info("Yolo Output Received")
         self.yolo_msgs_idx += 1
         self.yolo_msgs[self.yolo_msgs_idx % self.buffer_size] = msg
-
-        y, c = self.merge_by_timestamp()
-        if y is None:
-            return
-        fused_msgs = self.fuse_data(y, c)
-        for (cluster, label) in fused_msgs:
-            print(f"{label}: {cluster.angles}")
+    
+        self.update_map(msg)
+        
+        current_pos = self.pos_msgs[self.pos_msgs_idx]
+        self.map.save_plot(current_pos.x_position, current_pos.y_position)
         exit()
 
 
@@ -56,14 +57,14 @@ class DataFusionNode(Node):
             self.pos_msgs_idx += 1
             self.pos_msgs[self.pos_msgs_idx % self.buffer_size] = msg
     
-    def merge_by_timestamp(self):
+    
+    def match_cluster(self, yolo_msg):
         """Because of the inference of the yolo model, the yolo messages arrive later than the cluster messages. Therefore this function takes 
-        the newest yolo message and searches the buffer for a Cluster message with the corresponding timestampl
+         searches the buffer for a Cluster message with the corresponding timestamp
 
         Returns:
-            Tuple: (yolo_msg, cluster_msg). Returns (None, None) if no matching cluster message was found
+            Cluster: Returns the matching Cluster message or None if no matching message was found
         """
-        yolo_msg = self.yolo_msgs[self.yolo_msgs_idx]
         # because of the inference of the yolo model, we search the other messages for the appropriate timestamp
         epsilon = 1 #TODO: make more precise
         yolo_timestamp = get_timestamp_as_float(yolo_msg)
@@ -72,12 +73,67 @@ class DataFusionNode(Node):
         for i in range(self.buffer_size):
              msg = self.cluster_msgs[(self.cluster_msgs_idx - i) % self.buffer_size]
              if msg is None:
-                  return None, None
+                  return None
              timestamp = get_timestamp_as_float(msg)
              if timestamp <= yolo_timestamp:
-                return yolo_msg, msg
+                return msg
         
-        return None, None
+        return None
+    
+    
+    def match_position(self, yolo_msg):
+        """Because of the inference of the yolo model, the yolo messages arrive later than the cluster messages. Therefore this function takes 
+         searches the buffer for a Position message with the corresponding timestamp
+
+        Args:
+            yolo_msg (_type_): _description_
+        
+        Returns:
+            Position: Returns the found Position message or None if no matching message was found
+        """
+        epsilon = 1 #TODO: make more precise
+        yolo_timestamp = get_timestamp_as_float(yolo_msg)
+
+        # find nearest cluster message
+        for i in range(self.buffer_size):
+            msg = self.pos_msgs[(self.pos_msgs_idx - i) % self.buffer_size]
+            if msg is None:
+                return None
+            timestamp = get_timestamp_as_float(msg)
+            if timestamp <= yolo_timestamp:
+                return msg
+        
+        return None
+        
+    
+    def update_map(self, yolo_msg = None):
+        if yolo_msg is None:
+            yolo_msg = self.yolo_msgs[self.yolo_msgs_idx]
+        
+        cluster_msg = self.match_cluster(yolo_msg)
+        position_msg = self.match_position(yolo_msg)
+        
+        if cluster_msg is None or position_msg is None:
+            self.get_logger().warning("Found no message to match to yolo message timestamp")
+            return
+        
+        labeled_clusters = self.fuse_data(yolo_msg, cluster_msg)
+        
+        for cluster, label in labeled_clusters:
+            # compute x and y position of cluster
+            cone_x_pos, cone_y_pos = estimate_cone_position(cluster)
+            
+            self.map.set(position_msg.x_position, position_msg.y_position, position_msg.facing_direction, 
+                         cone_x_pos, cone_y_pos, label)
+            
+            
+            
+            
+            
+            
+        
+    
+    
     
     def fuse_data(self, yolo_msg, cluster_msg):
         """This function fuses the information of the clusters and the output of the yolo model. It tries to match the clusters found by the lidar

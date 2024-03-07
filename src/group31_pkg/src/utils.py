@@ -25,6 +25,12 @@ def rotate_point_around_origin(x, y, angle):
     angle = np.deg2rad(angle)
     return x * np.cos(angle) - y * np.sin(angle), y * np.cos(angle) + x * np.sin(angle)
 
+def estimate_cone_position(cluster_msg):
+        cone_x_pos = np.mean(cluster_msg.x_positions)
+        cone_y_pos = np.mean(cluster_msg.y_positions)
+        
+        return cone_x_pos, cone_y_pos
+
 
 class Map:
     def __init__(self, size=10000) -> None:
@@ -65,9 +71,7 @@ class Map:
         for i in [0, 1, 2]:
             cone_positions.append(np.argwhere(self.data == i) * self.discretization_steps) 
         return cone_positions
-        
-        
-        
+            
         
     def save_plot(self, x_pos_t = 0, y_pos_t = 0):
         
@@ -76,7 +80,6 @@ class Map:
         
         # prepare plot 
         self.ax.clear()
-        print(x_pos_t)
         turtlebot = plt.Circle((x_pos_t, y_pos_t), 100, color="red", fill=True)
         self.ax.add_patch(turtlebot)
         cone_positions = self.get_cones()
@@ -96,3 +99,9 @@ class Map:
         self.ax.set_ylim([0, self.size])
         self.ax.set_box_aspect(1)
         self.fig.savefig(IMSAVE_PATH)
+
+
+# map = Map()
+
+# map.set(0, 0, 90, 1500, -500, 1)
+# map.save_plot()
