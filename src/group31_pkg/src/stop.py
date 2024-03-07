@@ -14,7 +14,7 @@ class MotorController(Node):
         # Timer for periodic updates
         timer_period = 2  # seconds
         self.timer_callback()
-        # self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def timer_callback(self):
         new_motor_command = Motors()

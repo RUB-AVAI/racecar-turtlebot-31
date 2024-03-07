@@ -35,8 +35,8 @@ class NavigationNode(Node):
         self.TARGET_X = 0
         self.TARGET_Y = 0
         
-        self.TARGETS_X = [-300]
-        self.TARGETS_Y = [600]
+        self.TARGETS_X = [-1100]
+        self.TARGETS_Y = [1]
         
         
         self.TARGET_X = self.TARGETS_X.pop(0)
@@ -194,8 +194,8 @@ class NavigationNode(Node):
             delta_phi = self.f_tar()
             #delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
-            # self.setVelocity(self.v_l, self.v_r)
-            self.setVelocity(0, 0)
+            self.setVelocity(self.v_l, self.v_r)
+            # self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
             self.updateMovement()
             self.x_all.append(self.x)

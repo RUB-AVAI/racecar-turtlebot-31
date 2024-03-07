@@ -29,7 +29,7 @@ class NavigationNode(Node):
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         self.LAMBDA = 100
-        self.LAMBDA_TAR = 30
+        self.LAMBDA_TAR = 60
         
         self.MAX_VELOCITY = 255
         self.TARGET_RADIUS = 25
@@ -39,8 +39,8 @@ class NavigationNode(Node):
         #self.TARGETS_X = [0, 1000, 1000, 0]
         #self.TARGETS_Y = [1000, 1000, 0, 0]
         
-        self.TARGETS_X = [-1000]
-        self.TARGETS_Y = [0]
+        self.TARGETS_X = [0]
+        self.TARGETS_Y = [-1750]
         
         
         self.TARGET_X = self.TARGETS_X.pop(0)
@@ -53,8 +53,7 @@ class NavigationNode(Node):
         self.x_all = []
         self.y_all = []
         
-        self.PSI_OBS = list(range(0, 180, 1)) + list(range(360, 180, -1))
-        self.PSI_OBS = [x - 180 for x in self.PSI_OBS]
+        self.PSI_OBS = list(range(0, 180, 1)) + list(range(-180, 0, 1))
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
@@ -102,8 +101,10 @@ class NavigationNode(Node):
         """
         lambda_ops_i = self.lambda_obs(range)
         sigma = self.sigma(range)
-        exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
-        return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
+        exp_arg = (-psi_obs**2)/(2*sigma**2)
+        return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
+        #exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
+        #return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
 
     
     
@@ -198,7 +199,6 @@ class NavigationNode(Node):
             
             self.ranges = msg_lidar.ranges
             self.getDirection()
-            #delta_phi = self.f_tar()
             delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
             self.setVelocity(self.v_l, self.v_r)

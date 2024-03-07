@@ -21,7 +21,6 @@ class DataFusionNode(Node):
         
         self.map = Map()
         
-        
         self.buffer_size = 100
         self.yolo_msgs = [None] * self.buffer_size
         self.yolo_msgs_idx = 0
@@ -59,6 +58,7 @@ class DataFusionNode(Node):
     def position_listener_callback(self, msg):
             self.get_logger().info("Position Received")
             self.pos_msgs_idx += 1
+            msg.facing_direction = -msg.facing_direction % 360
             self.pos_msgs[self.pos_msgs_idx % self.buffer_size] = msg
     
     
@@ -138,10 +138,15 @@ class DataFusionNode(Node):
         Returns:
             list: returns a list with all found matches. One entry of the list is a tupel of a Cluster object and the label of the matched bounding box (0, 1 or 2)
         """
+        
+        # rule out clusters which are not in fov
         clusters_in_fov = []
         for cluster in cluster_msg.clusters:
              if (FOV[0] <= cluster.angles[0] and cluster.angles[0] <= FOV[1]) or (FOV[0] <= cluster.angles[-1] and cluster.angles[-1] <= FOV[1]):
                   clusters_in_fov.append(cluster)
+        
+        # rule out clusters that are far away and too big
+        
         
         labeled_clusters = []
         for box in yolo_msg.bounding_boxes:
@@ -156,6 +161,8 @@ class DataFusionNode(Node):
                   
                   
                   if is_range_in_range(range_cluster, range_box):
+                      print(f"cluster: {range_cluster}")
+                      print(f"bounding box: {range_box}")
                       labeled_clusters.append((cluster, box.cone))
         return labeled_clusters
                        

@@ -61,8 +61,6 @@ class Map:
         x = glob_x_cone / self.discretization_steps
         y = glob_y_cone / self.discretization_steps
         
-        
-        
         x = round(x)
         y = round(y)
         self.data[x, y] = cone
