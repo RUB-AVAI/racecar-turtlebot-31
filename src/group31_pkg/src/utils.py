@@ -32,6 +32,7 @@ def estimate_cone_position(cluster_msg):
         return cone_x_pos, cone_y_pos
 
 
+
 class Map:
     def __init__(self, size=10000) -> None:
         # all distances are in mm
@@ -60,9 +61,10 @@ class Map:
         x = glob_x_cone / self.discretization_steps
         y = glob_y_cone / self.discretization_steps
         
+        
+        
         x = round(x)
         y = round(y)
-        
         self.data[x, y] = cone
     
     
