@@ -17,7 +17,7 @@ class DataFusionNode(Node):
 
         self.clustered_lidar_subscription = self.create_subscription(ClusteredLidarData, "/clusterered_lidar_data", self.clustered_lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.yolo_output_subscription = self.create_subscription(YoloOutput, "/cone_classification", self.yolo_output_listener_callback, rclpy.qos.qos_profile_sensor_data)
-        self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
+        self.pos_subscription = self.create_subscription(Position, "/position2", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
         
         self.map = Map()
         
@@ -33,7 +33,7 @@ class DataFusionNode(Node):
         self.default_position = Position()
         self.default_position.x_position=0.0 # in mm
         self.default_position.y_position=0.0 # in mm
-        self.default_position.facing_direction=0.0 # in degrees
+        self.default_position.facing_direction=90.0 # in degrees
     
 
     def clustered_lidar_listener_callback(self, msg):
@@ -151,7 +151,7 @@ class DataFusionNode(Node):
                   box_left = (box.min_x - 320) / 320
                   box_right = (box.max_x - 320) / 320
                   
-                  range_cluster = (cluster_left, cluster_right)
+                  range_cluster = (max(cluster_left, -1), min(1, cluster_right))
                   range_box = (box_left, box_right)
                   
                   
