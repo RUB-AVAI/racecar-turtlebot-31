@@ -38,7 +38,7 @@ class NavigationNode(Node):
         
         #self.TARGETS_X = [0, 1000, 1000, 0]
         #self.TARGETS_Y = [1000, 1000, 0, 0]
-        self.TARGETS_X = [-1000]
+        self.TARGETS_X = [-10000]
         self.TARGETS_Y = [0]
         
         
