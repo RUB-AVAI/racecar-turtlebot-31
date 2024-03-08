@@ -5,7 +5,7 @@ from cv_bridge import CvBridge
 import cv2
 import os
 
-IMSAVE_PATH_BOUNDING_BOXES = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_with_bounding_boxes.png"
+IMSAVE_PATH_BOUNDING_BOXES = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/cam.png"
 
 
 class ImageReceiverNode(Node):

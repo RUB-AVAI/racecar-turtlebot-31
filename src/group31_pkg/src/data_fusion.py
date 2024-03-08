@@ -43,10 +43,11 @@ class DataFusionNode(Node):
 
     def yolo_output_listener_callback(self, msg):
         self.get_logger().info("Yolo Output Received")
-        # for box in msg.bounding_boxes:
-        #     delta_x = np.abs(box.min_x - box.max_x)
-        #     delta_y = np.abs(box.min_y - box.max_y)
-        #     print(f"ratio for {box.cone}: {delta_y / delta_x}")
+        for box in msg.bounding_boxes:
+            delta_x = np.abs(box.min_x - box.max_x)
+            delta_y = np.abs(box.min_y - box.max_y)
+            print(f"ratio for {box.cone}: {delta_y / delta_x}")
+            
         msg = preprocess_bounding_boxes(msg, log_to_console=True)
         self.yolo_msgs_idx += 1
         self.yolo_msgs[self.yolo_msgs_idx % self.buffer_size] = msg

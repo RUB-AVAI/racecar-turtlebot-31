@@ -29,7 +29,7 @@ class NavigationNode(Node):
         self.RADIUS_ROBOT = 89 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
-        self.LAMBDA = 100
+        self.LAMBDA = 70
         self.LAMBDA_TAR = 60
         
         self.MAX_VELOCITY = 255
@@ -40,7 +40,7 @@ class NavigationNode(Node):
         #self.TARGETS_X = [0, 1000, 1000, 0]
         #self.TARGETS_Y = [1000, 1000, 0, 0]
         
-        self.TARGETS_X = [-500]
+        self.TARGETS_X = [-6000]
         self.TARGETS_Y = [0]
         
         

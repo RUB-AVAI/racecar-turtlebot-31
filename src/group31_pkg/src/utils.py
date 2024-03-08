@@ -47,7 +47,7 @@ def preprocess_bounding_boxes(yolo_msg, log_to_console=False):
     # can be matched with the clusters more easily, because the center in the x dimension
     # aligns with the center of the cluster
     processed_boxes = []
-    threshold = 2.5
+    threshold = 3.0
     desired_ratio = 2.3
     boundary_offset = 20
     for box in yolo_msg.bounding_boxes:
@@ -78,13 +78,15 @@ def preprocess_bounding_boxes(yolo_msg, log_to_console=False):
     return yolo_msg
 
 class Map:
-    def __init__(self, size=10000, epsilon=100) -> None:
+    def __init__(self, size=20000, epsilon=100, min_hist=4) -> None:
         # all distances are in mm
         self.size = size
         self.discretization_steps = 10 # = 1cm
         self.epsilon = epsilon
-        self.dim = (int(size / self.discretization_steps), int(size / self.discretization_steps))
-        self.data = np.zeros(self.dim) - 1
+        self.min_hist = min_hist
+        self.dim = (int(size / self.discretization_steps), int(size / self.discretization_steps), 2)
+        self.data = np.zeros(self.dim)
+        self.data[:, :, 0] = -1
         
         self.y_errors = []
         self.x_errors = []
@@ -112,17 +114,21 @@ class Map:
         x = round(x)
         y = round(y)
         hits = self.check_vicinity(x, y)
-        if len(hits) > 0:
-            print(f"new cone: {x}, {y}")
+        if len(hits) == 1:
+            # print(f"new cone: {x}, {y}")
             for hit in hits:
+                self.data[hit[0], hit[1], 1] += 1
                 x_error = x - hit[0]
                 y_error = y - hit[1]
                 self.x_errors.append(x_error)
                 self.y_errors.append(y_error)
-                print(f"existing cone: {hit[0]}, {hit[1]}")
-                print(f"errors: {x_error}  {y_error}")
+            #     print(f"existing cone: {hit[0]}, {hit[1]}")
+            #     print(f"errors: {x_error}  {y_error}")
+        elif len(hits) > 1:
+            print(hits)
         else:
-            self.data[x, y] = cone
+            self.data[x, y, 0] = cone
+            self.data[x, y, 1] = 1
         
     
     def check_vicinity(self, X, Y):
@@ -130,15 +136,20 @@ class Map:
         hits = []
         for x in range(X - epsilon, X + epsilon + 1):
             for y in range(Y - epsilon, Y + epsilon):
-                if self.data[x, y] != -1:
+                if self.data[x, y, 0] != -1:
                     hits.append((x, y, self.data[x, y]))
         return hits
     
     def get_cones(self):
-        cone_positions = []
+        # only to be called from outside since it gives back positions, not indices
+        valid_positions = [[], [], []]
         for i in [0, 1, 2]:
-            cone_positions.append(np.argwhere(self.data == i) * self.discretization_steps) 
-        return cone_positions
+            cone_positions = (np.argwhere(self.data[:, :, 0] == i))
+            for cone_pos in cone_positions:
+                if self.data[cone_pos[0], cone_pos[1], 1] >= self.min_hist:
+                    valid_positions[i].append(cone_pos * self.discretization_steps)
+        
+        return valid_positions
             
         
     def save_plot(self, x_pos_t = 0, y_pos_t = 0):
