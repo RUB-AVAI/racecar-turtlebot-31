@@ -17,76 +17,74 @@ class NavigationNode(Node):
         
         self.motor_subscription = Subscriber(self, Motors, '/motor_position')
         self.lidar_subscription = Subscriber(self, LaserScan, "/scan", qos_profile=rclpy.qos.qos_profile_sensor_data)
-        
         ts = ApproximateTimeSynchronizer([self.motor_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
         ts.registerCallback(self.drive)
         
         self.motor_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
-        
         self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
         
+        # Set if obstacle avoidance or velocity control should be used
+        self.OBSTACLE_AVOIDANCE = True
+        self.VELOCITY_CONTROL = True
+        
+        # Robot parameter
         self.WHEEL_DISTANCE = 160 #mm
         self.RADIUS_ROBOT = 89 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
+        
+        # Velocity parameter
         self.LAMBDA = 100
         self.LAMBDA_TAR = 60
-        
         self.MAX_VELOCITY = 255
+        self.MIN_VELOCITY = 5
+        
+        # Target parameter (changed in future for subscriber of target points)
         self.TARGET_RADIUS = 25
-        self.TARGET_X = 0
-        self.TARGET_Y = 0
-        
-        #self.TARGETS_X = [0, 1000, 1000, 0]
-        #self.TARGETS_Y = [1000, 1000, 0, 0]
-        
-        self.TARGETS_X = [-3000]
-        self.TARGETS_Y = [0]
-        
-        
+        self.TARGETS_X = [3000] #self.TARGETS_X = [0, 1000, 1000, 0]
+        self.TARGETS_Y = [0] #self.TARGETS_Y = [1000, 1000, 0, 0]
         self.TARGET_X = self.TARGETS_X.pop(0)
         self.TARGET_Y = self.TARGETS_Y.pop(0)
         
+        # Start position
         self.x = 0
         self.y = 0
-        self.phi = 0#2*np.pi
+        self.phi = 0
         
-        self.x_all = []
-        self.y_all = []
+        # Tracking
+        self.x_all, self.y_all = [], []
         
-        
-        #self.PSI_OBS = list(range(0, 180, 1)) + list(range(-180, 0, 1))
-        self.PSI_OBS = list(range(180, 0, -1)) + list(range(0, -180, -1))
+        # Positions of sensor entries starting from 180 to -179 with 180 being the back, 90 right, 1 front and -89 left
+        self.PSI_OBS = list(range(180, -180, -1))
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
-        
+        # Parameters for weighting of force-lets of obstacle avoidance and velocity control
         self.beta_1 = 60
         self.beta_2 = 140
         
-        self.c = 2.5  # Example value, adjust based on your system
-        self.c_u = 2.0  # Example value, adjust based on your system
-        self.sigma_obs = 10.0  # Example value, adjust based on your system
-        self.sigma_tar = 15.0  # Example value, adjust based on your system
-        self.v_obs = 20.0 # Initial required velocity for obstacle avoidance
-        self.v_tar = 100.0  # Initial required velocity for target acquisition
+        # Parameters for speed control
+        self.c = 2.5
+        self.c_u = 2.0
+        self.sigma_obs = 10.0
+        self.sigma_tar = 30.0
+        self.v_obs = 20.0
+        self.v_tar = 130.0
 
-        
-        self.counter = 0 # Counts number of callback calls
+        # Counts number of callback calls
+        self.counter = 0
 
 
-    def a_phi(self, phi):
-        print(f"a_phi: {np.arctan(self.c * self.V(phi))}, V: {self.V(phi)}")
-        return np.arctan(self.c * self.V(phi))
+    def a_phi(self):
+        return np.arctan(self.c * self.V())
 
-    def V(self, phi): #, obstacles):
+    def V(self):
         """
-        Calculates the integral over the obstacle contribution to the heading direction dynamics.
+        Calculates the obstacle contribution to the heading direction dynamics.
         
         :param phi: Current heading direction in radians.
         :param obstacles: A list or array of obstacles, each described by its angle and distance.
         :return: The integral value representing the summed influence of obstacles.
         """
-        
         V_phi = 0
         for psi_obs_i, range in zip(self.PSI_OBS, self.ranges):
             if range == 0.0:
@@ -95,29 +93,24 @@ class NavigationNode(Node):
             exp_term1 = np.exp(-((-psi_obs_i)**2/(2*sigma_i**2)))
             exp_term2 = np.exp(-1/2)
             V_phi += lambda_i * sigma_i**2 * exp_term1 - exp_term2
-            #print(lambda_i, sigma_i, psi_obs_i, range*1000, lambda_i * sigma_i**2 * exp_term1 - exp_term2)
-        return np.clip(V_phi, -np.pi/2, np.pi/2)# % np.pi - np.pi/2
+        return np.clip(V_phi, -np.pi/2, np.pi/2)
 
 
     # Implement g_obs(v) function here
-    def g_obs(self, v):
-        c_obs = self.c_u * (np.pi / 2 + self.a_phi(self.phi))
-        print(f"C_OBS: {c_obs}")
-        return -c_obs * (- self.v_obs) * np.exp(-(- self.v_obs)**2 / (2 * self.sigma_obs**2))
+    def g_obs(self):
+        c_obs = self.c_u * (np.pi / 2 + self.a)
+        return -c_obs * (self.LAMBDA - self.v_obs) * np.exp(-(self.LAMBDA - self.v_obs)**2 / (2 * self.sigma_obs**2))
 
     # Implement g_tar(v) function here
-    def g_tar(self, v):
-        c_tar = self.c_u * (np.pi / 2 - self.a_phi(self.phi))
-        print(f"C_TAR: {c_tar}")
-        return -c_tar * (- self.v_tar) * np.exp(-(- self.v_tar)**2 / (2 * self.sigma_tar**2))
+    def g_tar(self):
+        c_tar = self.c_u * (np.pi / 2 - self.a)
+        return -c_tar * (self.LAMBDA - self.v_tar) * np.exp(-(self.LAMBDA - self.v_tar)**2 / (2 * self.sigma_tar**2))
 
-    def control_velocity(self, v):
-        # Calculate the change in velocity based on g_obs and g_tar
-        g_obs = self.g_obs(v)
-        g_tar = self.g_tar(v)
-        v = g_obs + g_tar
-        print(f"G_OBS: {g_obs}, G_TAR: {g_tar}")
-        return v  # Update and return the new velocity
+    def control_velocity(self):
+        self.a = self.a_phi()
+        g_obs = self.g_obs()
+        g_tar = self.g_tar()
+        return g_obs + g_tar
 
 
     def getDeltaPhi(self):
@@ -125,12 +118,15 @@ class NavigationNode(Node):
         Returns the new direction of robot
         """
         f_obs = 0
-        for psi_obs_i, range in zip(self.PSI_OBS, self.ranges):
-            if range == 0.0:
-                continue
-            range *= 1000 # from meter to millimeter
-            f_obs += self.f_obs_i(psi_obs_i, range)
-        return self.f_tar() + f_obs
+        
+        if self.OBSTACLE_AVOIDANCE:
+            for psi_obs_i, range in zip(self.PSI_OBS, self.ranges):
+                if range == 0.0:
+                    continue
+                range *= 1000 # from meter to millimeter
+                f_obs += self.f_obs_i(psi_obs_i, range)
+                
+        self.delta_phi = self.f_tar() + f_obs
 
     
     def f_tar(self):
@@ -179,34 +175,33 @@ class NavigationNode(Node):
         """
         self.psi = -np.arctan2(self.y-self.TARGET_Y, self.x-self.TARGET_X)
     
-    
-    def getVelocity(self, deltaPhi):
-        velocity = int((deltaPhi * (self.WHEEL_DISTANCE/2))/50)
-        v = self.control_velocity(self.LAMBDA)
-        print(velocity, v)
-        if np.abs(self.LAMBDA) >= self.MAX_VELOCITY:
-            print("The constant forward velocity self.LAMBDA can't be larger then the maxium_velocity self.MAX_VELOCITY!")
-            exit()
-
-        self.v_l = int(velocity+v)
-        self.v_l = max(self.v_l, 5)
-        self.v_l = min(self.v_l, self.MAX_VELOCITY)
-        
-        self.v_r = int(-velocity+v)
-        self.v_r = max(self.v_r, 5)
-        self.v_r = min( self.v_r, self.MAX_VELOCITY)
-    
        
-    def setVelocity(self, v_l, v_r):
-        """
-        sets the new velocity
-        """
+    def setVelocity(self):
+        omega = int((self.delta_phi * (self.WHEEL_DISTANCE/2))/50)
+        
+        if self.VELOCITY_CONTROL:
+            v = self.control_velocity()
+        else:
+            v = self.LAMBDA
+
+        self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        
         new_motor_command = Motors()
         new_motor_command.motors = [
-            Motor(position=1, velocity=v_l), 
-            Motor(position=1, velocity=v_r)
+            Motor(position=1, velocity=self.v_l), 
+            Motor(position=1, velocity=self.v_r)
         ]
         #self.get_logger().info(f'Published velocities')
+        self.motor_publisher.publish(new_motor_command)
+        
+    def stop(self):
+        new_motor_command = Motors()
+        new_motor_command.motors = [
+            Motor(position=1, velocity=int(0)), 
+            Motor(position=1, velocity=int(0))
+        ]
+        #self.get_logger().info(f'Stopped')
         self.motor_publisher.publish(new_motor_command)
 
 
@@ -215,7 +210,7 @@ class NavigationNode(Node):
         Updates the movement
         """
         # Track the ticks that has been made since the last time step for the right wheel
-        right_now_ticks =  self.RIGHT_MOVED - self.TOTAL_RIGHT_MOVED
+        right_now_ticks = self.RIGHT_MOVED - self.TOTAL_RIGHT_MOVED
         self.TOTAL_RIGHT_MOVED = self.RIGHT_MOVED
         right_now_moved = right_now_ticks * ((2*np.pi*self.WHEEL_RADIUS)/self.NUM_TICKS)
         
@@ -227,7 +222,7 @@ class NavigationNode(Node):
         self.phi = (self.phi + (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE) % (2*np.pi)
         
         c = (left_now_moved + right_now_moved) / 2
-        self.x = self.x - c * np.cos(self.phi)
+        self.x = self.x + c * np.cos(self.phi) # If + does not work try with -
         self.y = self.y + c * np.sin(self.phi)
         
         #Publish the current position
@@ -242,40 +237,33 @@ class NavigationNode(Node):
 
 
     def drive(self, msg_motor, msg_lidar):
-        #self.get_logger().info(f'Received synchronized messages')
+        #self.get_logger().info(f'Received messages')
         
         if self.counter == 0:
-            self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position  
-            self.LAST_TIMESTEP = float(str(msg_motor.header.stamp.sec) + '.' + str(msg_motor.header.stamp.nanosec))         
+            self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position          
         else:
-            TIMESTEP = float(str(msg_motor.header.stamp.sec) + '.' + str(msg_motor.header.stamp.nanosec))
-            self.CURRENT_TIME_STEP = TIMESTEP - self.LAST_TIMESTEP
-            self.LAST_TIMESTEP = TIMESTEP
-            
-            self.ranges = msg_lidar.ranges
-            self.getDirection()
-            delta_phi = self.getDeltaPhi()
-            self.getVelocity(delta_phi)
-            #self.setVelocity(self.v_l, self.v_r)
-            #self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
+            self.ranges = msg_lidar.ranges
+            
+            self.getDirection()
+            self.getDeltaPhi()
+            self.setVelocity()
             self.updateMovement()
+            
             self.x_all.append(self.x)
             self.y_all.append(self.y)
             
-            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
+            print(f"POSITION: ({self.x},{self.y}), HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
             if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
                 if not self.TARGETS_X:
-                    self.setVelocity(0, 0)
+                    self.stop
                     plt.plot(self.y_all, self.x_all)
                     plt.savefig(IMSAVE_PATH)
                     exit()
                 else:
                     self.TARGET_X = self.TARGETS_X.pop(0)
                     self.TARGET_Y = self.TARGETS_Y.pop(0)
-            
-            
-        
+                    
         self.counter += 1
     
 
