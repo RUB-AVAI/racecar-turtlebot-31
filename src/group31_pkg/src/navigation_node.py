@@ -6,9 +6,7 @@ from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 from avai_messages.msg import Motors, Motor, Position
 from sensor_msgs.msg import LaserScan
-from stop import Stopper
-import keyboard
-import threading
+
 
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/route.png"
@@ -240,16 +238,9 @@ def main(args=None):
     rclpy.init(args=args)
     
     navigation = NavigationNode()
-    stopper = Stopper()
-
-    # Start listening for 's' in a separate thread
-    thread = threading.Thread(target=listen_for_s, args=(stopper, navigation))
-    thread.start()
-
     rclpy.spin(navigation)
     
     navigation.destroy_node()
-    stopper.destroy_node()
         
     rclpy.shutdown()
 
