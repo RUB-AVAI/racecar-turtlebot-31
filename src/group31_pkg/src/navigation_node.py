@@ -40,7 +40,7 @@ class NavigationNode(Node):
         #self.TARGETS_X = [0, 1000, 1000, 0]
         #self.TARGETS_Y = [1000, 1000, 0, 0]
         
-        self.TARGETS_X = [-500]
+        self.TARGETS_X = [-3000]
         self.TARGETS_Y = [0]
         
         
@@ -49,20 +49,75 @@ class NavigationNode(Node):
         
         self.x = 0
         self.y = 0
-        self.phi = 0
+        self.phi = 0#2*np.pi
         
         self.x_all = []
         self.y_all = []
         
-        self.PSI_OBS = list(range(0, 180, 1)) + list(range(-180, 0, 1))
+        
+        #self.PSI_OBS = list(range(0, 180, 1)) + list(range(-180, 0, 1))
+        self.PSI_OBS = list(range(180, 0, -1)) + list(range(0, -180, -1))
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
-        self.beta_1 = 40
-        self.beta_2 = 80
+        self.beta_1 = 60
+        self.beta_2 = 140
+        
+        self.c = 2.5  # Example value, adjust based on your system
+        self.c_u = 2.0  # Example value, adjust based on your system
+        self.sigma_obs = 10.0  # Example value, adjust based on your system
+        self.sigma_tar = 15.0  # Example value, adjust based on your system
+        self.v_obs = 20.0 # Initial required velocity for obstacle avoidance
+        self.v_tar = 100.0  # Initial required velocity for target acquisition
 
         
         self.counter = 0 # Counts number of callback calls
+
+
+    def a_phi(self, phi):
+        print(f"a_phi: {np.arctan(self.c * self.V(phi))}, V: {self.V(phi)}")
+        return np.arctan(self.c * self.V(phi))
+
+    def V(self, phi): #, obstacles):
+        """
+        Calculates the integral over the obstacle contribution to the heading direction dynamics.
+        
+        :param phi: Current heading direction in radians.
+        :param obstacles: A list or array of obstacles, each described by its angle and distance.
+        :return: The integral value representing the summed influence of obstacles.
+        """
+        
+        V_phi = 0
+        for psi_obs_i, range in zip(self.PSI_OBS, self.ranges):
+            if range == 0.0:
+                continue
+            lambda_i, sigma_i = self.lambda_obs(range*1000), self.sigma(range*1000)
+            exp_term1 = np.exp(-((-psi_obs_i)**2/(2*sigma_i**2)))
+            exp_term2 = np.exp(-1/2)
+            V_phi += lambda_i * sigma_i**2 * exp_term1 - exp_term2
+            #print(lambda_i, sigma_i, psi_obs_i, range*1000, lambda_i * sigma_i**2 * exp_term1 - exp_term2)
+        return np.clip(V_phi, -np.pi/2, np.pi/2)# % np.pi - np.pi/2
+
+
+    # Implement g_obs(v) function here
+    def g_obs(self, v):
+        c_obs = self.c_u * (np.pi / 2 + self.a_phi(self.phi))
+        print(f"C_OBS: {c_obs}")
+        return -c_obs * (- self.v_obs) * np.exp(-(- self.v_obs)**2 / (2 * self.sigma_obs**2))
+
+    # Implement g_tar(v) function here
+    def g_tar(self, v):
+        c_tar = self.c_u * (np.pi / 2 - self.a_phi(self.phi))
+        print(f"C_TAR: {c_tar}")
+        return -c_tar * (- self.v_tar) * np.exp(-(- self.v_tar)**2 / (2 * self.sigma_tar**2))
+
+    def control_velocity(self, v):
+        # Calculate the change in velocity based on g_obs and g_tar
+        g_obs = self.g_obs(v)
+        g_tar = self.g_tar(v)
+        v = g_obs + g_tar
+        print(f"G_OBS: {g_obs}, G_TAR: {g_tar}")
+        return v  # Update and return the new velocity
 
 
     def getDeltaPhi(self):
@@ -102,10 +157,8 @@ class NavigationNode(Node):
         """
         lambda_ops_i = self.lambda_obs(range)
         sigma = self.sigma(range)
-        exp_arg = (-psi_obs**2)/(2*sigma**2)
+        exp_arg = ((-psi_obs)**2)/(2*sigma**2)
         return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
-        #exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
-        #return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
 
     
     
@@ -113,7 +166,7 @@ class NavigationNode(Node):
         """
         weight function
         """
-        return self.beta_1 * np.exp(-d/self.beta_2)
+        return self.beta_1 * np.exp(-(d/self.beta_2))
     
     
     def sigma(self, d):
@@ -129,16 +182,17 @@ class NavigationNode(Node):
     
     def getVelocity(self, deltaPhi):
         velocity = int((deltaPhi * (self.WHEEL_DISTANCE/2))/50)
-        
+        v = self.control_velocity(self.LAMBDA)
+        print(velocity, v)
         if np.abs(self.LAMBDA) >= self.MAX_VELOCITY:
             print("The constant forward velocity self.LAMBDA can't be larger then the maxium_velocity self.MAX_VELOCITY!")
             exit()
 
-        self.v_l = int(velocity+self.LAMBDA)
+        self.v_l = int(velocity+v)
         self.v_l = max(self.v_l, 5)
         self.v_l = min(self.v_l, self.MAX_VELOCITY)
         
-        self.v_r = int(-velocity+self.LAMBDA)
+        self.v_r = int(-velocity+v)
         self.v_r = max(self.v_r, 5)
         self.v_r = min( self.v_r, self.MAX_VELOCITY)
     
@@ -202,7 +256,7 @@ class NavigationNode(Node):
             self.getDirection()
             delta_phi = self.getDeltaPhi()
             self.getVelocity(delta_phi)
-            self.setVelocity(self.v_l, self.v_r)
+            #self.setVelocity(self.v_l, self.v_r)
             #self.setVelocity(0, 0)
             self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
             self.updateMovement()
