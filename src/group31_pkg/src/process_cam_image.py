@@ -75,8 +75,8 @@ class CamImageProcessingNode(Node):
             self.interpreter = yolov5.models.common.AutoShape(self.interpreter)
         
         # initialize publisher
-        self.publisher_ = self.create_publisher(YoloOutput, TOPIC, QUEUE_SIZE)
-        self.publisher_image_bb = self.create_publisher(Image, "/bb_images", QUEUE_SIZE)
+        self.publisher_ = self.create_publisher(YoloOutput, TOPIC, qos_profile=rclpy.qos.qos_profile_sensor_data)
+        self.publisher_image_bb = self.create_publisher(Image, "/bb_images", qos_profile=rclpy.qos.qos_profile_services_default)
         
         if PUBLISH:
             # initialize publisher callback
