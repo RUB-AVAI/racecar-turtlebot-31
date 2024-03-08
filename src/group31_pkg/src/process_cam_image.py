@@ -15,7 +15,7 @@ import yolov5.models.common
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will not publish any", type=int)
+parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 4", default=4, type=int)
 parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
 args = parser.parse_args()
 
@@ -24,8 +24,11 @@ args = parser.parse_args()
 TOPIC = "/cone_classification"
 QUEUE_SIZE = 10
 
-PUBLISH = (args.fps is not None)
+if args.fps < 1:
+    raise ValueError("Argument has to be greater or equal 1")
 
+PUBLISH = (args.fps is not None)
+print(args.fps)
 SAVE_IMAGE_RAW = False
 SAVE_IMAGE_WITH_BOUNDING_BOXES = False
 PUBLISH_IMAGE_WITH_BOUNDING_BOXES = (args.bb is not None)
