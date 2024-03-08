@@ -223,15 +223,6 @@ class NavigationNode(Node):
             
         
         self.counter += 1
-
-
-
-
-def listen_for_s(stopper, navigation):
-    keyboard.wait('s')
-    navigation.destroy_node()
-    rclpy.spin_once(stopper)
-    print("Executing code for 's' key")
     
 
 def main(args=None): 
