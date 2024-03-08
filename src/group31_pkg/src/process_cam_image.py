@@ -28,7 +28,6 @@ if args.fps < 1:
     raise ValueError("Argument has to be greater or equal 1")
 
 PUBLISH = (args.fps is not None)
-print(args.fps)
 SAVE_IMAGE_RAW = False
 SAVE_IMAGE_WITH_BOUNDING_BOXES = False
 PUBLISH_IMAGE_WITH_BOUNDING_BOXES = (args.bb is not None)
@@ -36,7 +35,6 @@ PUBLISH_IMAGE_WITH_BOUNDING_BOXES = (args.bb is not None)
     
 
 FPS_PUBLISH = args.fps #seconds
-FPS_IMAGE_CAPTURE = 2
 FPS_IMAGE_SAVING_RAW = 0.2
 FPS_IMAGE_SAVING_BOUNDING_BOXES = FPS_IMAGE_SAVING_RAW
 FPS_IMAGE_PUBLISH_BB = args.bb
@@ -77,9 +75,6 @@ class CamImageProcessingNode(Node):
         # initialize publisher
         self.publisher_ = self.create_publisher(YoloOutput, TOPIC, QUEUE_SIZE)
         self.publisher_image_bb = self.create_publisher(Image, "/bb_images", QUEUE_SIZE)
-
-        # initialize image capture callback
-        self.image_capture_callback = self.create_timer(1.0 / FPS_IMAGE_CAPTURE, self.capture_image)
         
         if PUBLISH:
             # initialize publisher callback
@@ -110,10 +105,11 @@ class CamImageProcessingNode(Node):
     
     def publish(self):
         # publish yolo output
+        self.capture_image()
         if self.camera_frame is not None:
             yolo_output = self.yolo(self.camera_frame, self.camera_frame_stamp)
             self.publisher_.publish(yolo_output)
-            self.get_logger().info('%d Images Published' % self.i)
+            self.get_logger().info('%d Yolo Predictions Published' % self.i)
             self.i += 1 # image counter increment
         else:
             self.get_logger().warning("Found no frame to publish")
