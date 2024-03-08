@@ -25,7 +25,7 @@ class LidarProcessingNode(Node):
         self.lidar_subscription = self.create_subscription(LaserScan, "/scan", self.lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.lidar_subscription  # prevent unused variable warning
 
-        self.publisher_ = self.create_publisher(ClusteredLidarData, TOPIC, QUEUE_SIZE)
+        self.publisher_ = self.create_publisher(ClusteredLidarData, TOPIC, rclpy.qos.qos_profile_sensor_data)
         self.i = 0
 
         # cluster parameters
@@ -133,13 +133,14 @@ class LidarProcessingNode(Node):
             self.ax.scatter(X, Y, marker=".")
 
         if SAVE_VISUALISATION:    
-            limit = 4000 # mm
+            limit = 5000 # mm
             self.ax.set_xlim([-limit, limit])
             self.ax.set_ylim([-limit, limit])
             self.ax.set_box_aspect(1)
 
 
     def save_map(self):
+        self.fig.tight_layout()
         self.fig.savefig(IMSAVE_PATH)
 
 
