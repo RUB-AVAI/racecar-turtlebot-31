@@ -6,7 +6,7 @@ import time
 import math
 import numpy as np
 
-class MotorController(Node):
+class Stopper(Node):
     def __init__(self):
         super().__init__('motor_controller')
         # Publisher and Subscriber
@@ -29,7 +29,7 @@ class MotorController(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    motor_controller = MotorController()
+    motor_controller = Stopper()
     rclpy.spin(motor_controller)
 
     # Clean up

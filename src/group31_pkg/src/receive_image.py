@@ -12,7 +12,7 @@ class ImageReceiverNode(Node):
     def __init__(self):
         super().__init__("image_receiving_node")
         self.bridge = CvBridge()
-        self.subscriber = self.create_subscription(Image, "/bb_images", self.callback, rclpy.qos.qos_profile_sensor_data)
+        self.subscriber = self.create_subscription(Image, "/bb_images", self.callback, qos_profile=rclpy.qos.qos_profile_services_default)
     
     
     def callback(self, msg):

@@ -9,13 +9,15 @@ from rclpy.node import Node
 from avai_messages.msg import BoundingBox, YoloOutput
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
+
 
 # YOLO model imports
 import yolov5.models.common
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 4", default=4, type=int)
+parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=2, type=int)
 parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
 args = parser.parse_args()
 

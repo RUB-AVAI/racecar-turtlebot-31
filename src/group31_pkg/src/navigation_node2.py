@@ -22,7 +22,7 @@ class NavigationNode(Node):
         
         self.motor_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
         
-        self.position_publisher = self.create_publisher(Position, '/position2', qos_profile=rclpy.qos.qos_profile_sensor_data)
+        self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
         
         self.WHEEL_DISTANCE = 160 #mm
         self.WHEEL_RADIUS = 33 #mm

@@ -6,6 +6,9 @@ from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 from avai_messages.msg import Motors, Motor, Position
 from sensor_msgs.msg import LaserScan
+from stop import Stopper
+import keyboard
+import threading
 
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/route.png"
@@ -39,8 +42,8 @@ class NavigationNode(Node):
         #self.TARGETS_X = [0, 1000, 1000, 0]
         #self.TARGETS_Y = [1000, 1000, 0, 0]
         
-        self.TARGETS_X = [0]
-        self.TARGETS_Y = [-1750]
+        self.TARGETS_X = [-500]
+        self.TARGETS_Y = [0]
         
         
         self.TARGET_X = self.TARGETS_X.pop(0)
@@ -208,7 +211,7 @@ class NavigationNode(Node):
             self.x_all.append(self.x)
             self.y_all.append(self.y)
             
-            
+            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
             if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
                 if not self.TARGETS_X:
                     self.setVelocity(0, 0)
@@ -218,21 +221,37 @@ class NavigationNode(Node):
                 else:
                     self.TARGET_X = self.TARGETS_X.pop(0)
                     self.TARGET_Y = self.TARGETS_Y.pop(0)
-            print(f"POSITION: {self.x}, {self.y}. HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: {self.TARGET_X}, {self.TARGET_Y}")
+            
             
         
         self.counter += 1
 
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    navigation = NavigationNode()
-    rclpy.spin(navigation)
 
+def listen_for_s(stopper, navigation):
+    keyboard.wait('s')
     navigation.destroy_node()
-    rclpy.shutdown()
+    rclpy.spin_once(stopper)
+    print("Executing code for 's' key")
+    
 
+def main(args=None): 
+    rclpy.init(args=args)
+    
+    navigation = NavigationNode()
+    stopper = Stopper()
+
+    # Start listening for 's' in a separate thread
+    thread = threading.Thread(target=listen_for_s, args=(stopper, navigation))
+    thread.start()
+
+    rclpy.spin(navigation)
+    
+    navigation.destroy_node()
+    stopper.destroy_node()
+        
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
