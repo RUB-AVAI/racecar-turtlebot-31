@@ -31,15 +31,63 @@ def estimate_cone_position(cluster_msg):
         
         return cone_x_pos, cone_y_pos
 
+def center_of_range(range):
+    return np.mean(range)
 
+def bb_ratio(box):
+    delta_x = np.abs(box.min_x - box.max_x)
+    delta_y = np.abs(box.min_y - box.max_y)
+    return delta_y / delta_x
+    
+
+def preprocess_bounding_boxes(yolo_msg, log_to_console=False):
+    # all boxes have an estimate ratio of the delta_y / delta_x = 1.9 (+- 0.25)
+    # this function utilizes this property to artificially enlarge the bounding
+    # which are located at the edge of the camera image in their x dimension, so they
+    # can be matched with the clusters more easily, because the center in the x dimension
+    # aligns with the center of the cluster
+    processed_boxes = []
+    threshold = 2.5
+    desired_ratio = 2.3
+    boundary_offset = 20
+    for box in yolo_msg.bounding_boxes:
+        if bb_ratio(box) > threshold:
+        #     # check if box is at right or left boundary
+        #     if box.min_x < boundary_offset:
+        #         #left boundary
+        #         min_x_ = box.max_x - (box.max_y - box.min_y) / desired_ratio
+        #         box.min_x = min_x_
+        #         if log_to_console:
+        #             print(f"found bounding box (label {box.cone}) with unusual box_ratio at left image boundary.")
+        #             print(f"new bb box: {box}")
+        #     elif box.max_x > 640 - boundary_offset:
+        #         #right boundary
+        #         max_x_ = (box.max_y - box.min_y) / desired_ratio + box.min_x
+        #         box.max_x = max_x_
+        #         if log_to_console:
+        #             print(f"found bounding box (label {box.cone}) with unusual box_ratio at right image boundary.")
+        #             print(f"new bb box: {box}")
+        #     else:
+        #         if log_to_console:
+        #             print(f"found bounding box (label {box.cone}) with unusual box_ratio but not at boundary of camera image")
+        # processed_boxes.append(box)
+            pass
+        else:
+            processed_boxes.append(box)
+    yolo_msg.bounding_boxes = processed_boxes
+    return yolo_msg
 
 class Map:
-    def __init__(self, size=10000) -> None:
+    def __init__(self, size=10000, epsilon=100) -> None:
         # all distances are in mm
         self.size = size
         self.discretization_steps = 10 # = 1cm
+        self.epsilon = epsilon
         self.dim = (int(size / self.discretization_steps), int(size / self.discretization_steps))
         self.data = np.zeros(self.dim) - 1
+        
+        self.y_errors = []
+        self.x_errors = []
         
         # plot
         self.fig, self.ax = plt.subplots()
@@ -63,8 +111,28 @@ class Map:
         
         x = round(x)
         y = round(y)
-        self.data[x, y] = cone
+        hits = self.check_vicinity(x, y)
+        if len(hits) > 0:
+            print(f"new cone: {x}, {y}")
+            for hit in hits:
+                x_error = x - hit[0]
+                y_error = y - hit[1]
+                self.x_errors.append(x_error)
+                self.y_errors.append(y_error)
+                print(f"existing cone: {hit[0]}, {hit[1]}")
+                print(f"errors: {x_error}  {y_error}")
+        else:
+            self.data[x, y] = cone
+        
     
+    def check_vicinity(self, X, Y):
+        epsilon = int(self.epsilon / self.discretization_steps)
+        hits = []
+        for x in range(X - epsilon, X + epsilon + 1):
+            for y in range(Y - epsilon, Y + epsilon):
+                if self.data[x, y] != -1:
+                    hits.append((x, y, self.data[x, y]))
+        return hits
     
     def get_cones(self):
         cone_positions = []
@@ -98,6 +166,7 @@ class Map:
         self.ax.set_xlim([0, self.size])
         self.ax.set_ylim([0, self.size])
         self.ax.set_box_aspect(1)
+        self.fig.tight_layout()
         self.fig.savefig(IMSAVE_PATH)
         
 

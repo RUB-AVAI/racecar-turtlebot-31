@@ -1,5 +1,5 @@
 import os
-from utils import get_timestamp_as_float, is_range_in_range, Map, estimate_cone_position
+from utils import get_timestamp_as_float, is_range_in_range, Map, estimate_cone_position, center_of_range, preprocess_bounding_boxes
 import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,7 +17,7 @@ class DataFusionNode(Node):
 
         self.clustered_lidar_subscription = self.create_subscription(ClusteredLidarData, "/clusterered_lidar_data", self.clustered_lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.yolo_output_subscription = self.create_subscription(YoloOutput, "/cone_classification", self.yolo_output_listener_callback, rclpy.qos.qos_profile_sensor_data)
-        self.pos_subscription = self.create_subscription(Position, "/position2", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
+        self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
         
         self.map = Map()
         
@@ -43,8 +43,16 @@ class DataFusionNode(Node):
 
     def yolo_output_listener_callback(self, msg):
         self.get_logger().info("Yolo Output Received")
+        # for box in msg.bounding_boxes:
+        #     delta_x = np.abs(box.min_x - box.max_x)
+        #     delta_y = np.abs(box.min_y - box.max_y)
+        #     print(f"ratio for {box.cone}: {delta_y / delta_x}")
+        msg = preprocess_bounding_boxes(msg, log_to_console=True)
         self.yolo_msgs_idx += 1
         self.yolo_msgs[self.yolo_msgs_idx % self.buffer_size] = msg
+        
+        
+        
     
         self.update_map(msg)
         
@@ -145,25 +153,46 @@ class DataFusionNode(Node):
              if (FOV[0] <= cluster.angles[0] and cluster.angles[0] <= FOV[1]) or (FOV[0] <= cluster.angles[-1] and cluster.angles[-1] <= FOV[1]):
                   clusters_in_fov.append(cluster)
         
-        # rule out clusters that are far away and too big
-        
-        
         labeled_clusters = []
         for box in yolo_msg.bounding_boxes:
-             for cluster in clusters_in_fov:
-                  cluster_left = (-(cluster.angles[-1] - 180) / (0.5 * (FOV[1] - FOV[0])))
-                  cluster_right = (-(cluster.angles[0] - 180) / (0.5 * (FOV[1] - FOV[0])))
-                  box_left = (box.min_x - 320) / 320
-                  box_right = (box.max_x - 320) / 320
-                  
-                  range_cluster = (max(cluster_left, -1), min(1, cluster_right))
-                  range_box = (box_left, box_right)
-                  
-                  
-                  if is_range_in_range(range_cluster, range_box):
-                      print(f"cluster: {range_cluster}")
-                      print(f"bounding box: {range_box}")
-                      labeled_clusters.append((cluster, box.cone))
+            box_left = (box.min_x - 320) / 320
+            box_right = (box.max_x - 320) / 320
+            range_box = (box_left, box_right)
+            
+            best_fitting_cluster = None
+            range_best_fitting_cluster = None
+            
+            possible_clusters = []
+            
+            for cluster in clusters_in_fov:
+                cluster_left = (-(cluster.angles[-1] - 180) / (0.5 * (FOV[1] - FOV[0])))
+                cluster_right = (-(cluster.angles[0] - 180) / (0.5 * (FOV[1] - FOV[0])))
+                range_cluster = (max(cluster_left, -1), min(1, cluster_right))
+                
+                # check if cluster is in bounding box
+                if is_range_in_range(range_cluster, range_box):
+                    possible_clusters.append(f"cluster:{range_cluster}, angles: {cluster.angles}, box:{range_box}, label: {box.cone}")
+                    if best_fitting_cluster is None:
+                        best_fitting_cluster = cluster
+                        range_best_fitting_cluster = range_cluster
+                    else:
+                        # check if the center of the cluster is closer to the center of the box than the current best cluster
+                        if np.abs(center_of_range(range_cluster) - center_of_range(range_box)) < np.abs(center_of_range(range_best_fitting_cluster) - center_of_range(range_box)):
+                            best_fitting_cluster = cluster
+                            range_best_fitting_cluster = range_cluster
+
+                        # delta = np.abs(range_cluster[1] - range_cluster[0])
+                        
+                        # if delta > np.abs(range_best_fitting_cluster[0] - range_best_fitting_cluster[1]):
+                        #     best_fitting_cluster = cluster
+                        #     range_best_fitting_cluster = range_cluster
+            
+            if best_fitting_cluster:
+                if len(possible_clusters) > 1:
+                    print(possible_clusters)
+                labeled_clusters.append((best_fitting_cluster, box.cone))
+            else:
+                self.get_logger().warning("Found no cluster to match to bounding box")
         return labeled_clusters
                        
         
