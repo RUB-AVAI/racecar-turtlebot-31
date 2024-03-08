@@ -40,7 +40,7 @@ class NavigationNode(Node):
         #self.TARGETS_X = [0, 1000, 1000, 0]
         #self.TARGETS_Y = [1000, 1000, 0, 0]
         
-        self.TARGETS_X = [-500]
+        self.TARGETS_X = [-10000]
         self.TARGETS_Y = [0]
         
         
@@ -49,17 +49,19 @@ class NavigationNode(Node):
         
         self.x = 0
         self.y = 0
-        self.phi = 0
+        self.phi = 0#2*np.pi
         
         self.x_all = []
         self.y_all = []
         
-        self.PSI_OBS = list(range(0, 180, 1)) + list(range(-180, 0, 1))
+        
+        #self.PSI_OBS = list(range(0, 180, 1)) + list(range(-180, 0, 1))
+        self.PSI_OBS = list(range(180, 0, -1)) + list(range(0, -180, -1))
         self.PSI_OBS = np.deg2rad(self.PSI_OBS)
 
         
-        self.beta_1 = 40
-        self.beta_2 = 80
+        self.beta_1 = 60
+        self.beta_2 = 160
 
         
         self.counter = 0 # Counts number of callback calls
@@ -75,6 +77,8 @@ class NavigationNode(Node):
                 continue
             range *= 1000 # from meter to millimeter
             f_obs += self.f_obs_i(psi_obs_i, range)
+            #print(f_obs, np.rad2deg(psi_obs_i), range)
+        #exit()
         return self.f_tar() + f_obs
 
     
@@ -102,10 +106,8 @@ class NavigationNode(Node):
         """
         lambda_ops_i = self.lambda_obs(range)
         sigma = self.sigma(range)
-        exp_arg = (-psi_obs**2)/(2*sigma**2)
+        exp_arg = ((-psi_obs)**2)/(2*sigma**2)
         return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
-        #exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
-        #return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
 
     
     
@@ -113,7 +115,7 @@ class NavigationNode(Node):
         """
         weight function
         """
-        return self.beta_1 * np.exp(-d/self.beta_2)
+        return self.beta_1 * np.exp(-(d/self.beta_2))
     
     
     def sigma(self, d):
