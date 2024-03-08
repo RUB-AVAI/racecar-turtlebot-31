@@ -2,6 +2,7 @@ import cv2
 import rclpy
 import os
 import numpy as np
+import argparse
 
 # ROS2 imports
 from rclpy.node import Node
@@ -13,23 +14,29 @@ from cv_bridge import CvBridge
 import yolov5.models.common
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will not publish any", type=int)
+parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
+args = parser.parse_args()
+
+
 # Global Variables
 TOPIC = "/cone_classification"
 QUEUE_SIZE = 10
 
-PUBLISH = True
+PUBLISH = (args.fps is not None)
 
 SAVE_IMAGE_RAW = False
 SAVE_IMAGE_WITH_BOUNDING_BOXES = False
-PUBLISH_IMAGE_WITH_BOUNDING_BOXES = True
+PUBLISH_IMAGE_WITH_BOUNDING_BOXES = (args.bb is not None)
 
     
 
-FPS_PUBLISH = 1.0 #seconds
+FPS_PUBLISH = args.fps #seconds
 FPS_IMAGE_CAPTURE = 2
 FPS_IMAGE_SAVING_RAW = 0.2
 FPS_IMAGE_SAVING_BOUNDING_BOXES = FPS_IMAGE_SAVING_RAW
-FPS_IMAGE_PUBLISH_BB = 0.25
+FPS_IMAGE_PUBLISH_BB = args.bb
 
 IMSAVE_PATH_RAW = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_raw.png"
 IMSAVE_PATH_BOUNDING_BOXES = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_with_bounding_boxes.png"
