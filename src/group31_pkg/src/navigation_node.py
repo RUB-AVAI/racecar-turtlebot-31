@@ -11,6 +11,42 @@ from sensor_msgs.msg import LaserScan
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/route.png"
 
+
+
+class KalmanFilter:
+    def __init__(self, initial_state, process_covariance, measurement_covariance, state_transition, identity_matrix_size):
+        self.state = np.array(initial_state, dtype=float)
+        self.state_estimate = self.state.copy()
+        
+        self.process_covariance = np.array(process_covariance, dtype=float)
+        self.measurement_covariance = np.array(measurement_covariance, dtype=float)
+        self.state_transition = np.array(state_transition, dtype=float)
+        self.identity_matrix = np.identity(identity_matrix_size)
+
+
+    def predict(self):
+        # Predict the next state
+        self.state = np.dot(self.state_transition, self.state)
+        # Update the state covariance matrix
+        self.process_covariance = np.dot(np.dot(self.state_transition, self.process_covariance),
+                                         self.state_transition.T)
+
+
+    def update(self, measurement):
+        # Compute Kalman gain
+        kalman_gain = np.dot(
+            np.dot(self.process_covariance, self.identity_matrix.T), 
+            np.linalg.inv(np.dot(np.dot(self.identity_matrix, self.process_covariance), self.identity_matrix.T) + self.measurement_covariance)
+        )
+
+        # Update the state estimate
+        self.state_estimate = self.state + np.dot(kalman_gain, measurement - np.dot(self.identity_matrix, self.state))
+
+        # Update the state covariance matrix
+        self.process_covariance = np.dot((self.identity_matrix - np.dot(kalman_gain, self.identity_matrix)), self.process_covariance)
+
+
+
 class NavigationNode(Node):
     def __init__(self):
         super().__init__('navigation_node')
@@ -23,26 +59,29 @@ class NavigationNode(Node):
         self.motor_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
         self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
         
-        # Set if obstacle avoidance or velocity control should be used
-        self.OBSTACLE_AVOIDANCE = True
-        self.VELOCITY_CONTROL = True
-        
         # Robot parameter
         self.WHEEL_DISTANCE = 160 #mm
         self.RADIUS_ROBOT = 89 #mm
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         
-        # Velocity parameter
-        self.LAMBDA = 100
-        self.LAMBDA_TAR = 60
-        self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = 5
+        # Positions of sensor entries starting from 180 to -179 with 180 being the back, 90 right, 1 front and -89 left
+        #self.THETA = list(range(180, -180, -1))
+        self.THETA = list(range(-180, 180, 1))
+        self.THETA = np.deg2rad(self.THETA)
+        
+        # Set if obstacle avoidance or velocity control should be used
+        self.OBSTACLE_AVOIDANCE = True
+        self.VELOCITY_CONTROL = True
+        self.USE_KALMAN = False
+        
+        # Set if live visualization should be created
+        self.VISUALIZATION = True
         
         # Target parameter (changed in future for subscriber of target points)
         self.TARGET_RADIUS = 25
-        self.TARGETS_X = [3000] #self.TARGETS_X = [0, 1000, 1000, 0]
-        self.TARGETS_Y = [0] #self.TARGETS_Y = [1000, 1000, 0, 0]
+        self.TARGETS_X = [1000] #[0, 1000, 1000, 0]
+        self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
         self.TARGET_X = self.TARGETS_X.pop(0)
         self.TARGET_Y = self.TARGETS_Y.pop(0)
         
@@ -54,9 +93,37 @@ class NavigationNode(Node):
         # Tracking
         self.x_all, self.y_all = [], []
         
-        # Positions of sensor entries starting from 180 to -179 with 180 being the back, 90 right, 1 front and -89 left
-        self.PSI_OBS = list(range(180, -180, -1))
-        self.PSI_OBS = np.deg2rad(self.PSI_OBS)
+        # Kalman Filter
+        process_covariance = [[0, 0], [0, 0]]
+        measurement_covariance = [[0, 0], [0, 0]]
+        state_transition = [[0, 0], [0, 0]]
+        
+        if self.USE_KALMAN:
+            self.filter = KalmanFilter(
+                initial_state=[self.x, self.y],
+                process_covariance=process_covariance,
+                measurement_covariance=measurement_covariance,
+                state_transition=state_transition,
+                identity_matrix_size=2
+            )
+        
+        # Counts number of callback calls
+        self.counter = -1
+        
+        self.params_round1()
+        
+        if self.VISUALIZATION:
+            self.set_visualization()
+        
+        
+    def params_round1(self):
+        # Velocity parameter
+        self.LAMBDA = 100
+        self.LAMBDA_TAR = 2*np.pi
+        self.MAX_VELOCITY = 255
+        self.MIN_VELOCITY = 5
+        
+        self.delta_t = 20
 
         # Parameters for weighting of force-lets of obstacle avoidance and velocity control
         self.beta_1 = 60
@@ -65,17 +132,75 @@ class NavigationNode(Node):
         # Parameters for speed control
         self.c = 2.5
         self.c_u = 2.0
-        self.sigma_obs = 10.0
+        self.sigma_obs = 25.0
         self.sigma_tar = 30.0
-        self.v_obs = 20.0
+        self.v_obs = 105.0
         self.v_tar = 130.0
+    
+    
+    def params_round2(self):
+        #TODO: Add parameter for the second round
+        pass
 
-        # Counts number of callback calls
-        self.counter = 0
 
+    def set_visualization(self):
+        layout = [
+            ["traj", "traj", "f"],
+            ["traj", "traj", "g"],
+        ]
+        
+        self.fig = plt.figure(figsize=(15, 10))
+        self.ax = self.fig.subplot_mosaic(layout)
+        
+        
+        self.range = [0, 2*np.pi]
+
+    
+    def trajectory_visualization(self):
+        self.ax["traj"].clear()
+        
+        self.ax["traj"].set_aspect('equal')
+        self.ax["traj"].set_xlim(-1000, 1000)
+        self.ax["traj"].set_ylim(-1000, 1000)
+        
+        self.ax["traj"].plot(self.x_all, self.y_all)
+       
+        
+    def f_visualization(self):
+        self.ax["f"].clear()
+        
+        self.ax["f"].set_ylim(-2*self.LAMBDA_TAR, 2*self.LAMBDA_TAR)
+        
+        self.ax["f"].scatter(self.phi, self.delta_phi, label="Heading direction", color="green")
+        r = np.linspace(self.range[0], self.range[1], 100)
+        self.ax["f"].plot(r, self.f_tar(r)+ self.f_obs, label="delta phi")
+       
+    
+    def g_visualization(self):
+        self.ax["g"].clear()
+        
+        categories = ['v', 'g_tar', 'g_obs']
+        values = [self.g_tar_value + self.g_obs_value, self.g_tar_value, self.g_obs_value]
+        
+        self.ax["g"].bar(categories, values, color=['blue', 'green', 'orange'])
+       
+       
+    def visualize(self):
+        self.trajectory_visualization()
+        
+        if self.OBSTACLE_AVOIDANCE:
+            self.f_visualization()
+        
+        if self.VELOCITY_CONTROL:
+            self.g_visualization()
+        
+        self.fig.tight_layout()
+        self.fig.savefig(IMSAVE_PATH)
+        
 
     def a_phi(self):
         return np.arctan(self.c * self.V())
+
 
     def V(self):
         """
@@ -86,50 +211,50 @@ class NavigationNode(Node):
         :return: The integral value representing the summed influence of obstacles.
         """
         V_phi = 0
-        for psi_obs_i, range in zip(self.PSI_OBS, self.ranges):
+        for theta_i, range in zip(self.THETA, self.ranges):
             if range == 0.0:
                 continue
-            lambda_i, sigma_i = self.lambda_obs(range*1000), self.sigma(range*1000)
-            exp_term1 = np.exp(-((-psi_obs_i)**2/(2*sigma_i**2)))
-            exp_term2 = np.exp(-1/2)
-            V_phi += lambda_i * sigma_i**2 * exp_term1 - exp_term2
-        return np.clip(V_phi, -np.pi/2, np.pi/2)
+            lambda_i = self.lambda_obs(range*1000)
+            sigma_i = self.sigma(range*1000)
+            exp_arg = -((-theta_i)**2/(2*sigma_i**2))
+            V_phi += lambda_i * sigma_i**2 * np.exp(exp_arg) - np.exp(-1/2)
+        return np.clip(V_phi, -self.LAMBDA_TAR, self.LAMBDA_TAR)
 
 
-    # Implement g_obs(v) function here
     def g_obs(self):
         c_obs = self.c_u * (np.pi / 2 + self.a)
-        return -c_obs * (self.LAMBDA - self.v_obs) * np.exp(-(self.LAMBDA - self.v_obs)**2 / (2 * self.sigma_obs**2))
+        self.g_obs_value = -c_obs * (self.LAMBDA - self.v_obs) * np.exp(-(self.LAMBDA - self.v_obs)**2 / (2 * self.sigma_obs**2))
 
-    # Implement g_tar(v) function here
+
     def g_tar(self):
         c_tar = self.c_u * (np.pi / 2 - self.a)
-        return -c_tar * (self.LAMBDA - self.v_tar) * np.exp(-(self.LAMBDA - self.v_tar)**2 / (2 * self.sigma_tar**2))
+        self.g_tar_value = -c_tar * (self.LAMBDA - self.v_tar) * np.exp(-(self.LAMBDA - self.v_tar)**2 / (2 * self.sigma_tar**2))
+
 
     def control_velocity(self):
         self.a = self.a_phi()
-        g_obs = self.g_obs()
-        g_tar = self.g_tar()
-        return g_obs + g_tar
+        self.g_obs()
+        self.g_tar()
+        return self.g_obs_value + self.g_tar_value
 
 
     def getDeltaPhi(self):
         """
         Returns the new direction of robot
         """
-        f_obs = 0
+        self.f_obs = 0
         
         if self.OBSTACLE_AVOIDANCE:
-            for psi_obs_i, range in zip(self.PSI_OBS, self.ranges):
+            for theta_i, range in zip(self.THETA, self.ranges):
                 if range == 0.0:
                     continue
                 range *= 1000 # from meter to millimeter
-                f_obs += self.f_obs_i(psi_obs_i, range)
-                
-        self.delta_phi = self.f_tar() + f_obs
+                self.f_obs += self.f_obs_i(theta_i, range)
+            self.f_obs = np.clip(self.f_obs, -self.LAMBDA_TAR, self.LAMBDA_TAR)                
+        self.delta_phi = self.f_tar() + self.f_obs
 
     
-    def f_tar(self):
+    def f_tar(self, x=None):
         """
         Influence from target dynamics
         
@@ -139,10 +264,13 @@ class NavigationNode(Node):
         
         returns influence of target to new phi
         """
-        return -self.LAMBDA_TAR * np.sin(self.phi - self.psi)
+        if x is None:
+            x = self.phi
+            
+        return -self.LAMBDA_TAR * np.sin(x - self.psi)
     
     
-    def f_obs_i(self, psi_obs, range):
+    def f_obs_i(self, theta_obs, range):
         """
         Creates repellors at the locations of obstacles
         
@@ -151,12 +279,11 @@ class NavigationNode(Node):
         
         Returns influence of psi_obs
         """
-        lambda_ops_i = self.lambda_obs(range)
+        lambda_i = self.lambda_obs(range)
         sigma = self.sigma(range)
-        exp_arg = ((-psi_obs)**2)/(2*sigma**2)
-        return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
+        exp_arg = ((-theta_obs)**2)/(2*sigma**2)
+        return lambda_i*(-theta_obs)*np.exp(-exp_arg)
 
-    
     
     def lambda_obs(self, d):
         """
@@ -173,19 +300,19 @@ class NavigationNode(Node):
         """
         Calculates the heading direction
         """
-        self.psi = -np.arctan2(self.y-self.TARGET_Y, self.x-self.TARGET_X)
+        self.psi = -np.arctan2(self.y-self.TARGET_Y, -(self.x-self.TARGET_X))
     
        
     def setVelocity(self):
-        omega = int((self.delta_phi * (self.WHEEL_DISTANCE/2))/50)
+        omega = int((self.delta_phi * (self.WHEEL_DISTANCE/2))/(self.delta_t)) # mm/ms
         
         if self.VELOCITY_CONTROL:
             v = self.control_velocity()
         else:
             v = self.LAMBDA
 
-        self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
-        self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        self.v_l = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        self.v_r = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
         
         new_motor_command = Motors()
         new_motor_command.motors = [
@@ -194,6 +321,7 @@ class NavigationNode(Node):
         ]
         #self.get_logger().info(f'Published velocities')
         self.motor_publisher.publish(new_motor_command)
+        
         
     def stop(self):
         new_motor_command = Motors()
@@ -225,6 +353,11 @@ class NavigationNode(Node):
         self.x = self.x + c * np.cos(self.phi) # If + does not work try with -
         self.y = self.y + c * np.sin(self.phi)
         
+        if self.USE_KALMAN:
+            self.filter.predict()
+            self.filter.update([self.x, self.y])
+            self.x, self.y = self.filter.state_estimate
+        
         #Publish the current position
         current_position = Position()
         current_position.header.stamp = self.get_clock().now().to_msg()
@@ -239,33 +372,35 @@ class NavigationNode(Node):
     def drive(self, msg_motor, msg_lidar):
         #self.get_logger().info(f'Received messages')
         
-        if self.counter == 0:
-            self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position          
-        else:
-            self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
-            self.ranges = msg_lidar.ranges
-            
-            self.getDirection()
-            self.getDeltaPhi()
-            self.setVelocity()
-            self.updateMovement()
-            
-            self.x_all.append(self.x)
-            self.y_all.append(self.y)
-            
-            print(f"POSITION: ({self.x},{self.y}), HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
-            if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
-                if not self.TARGETS_X:
-                    self.stop
-                    plt.plot(self.y_all, self.x_all)
-                    plt.savefig(IMSAVE_PATH)
-                    exit()
-                else:
-                    self.TARGET_X = self.TARGETS_X.pop(0)
-                    self.TARGET_Y = self.TARGETS_Y.pop(0)
-                    
         self.counter += 1
+        if self.counter == 0:
+            self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
+            return        
+
+        self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
+        self.ranges = msg_lidar.ranges
+        
+        self.getDirection()
+        self.getDeltaPhi()
+        self.setVelocity()
+        self.updateMovement()
+        
+        self.x_all.append(self.x)
+        self.y_all.append(self.y)
+        
+        if self.VISUALIZATION:
+            self.visualize()
+        
+        print(f"POSITION: ({self.x},{self.y}), HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
+        if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
+            if not self.TARGETS_X:
+                self.stop()
+                exit()
+            else:
+                self.TARGET_X = self.TARGETS_X.pop(0)
+                self.TARGET_Y = self.TARGETS_Y.pop(0)
     
+
 
 def main(args=None): 
     rclpy.init(args=args)
@@ -276,6 +411,8 @@ def main(args=None):
     navigation.destroy_node()
         
     rclpy.shutdown()
+
+
 
 if __name__ == '__main__':
     main()
