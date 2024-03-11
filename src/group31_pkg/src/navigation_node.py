@@ -6,6 +6,7 @@ from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 from avai_messages.msg import Motors, Motor, Position
 from sensor_msgs.msg import LaserScan
+from time import sleep
 
 
 
@@ -72,15 +73,15 @@ class NavigationNode(Node):
         
         # Set if obstacle avoidance or velocity control should be used
         self.OBSTACLE_AVOIDANCE = True
-        self.VELOCITY_CONTROL = True
+        self.VELOCITY_CONTROL = False
         self.USE_KALMAN = False
         
         # Set if live visualization should be created
-        self.VISUALIZATION = True
+        self.VISUALIZATION = False
         
         # Target parameter (changed in future for subscriber of target points)
         self.TARGET_RADIUS = 25
-        self.TARGETS_X = [1000] #[0, 1000, 1000, 0]
+        self.TARGETS_X = [-2000] #[0, 1000, 1000, 0]
         self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
         self.TARGET_X = self.TARGETS_X.pop(0)
         self.TARGET_Y = self.TARGETS_Y.pop(0)
@@ -123,11 +124,11 @@ class NavigationNode(Node):
         self.MAX_VELOCITY = 255
         self.MIN_VELOCITY = 5
         
-        self.delta_t = 20
+        self.delta_t = 10
 
         # Parameters for weighting of force-lets of obstacle avoidance and velocity control
-        self.beta_1 = 60
-        self.beta_2 = 140
+        self.beta_1 = 20
+        self.beta_2 = 60
         
         # Parameters for speed control
         self.c = 2.5
@@ -300,7 +301,7 @@ class NavigationNode(Node):
         """
         Calculates the heading direction
         """
-        self.psi = -np.arctan2(self.y-self.TARGET_Y, -(self.x-self.TARGET_X))
+        self.psi = -np.arctan2(self.y-self.TARGET_Y, self.x-self.TARGET_X)
     
        
     def setVelocity(self):
@@ -311,13 +312,13 @@ class NavigationNode(Node):
         else:
             v = self.LAMBDA
 
-        self.v_l = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
-        self.v_r = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
         
         new_motor_command = Motors()
         new_motor_command.motors = [
-            Motor(position=1, velocity=self.v_l), 
-            Motor(position=1, velocity=self.v_r)
+            Motor(position=1, velocity=0), #self.v_l), 
+            Motor(position=1, velocity=0) #self.v_r)
         ]
         #self.get_logger().info(f'Published velocities')
         self.motor_publisher.publish(new_motor_command)
@@ -326,8 +327,8 @@ class NavigationNode(Node):
     def stop(self):
         new_motor_command = Motors()
         new_motor_command.motors = [
-            Motor(position=1, velocity=int(0)), 
-            Motor(position=1, velocity=int(0))
+            Motor(position=1, velocity=0), 
+            Motor(position=1, velocity=0)
         ]
         #self.get_logger().info(f'Stopped')
         self.motor_publisher.publish(new_motor_command)
@@ -350,7 +351,7 @@ class NavigationNode(Node):
         self.phi = (self.phi + (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE) % (2*np.pi)
         
         c = (left_now_moved + right_now_moved) / 2
-        self.x = self.x + c * np.cos(self.phi) # If + does not work try with -
+        self.x = self.x - c * np.cos(self.phi) # If + does not work try with -
         self.y = self.y + c * np.sin(self.phi)
         
         if self.USE_KALMAN:
@@ -395,7 +396,8 @@ class NavigationNode(Node):
         if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
             if not self.TARGETS_X:
                 self.stop()
-                exit()
+                sleep(3)
+                raise SystemExit
             else:
                 self.TARGET_X = self.TARGETS_X.pop(0)
                 self.TARGET_Y = self.TARGETS_Y.pop(0)
