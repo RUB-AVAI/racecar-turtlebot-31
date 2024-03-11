@@ -104,8 +104,6 @@ class NavigationNode(Node):
         sigma = self.sigma(range)
         exp_arg = (-psi_obs**2)/(2*sigma**2)
         return lambda_ops_i*(-psi_obs)*np.exp(-exp_arg)
-        #exp_arg = (self.phi-psi_obs**2)/(2*sigma**2)
-        #return lambda_ops_i*(self.phi-psi_obs)*np.exp(-exp_arg)
 
     
     
