@@ -124,11 +124,11 @@ class NavigationNode(Node):
         self.MAX_VELOCITY = 255
         self.MIN_VELOCITY = 5
         
-        self.delta_t = 10
+        self.delta_t = 8
 
         # Parameters for weighting of force-lets of obstacle avoidance and velocity control
-        self.beta_1 = 20
-        self.beta_2 = 60
+        self.beta_1 = 100
+        self.beta_2 = 40
         
         # Parameters for speed control
         self.c = 2.5
@@ -312,13 +312,13 @@ class NavigationNode(Node):
         else:
             v = self.LAMBDA
 
-        self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
-        self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        self.v_l = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+        self.v_r = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
         
         new_motor_command = Motors()
         new_motor_command.motors = [
-            Motor(position=1, velocity=0), #self.v_l), 
-            Motor(position=1, velocity=0) #self.v_r)
+            Motor(position=1, velocity=self.v_l), 
+            Motor(position=1, velocity=self.v_r)
         ]
         #self.get_logger().info(f'Published velocities')
         self.motor_publisher.publish(new_motor_command)
