@@ -258,7 +258,7 @@ endif()
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   execute_process(
         COMMAND
-        "/usr/bin/python3.10" "-m" "compileall"
+        "/usr/bin/python3" "-m" "compileall"
         "/home/ubuntu/turtlebot-avai/install/avai_messages/local/lib/python3.10/dist-packages/avai_messages"
       )
 endif()
@@ -396,6 +396,10 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/avai_messages/msg" TYPE FILE FILES "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages/msg/Targets.idl")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/avai_messages/msg" TYPE FILE FILES "/home/ubuntu/turtlebot-avai/src/avai_messages/msg/Vector3Sensor.msg")
 endif()
 
@@ -433,6 +437,10 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/avai_messages/msg" TYPE FILE FILES "/home/ubuntu/turtlebot-avai/src/avai_messages/msg/Position.msg")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/avai_messages/msg" TYPE FILE FILES "/home/ubuntu/turtlebot-avai/src/avai_messages/msg/Targets.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)

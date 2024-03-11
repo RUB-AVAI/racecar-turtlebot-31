@@ -12,7 +12,8 @@
     "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/YoloOutput.idl",
     "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Cluster.idl",
     "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/ClusteredLidarData.idl",
-    "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Position.idl"
+    "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Position.idl",
+    "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Targets.idl"
   ],
   "ros_interface_dependencies": [
     "geometry_msgs:/opt/ros/humble/share/geometry_msgs/msg/Accel.idl",
@@ -96,6 +97,7 @@
     "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages/msg/Cluster.idl",
     "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages/msg/ClusteredLidarData.idl",
     "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages/msg/Position.idl",
+    "/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages/msg/Targets.idl",
     "/opt/ros/humble/share/geometry_msgs/msg/Accel.idl",
     "/opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl",
     "/opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl",

@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from message_filters import ApproximateTimeSynchronizer, Subscriber
-from avai_messages.msg import Motors, Motor, Position
+from avai_messages.msg import Motors, Motor, Position, Targets
 from sensor_msgs.msg import LaserScan
 from time import sleep
 
@@ -52,10 +52,14 @@ class NavigationNode(Node):
     def __init__(self):
         super().__init__('navigation_node')
         
+        # Set if points from data fusion should be subscribed
+        self.GET_TARGETS = True
+        
         self.motor_subscription = Subscriber(self, Motors, '/motor_position')
         self.lidar_subscription = Subscriber(self, LaserScan, "/scan", qos_profile=rclpy.qos.qos_profile_sensor_data)
-        ts = ApproximateTimeSynchronizer([self.motor_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
-        ts.registerCallback(self.drive)
+        self.ts = ApproximateTimeSynchronizer([self.motor_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
+        if not self.GET_TARGETS:
+            self.ts.registerCallback(self.drive)
         
         self.motor_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
         self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
@@ -81,10 +85,16 @@ class NavigationNode(Node):
         
         # Target parameter (changed in future for subscriber of target points)
         self.TARGET_RADIUS = 25
-        self.TARGETS_X = [-8000] #[0, 1000, 1000, 0]
-        self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
-        self.TARGET_X = self.TARGETS_X.pop(0)
-        self.TARGET_Y = self.TARGETS_Y.pop(0)
+        if not self.GET_TARGETS:
+            self.TARGETS_X = [-8000] #[0, 1000, 1000, 0]
+            self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
+            self.TARGET_X = self.TARGETS_X.pop(0)
+            self.TARGET_Y = self.TARGETS_Y.pop(0)
+        else:
+            self.target_subscriber = self.create_subscription(Targets, "/target_position", self.target_callback, 1)
+            self.TARGET_X = 0
+            self.TARGET_Y = 0
+            self.ROUND = 1
         
         # Start position
         self.x = 0
@@ -110,6 +120,8 @@ class NavigationNode(Node):
         
         # Counts number of callback calls
         self.counter = -1
+        
+        self.called = False
         
         self.params_round1()
         
@@ -144,6 +156,7 @@ class NavigationNode(Node):
     
     
     def params_round2(self):
+        self.called = True
         #TODO: Add parameter for the second round
         pass
 
@@ -410,15 +423,30 @@ class NavigationNode(Node):
             self.visualize()
         
         print(f"POSITION: ({self.x},{self.y}), HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
-        if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
-            if not self.TARGETS_X:
-                self.stop()
-                sleep(3)
-                raise SystemExit
-            else:
-                self.TARGET_X = self.TARGETS_X.pop(0)
-                self.TARGET_Y = self.TARGETS_Y.pop(0)
+        
+        if not self.GET_TARGETS:
+            if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
+                if not self.TARGETS_X:
+                    self.stop()
+                    sleep(3)
+                    raise SystemExit
+                else:
+                    self.TARGET_X = self.TARGETS_X.pop(0)
+                    self.TARGET_Y = self.TARGETS_Y.pop(0)
     
+    
+    def target_callback(self, msg):
+        self.get_logger().info("Target Received")
+        
+        self.TARGET_X = msg.x_position
+        self.TARGET_Y = msg.y_position
+        self.ROUND = msg.round
+        
+        if self.counter == -1:
+            self.ts.registerCallback(self.drive)
+        
+        if self.ROUND == 2 and self.called == False:
+            self.params_round2()
 
 
 def main(args=None): 

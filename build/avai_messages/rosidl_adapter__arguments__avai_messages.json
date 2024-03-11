@@ -10,6 +10,7 @@
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/YoloOutput.msg",
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Cluster.msg",
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/ClusteredLidarData.msg",
-    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Position.msg"
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Position.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Targets.msg"
   ]
 }

@@ -273,8 +273,13 @@ CMakeFiles/avai_messages__rosidl_typesupport_introspection_c__pyext.dir/rosidl_g
   rosidl_generator_c/avai_messages/msg/detail/cluster__functions.h \
   rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__type_support.h \
   rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__struct.h \
-  rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__functions.h
+  rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__functions.h \
+  rosidl_generator_c/avai_messages/msg/detail/position__type_support.h \
+  rosidl_generator_c/avai_messages/msg/detail/position__struct.h \
+  rosidl_generator_c/avai_messages/msg/detail/position__functions.h
 
+
+rosidl_generator_c/avai_messages/msg/detail/position__struct.h:
 
 rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__type_support.h:
 
@@ -576,6 +581,8 @@ rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__functions.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/struct_FILE.h:
 
+rosidl_generator_c/avai_messages/msg/detail/position__functions.h:
+
 /usr/include/python3.10/pystrcmp.h:
 
 /usr/include/python3.10/listobject.h:
@@ -593,6 +600,8 @@ rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__struct.h:
 /usr/include/aarch64-linux-gnu/bits/types/FILE.h:
 
 /usr/include/python3.10/pycapsule.h:
+
+rosidl_generator_c/avai_messages/msg/detail/position__type_support.h:
 
 /usr/include/aarch64-linux-gnu/bits/errno.h:
 

@@ -1,2 +1,3 @@
 [console_scripts]
 my_node = group31_pkg.my_node:main
+

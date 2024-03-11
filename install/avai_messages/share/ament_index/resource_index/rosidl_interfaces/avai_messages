@@ -12,6 +12,8 @@ msg/Motors.idl
 msg/Motors.msg
 msg/Position.idl
 msg/Position.msg
+msg/Targets.idl
+msg/Targets.msg
 msg/Vector3Sensor.idl
 msg/Vector3Sensor.msg
 msg/VehicleLights.idl

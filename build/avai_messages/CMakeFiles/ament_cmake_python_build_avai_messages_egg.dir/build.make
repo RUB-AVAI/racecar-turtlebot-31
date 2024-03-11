@@ -67,7 +67,7 @@ include CMakeFiles/ament_cmake_python_build_avai_messages_egg.dir/compiler_depen
 include CMakeFiles/ament_cmake_python_build_avai_messages_egg.dir/progress.make
 
 CMakeFiles/ament_cmake_python_build_avai_messages_egg:
-	cd /home/ubuntu/turtlebot-avai/build/avai_messages/ament_cmake_python/avai_messages && /usr/bin/python3.10 setup.py egg_info
+	cd /home/ubuntu/turtlebot-avai/build/avai_messages/ament_cmake_python/avai_messages && /usr/bin/python3 setup.py egg_info
 
 ament_cmake_python_build_avai_messages_egg: CMakeFiles/ament_cmake_python_build_avai_messages_egg
 ament_cmake_python_build_avai_messages_egg: CMakeFiles/ament_cmake_python_build_avai_messages_egg.dir/build.make
