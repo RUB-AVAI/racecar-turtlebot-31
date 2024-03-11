@@ -8,6 +8,15 @@ IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisatio
 def get_timestamp_as_float(msg):
     return msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
 
+# def secondary_fuse_criterion(cluster_range, box_range):
+#     if box_range[0] < cluster_range[0] and cluster_range[0] < box_range[1]:
+#         return True, 0
+#     if box_range[0] < cluster_range[1] and cluster_range[1] < box_range[1]:
+#         return True, 1
+    
+#     return False, None
+
+
 def is_range_in_range(inner_range, outer_range):    
     # check if at left border
     if inner_range[0] < -1:
@@ -38,6 +47,44 @@ def bb_ratio(box):
     delta_x = np.abs(box.min_x - box.max_x)
     delta_y = np.abs(box.min_y - box.max_y)
     return delta_y / delta_x
+
+def could_be_cone(cluster, max_size=150, max_range=4000):
+    # rule out the ones that are too far away
+    if np.mean(cluster.ranges) > max_range:
+        return False
+    # estimate size of cluster by calculating difference between edges
+    left_edge = (cluster.x_positions[0], cluster.y_positions[0])
+    right_edge = (cluster.x_positions[-1], cluster.y_positions[-1])
+    tmp = (left_edge[0] - right_edge[0], left_edge[1] - right_edge[1])
+    distance = np.linalg.norm(tmp)
+    if distance > max_size:
+        return False
+    
+    return True
+    
+
+fig, ax = plt.subplots()
+
+def plot_clusters(clusters):
+    IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/pl"
+    plt.axis("equal")
+    ax.clear()
+
+    blindspot = plt.Circle((0, 0), 90, color="red", fill=False)
+    ax.add_patch(blindspot)
+    
+    for cluster in clusters:
+        # scatter each cluster individually so they get different colors
+        ax.scatter(cluster.x_positions, cluster.y_positions, marker=".")
+        limit = 5000 # mm
+        ax.set_xlim([-limit, limit])
+        ax.set_ylim([-limit, limit])
+        ax.set_box_aspect(1)
+        
+    fig.tight_layout()
+    fig.savefig(IMSAVE_PATH)
+    
+    
     
 
 def preprocess_bounding_boxes(yolo_msg, log_to_console=False):
@@ -78,7 +125,7 @@ def preprocess_bounding_boxes(yolo_msg, log_to_console=False):
     return yolo_msg
 
 class Map:
-    def __init__(self, size=20000, epsilon=100, min_hist=4) -> None:
+    def __init__(self, size=20000, epsilon=100, min_hist=3) -> None:
         # all distances are in mm
         self.size = size
         self.discretization_steps = 10 # = 1cm
@@ -125,7 +172,8 @@ class Map:
             #     print(f"existing cone: {hit[0]}, {hit[1]}")
             #     print(f"errors: {x_error}  {y_error}")
         elif len(hits) > 1:
-            print(hits)
+            pass
+            # print(hits)
         else:
             self.data[x, y, 0] = cone
             self.data[x, y, 1] = 1
