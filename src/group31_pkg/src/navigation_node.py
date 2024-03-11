@@ -81,7 +81,7 @@ class NavigationNode(Node):
         self.USE_KALMAN = False
         
         # Set if live visualization should be created
-        self.VISUALIZATION = True
+        self.VISUALIZATION = False
         
         # Target parameter (changed in future for subscriber of target points)
         self.TARGET_RADIUS = 25
