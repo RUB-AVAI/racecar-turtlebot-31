@@ -53,7 +53,7 @@ class NavigationNode(Node):
         super().__init__('navigation_node')
         
         # Set if points from data fusion should be subscribed
-        self.GET_TARGETS = True
+        self.GET_TARGETS = False
         
         self.motor_subscription = Subscriber(self, Motors, '/motor_position')
         self.lidar_subscription = Subscriber(self, LaserScan, "/scan", qos_profile=rclpy.qos.qos_profile_sensor_data)
@@ -86,7 +86,7 @@ class NavigationNode(Node):
         # Target parameter (changed in future for subscriber of target points)
         self.TARGET_RADIUS = 25
         if not self.GET_TARGETS:
-            self.TARGETS_X = [-8000] #[0, 1000, 1000, 0]
+            self.TARGETS_X = [-1000] #[0, 1000, 1000, 0]
             self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
             self.TARGET_X = self.TARGETS_X.pop(0)
             self.TARGET_Y = self.TARGETS_Y.pop(0)
