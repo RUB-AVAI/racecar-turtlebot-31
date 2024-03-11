@@ -301,6 +301,15 @@ bool avai_messages__msg__cluster__convert_from_py(PyObject * _pymsg, void * _ros
     }
     Py_DECREF(field);
   }
+  {  // label
+    PyObject * field = PyObject_GetAttrString(_pymsg, "label");
+    if (!field) {
+      return false;
+    }
+    assert(PyLong_Check(field));
+    ros_message->label = (int16_t)PyLong_AsLong(field);
+    Py_DECREF(field);
+  }
 
   return true;
 }
@@ -550,6 +559,17 @@ PyObject * avai_messages__msg__cluster__convert_to_py(void * raw_ros_message)
       Py_DECREF(ret);
     }
     Py_DECREF(field);
+  }
+  {  // label
+    PyObject * field = NULL;
+    field = PyLong_FromLong(ros_message->label);
+    {
+      int rc = PyObject_SetAttrString(_pymessage, "label", field);
+      Py_DECREF(field);
+      if (rc) {
+        return NULL;
+      }
+    }
   }
 
   // ownership of _pymessage is transferred to the caller

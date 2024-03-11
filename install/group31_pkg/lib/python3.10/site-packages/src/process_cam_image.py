@@ -2,30 +2,44 @@ import cv2
 import rclpy
 import os
 import numpy as np
+import argparse
 
 # ROS2 imports
 from rclpy.node import Node
 from avai_messages.msg import BoundingBox, YoloOutput
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
+
 
 # YOLO model imports
 import yolov5.models.common
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=2, type=int)
+parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
+args = parser.parse_args()
+
+
 # Global Variables
 TOPIC = "/cone_classification"
-QUEUE_SIZE = 1
+QUEUE_SIZE = 10
 
-PUBLISH = True
+if args.fps < 1:
+    raise ValueError("Argument has to be greater or equal 1")
 
+PUBLISH = (args.fps is not None)
 SAVE_IMAGE_RAW = False
 SAVE_IMAGE_WITH_BOUNDING_BOXES = False
+PUBLISH_IMAGE_WITH_BOUNDING_BOXES = (args.bb is not None)
 
     
 
-FPS_PUBLISH = 1.0 #seconds
-FPS_IMAGE_CAPTURE = 2
+FPS_PUBLISH = args.fps #seconds
 FPS_IMAGE_SAVING_RAW = 0.2
 FPS_IMAGE_SAVING_BOUNDING_BOXES = FPS_IMAGE_SAVING_RAW
+FPS_IMAGE_PUBLISH_BB = args.bb
 
 IMSAVE_PATH_RAW = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_raw.png"
 IMSAVE_PATH_BOUNDING_BOXES = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_with_bounding_boxes.png"
@@ -50,6 +64,7 @@ class CamImageProcessingNode(Node):
         self.i = 0
         self.camera_frame = None
         self.camera_frame_stamp = None
+        self.bridge = CvBridge()
 
         self.current_yolo_frame = None
         self.current_yolo_output = None
@@ -60,10 +75,8 @@ class CamImageProcessingNode(Node):
             self.interpreter = yolov5.models.common.AutoShape(self.interpreter)
         
         # initialize publisher
-        self.publisher_ = self.create_publisher(YoloOutput, TOPIC, QUEUE_SIZE)
-
-        # initialize image capture callback
-        self.image_capture_callback = self.create_timer(1.0 / FPS_IMAGE_CAPTURE, self.capture_image)
+        self.publisher_ = self.create_publisher(YoloOutput, TOPIC, qos_profile=rclpy.qos.qos_profile_sensor_data)
+        self.publisher_image_bb = self.create_publisher(Image, "/bb_images", qos_profile=rclpy.qos.qos_profile_services_default)
         
         if PUBLISH:
             # initialize publisher callback
@@ -75,6 +88,9 @@ class CamImageProcessingNode(Node):
         
         if SAVE_IMAGE_WITH_BOUNDING_BOXES:
             self.image_save_bb_callback = self.create_timer(1.0 / FPS_IMAGE_SAVING_BOUNDING_BOXES, self.save_image_with_bounding_boxes)
+        
+        if PUBLISH_IMAGE_WITH_BOUNDING_BOXES:
+            self.image_pub_bb_callback = self.create_timer(1.0 / FPS_IMAGE_PUBLISH_BB, self.publish_image_with_bounding_boxes)
 
         
         
@@ -91,14 +107,41 @@ class CamImageProcessingNode(Node):
     
     def publish(self):
         # publish yolo output
+        self.capture_image()
         if self.camera_frame is not None:
             yolo_output = self.yolo(self.camera_frame, self.camera_frame_stamp)
             self.publisher_.publish(yolo_output)
-            self.get_logger().info('%d Images Published' % self.i)
+            self.get_logger().info('%d Yolo Predictions Published' % self.i)
             self.i += 1 # image counter increment
         else:
             self.get_logger().warning("Found no frame to publish")
 
+
+    def publish_image_with_bounding_boxes(self):
+        # lay the bounding boxes over the camera image and save it to the visualisations folder
+        image = self.current_yolo_frame
+        detections = self.current_yolo_output
+        if image is not None:
+            for det in detections:
+                class_id = det.cone
+                confidence = det.confidence
+                
+                # Draw rectangle
+                cv2.rectangle(image, (int(det.min_x), int(det.min_y)), (int(det.max_x), int(det.max_y)), (0, 255, 0), 2)
+                
+                # Draw label (if class_labels is provided)
+                class_labels = ["blue", "orange", "yellow"]
+                if class_labels and class_id < len(class_labels):
+                    label = f"{class_labels[class_id]}: {confidence:.2f}"
+                    cv2.putText(image, label, (int(det.min_x), int(det.min_y) - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
+            
+            msg = self.bridge.cv2_to_imgmsg(image, "bgr8")
+            self.publisher_image_bb.publish(msg)
+            self.get_logger().info("Published Image with bounding boxes")
+            
+
+        else:
+            self.get_logger().warning("Found no yolo frame to publish")
 
     def save_image_raw(self):
         # save the raw image from the camera to the visualisations folder

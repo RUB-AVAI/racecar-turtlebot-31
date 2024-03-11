@@ -11,6 +11,7 @@ avai_messages/msg/_clustered_lidar_data.py
 avai_messages/msg/_melody.py
 avai_messages/msg/_motor.py
 avai_messages/msg/_motors.py
+avai_messages/msg/_position.py
 avai_messages/msg/_vector3_sensor.py
 avai_messages/msg/_vehicle_lights.py
 avai_messages/msg/_yolo_output.py
