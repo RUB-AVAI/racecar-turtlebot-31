@@ -139,16 +139,16 @@ class NavigationNode(Node):
         self.delta_t = 10
 
         # Parameters for weighting of force-lets of obstacle avoidance
-        self.beta_1 = 40
-        self.beta_2 = 80
+        self.beta_1 = 37.5
+        self.beta_2 = 85
         
         # Parameters for weighting of force-lets for velocity control
         self.alpha_1 = 40
         self.alpha_2 = 300
         
         # Parameters for speed control
-        self.c = 0.25
-        self.c_u = 2.5
+        self.c = 0.20
+        self.c_u = 2.0
         self.sigma_obs = 25.0
         self.sigma_tar = 22.0
         self.v_obs = 80.0
