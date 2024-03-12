@@ -4,6 +4,8 @@ import os
 import numpy as np
 import argparse
 
+import time
+
 # ROS2 imports
 from rclpy.node import Node
 from avai_messages.msg import BoundingBox, YoloOutput
@@ -109,7 +111,11 @@ class CamImageProcessingNode(Node):
         # publish yolo output
         self.capture_image()
         if self.camera_frame is not None:
+            start_time = time.time()
             yolo_output = self.yolo(self.camera_frame, self.camera_frame_stamp)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"Execution time: {elapsed_time} seconds")
             self.publisher_.publish(yolo_output)
             self.get_logger().info('%d Yolo Predictions Published' % self.i)
             self.i += 1 # image counter increment
