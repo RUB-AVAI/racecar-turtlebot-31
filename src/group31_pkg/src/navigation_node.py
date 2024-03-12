@@ -102,7 +102,7 @@ class NavigationNode(Node):
         self.phi = 0
         
         # Tracking
-        self.x_all, self.y_all = [], []
+        self.x_all, self.y_all, self.phi_all = [], [], []
         
         # Kalman Filter
         process_covariance = [[0, 0], [0, 0]]
@@ -359,6 +359,18 @@ class NavigationNode(Node):
         ]
         #self.get_logger().info(f'Stopped')
         self.motor_publisher.publish(new_motor_command)
+        
+    
+    def clean_and_smooth_pose(self, window_size=20):
+        # Trim the history to the specified window size
+        x_history = self.x_all[-window_size:]
+        y_history = self.y_all[-window_size:]
+        phi_history = self.phi_all[-window_size:]
+
+        # Apply smoothing filter to clean and smooth the values        
+        self.x = np.convolve(x_history, np.ones(window_size)/window_size, mode='valid')
+        self.y = np.convolve(y_history, np.ones(window_size)/window_size, mode='valid')
+        self.phi = np.convolve(phi_history, np.ones(window_size)/window_size, mode='valid')
 
 
     def updateMovement(self):
@@ -378,15 +390,15 @@ class NavigationNode(Node):
         c = (left_now_moved + right_now_moved) / 2
         d = (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE
         
-        #self.phi = (self.phi + d) % (2*np.pi)
-        #self.x = self.x - c * np.cos(self.phi)
-        #self.y = self.y + c * np.sin(self.phi)
-        
         self.x = self.x - (c * np.cos(self.phi + d/2))
         self.y = self.y + (c * np.sin(self.phi + d/2))
         self.phi = (self.phi + d) % (2*np.pi)
         
+        self.x_all.append(self.x)
+        self.y_all.append(self.y)
+        self.phi_all.append(self.phi)
         
+        self.clean_and_smooth_pose()
         
         if self.USE_KALMAN:
             self.filter.predict()
@@ -419,9 +431,6 @@ class NavigationNode(Node):
         self.setVelocity()
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
-        
-        self.x_all.append(self.x)
-        self.y_all.append(self.y)
         
         if self.VISUALIZATION:
             self.visualize()
