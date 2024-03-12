@@ -378,13 +378,13 @@ class NavigationNode(Node):
         c = (left_now_moved + right_now_moved) / 2
         d = (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE
         
-        self.phi = (self.phi + d) % (2*np.pi)
-        self.x = self.x - c * np.cos(self.phi)
-        self.y = self.y + c * np.sin(self.phi)
-        
-        #self.x = self.x - (c * np.cos(self.phi + d/2))
-        #self.y = self.y + (c * np.sin(self.phi + d/2))
         #self.phi = (self.phi + d) % (2*np.pi)
+        #self.x = self.x - c * np.cos(self.phi)
+        #self.y = self.y + c * np.sin(self.phi)
+        
+        self.x = self.x - (c * np.cos(self.phi + d/2))
+        self.y = self.y + (c * np.sin(self.phi + d/2))
+        self.phi = (self.phi + d) % (2*np.pi)
         
         
         
