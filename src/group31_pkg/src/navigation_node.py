@@ -148,7 +148,7 @@ class NavigationNode(Node):
         
         # Parameters for speed control
         self.c = 0.25
-        self.c_u = 3.00
+        self.c_u = 2.5
         self.sigma_obs = 25.0
         self.sigma_tar = 22.0
         self.v_obs = 80.0
@@ -245,19 +245,16 @@ class NavigationNode(Node):
 
     def g_obs(self):
         c_obs = self.c_u * (np.pi / 2 + self.a)
-        #print(f"C_OBS: {c_obs}")
         self.g_obs_value = -c_obs * (self.LAMBDA - self.v_obs) * np.exp(-(self.LAMBDA - self.v_obs)**2 / (2 * self.sigma_obs**2))
 
 
     def g_tar(self):
         c_tar = self.c_u * (np.pi / 2 - self.a)
-        #print(f"C_TAR: {c_tar}")
         self.g_tar_value = -c_tar * (self.LAMBDA - self.v_tar) * np.exp(-(self.LAMBDA - self.v_tar)**2 / (2 * self.sigma_tar**2))
 
 
     def control_velocity(self):
         self.a = self.a_phi()
-        print(self.a)
         self.g_obs()
         self.g_tar()
         return self.g_obs_value + self.g_tar_value
@@ -341,7 +338,7 @@ class NavigationNode(Node):
             v = self.control_velocity()
         else:
             v = self.LAMBDA
-        print(v)
+
         self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
         self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
         
