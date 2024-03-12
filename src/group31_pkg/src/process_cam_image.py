@@ -4,8 +4,6 @@ import os
 import numpy as np
 import argparse
 
-import time
-
 # ROS2 imports
 from rclpy.node import Node
 from avai_messages.msg import BoundingBox, YoloOutput
@@ -19,7 +17,7 @@ import yolov5.models.common
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=2, type=int)
+parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=5, type=int)
 parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
 args = parser.parse_args()
 
@@ -45,7 +43,7 @@ FPS_IMAGE_PUBLISH_BB = args.bb
 
 IMSAVE_PATH_RAW = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_raw.png"
 IMSAVE_PATH_BOUNDING_BOXES = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_with_bounding_boxes.png"
-MODEL_PATH = "/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/best-int8_edgetpu.tflite"
+MODEL_PATH = "/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/small_best-int8_edgetpu.tflite"
 
 
 
@@ -111,11 +109,7 @@ class CamImageProcessingNode(Node):
         # publish yolo output
         self.capture_image()
         if self.camera_frame is not None:
-            start_time = time.time()
             yolo_output = self.yolo(self.camera_frame, self.camera_frame_stamp)
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-            print(f"yolo function execution time: {elapsed_time} seconds")
             self.publisher_.publish(yolo_output)
             self.get_logger().info('%d Yolo Predictions Published' % self.i)
             self.i += 1 # image counter increment
@@ -186,14 +180,7 @@ class CamImageProcessingNode(Node):
         raw_img = cv2.resize(input_img, (640, 640))
         raw_img_bgb = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
         
-        start_time = time.time()
         detect = self.interpreter(raw_img_bgb)
-        end_time = time.time()
-
-        # Calculate the elapsed time
-        elapsed_time = end_time - start_time
-
-        print(f"Interpreter execution time: {elapsed_time} seconds")
 
         # xmin, ymin, xmax, ymax, confidence, class, name
         boxes = detect.pandas().xyxy[0].to_numpy()
