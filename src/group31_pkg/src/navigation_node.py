@@ -105,21 +105,17 @@ class NavigationNode(Node):
         self.x_all, self.y_all = [], []
         
         # Kalman Filter
-        process_covariance = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        measurement_covariance = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        state_transition = [[1, 0, -np.sin(self.theta)],
-                    [0, 1, np.cos(self.theta)],
-                    [0, 0, 1]]
-        
-        #state_transition = [[0, 0], [0, 0]]
+        process_covariance = [[0, 0], [0, 0]]
+        measurement_covariance = [[0, 0], [0, 0]]
+        state_transition = [[0, 0], [0, 0]]
         
         if self.USE_KALMAN:
             self.filter = KalmanFilter(
-                initial_state= [self.x, self.y, self.phi],
+                initial_state=[self.x, self.y],
                 process_covariance=process_covariance,
                 measurement_covariance=measurement_covariance,
                 state_transition=state_transition,
-                identity_matrix_size=3
+                identity_matrix_size=2
             )
         
         # Counts number of callback calls
@@ -367,13 +363,6 @@ class NavigationNode(Node):
         #self.get_logger().info(f'Stopped')
         self.motor_publisher.publish(new_motor_command)
 
-    def update_state_transition(self, delta_t):
-    # Assuming self.phi is the current orientation
-        self.filter.state_transition = np.array([
-            [1, 0, -delta_t * np.sin(self.phi)],
-            [0, 1, delta_t * np.cos(self.phi)],
-            [0, 0, 1]
-        ])
 
     def updateMovement(self):
         """
@@ -395,11 +384,9 @@ class NavigationNode(Node):
         self.x = self.x - c * np.cos(self.phi) # If + does not work try with -
         self.y = self.y + c * np.sin(self.phi)
         
-        self.update_state_transition(c)
-    
         if self.USE_KALMAN:
             self.filter.predict()
-            self.filter.update([self.x, self.y,self.phi])
+            self.filter.update([self.x, self.y])
             self.x, self.y = self.filter.state_estimate
         
         #Publish the current position
