@@ -115,7 +115,7 @@ class CamImageProcessingNode(Node):
             yolo_output = self.yolo(self.camera_frame, self.camera_frame_stamp)
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print(f"Execution time: {elapsed_time} seconds")
+            print(f"yolo function execution time: {elapsed_time} seconds")
             self.publisher_.publish(yolo_output)
             self.get_logger().info('%d Yolo Predictions Published' % self.i)
             self.i += 1 # image counter increment
@@ -185,7 +185,15 @@ class CamImageProcessingNode(Node):
     def yolo(self, input_img:np.ndarray, timestamp):
         raw_img = cv2.resize(input_img, (640, 640))
         raw_img_bgb = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
+        
+        start_time = time.time()
         detect = self.interpreter(raw_img_bgb)
+        end_time = time.time()
+
+        # Calculate the elapsed time
+        elapsed_time = end_time - start_time
+
+        print(f"Interpreter execution time: {elapsed_time} seconds")
 
         # xmin, ymin, xmax, ymax, confidence, class, name
         boxes = detect.pandas().xyxy[0].to_numpy()
