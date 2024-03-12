@@ -87,7 +87,7 @@ class NavigationNode(Node):
         self.TARGET_RADIUS = 25
         if not self.GET_TARGETS:
             self.TARGETS_X = [-1000] #[0, 1000, 1000, 0]
-            self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
+            self.TARGETS_Y = [1000] #[1000, 1000, 0, 0]
             self.TARGET_X = self.TARGETS_X.pop(0)
             self.TARGET_Y = self.TARGETS_Y.pop(0)
         else:
@@ -378,11 +378,14 @@ class NavigationNode(Node):
         self.TOTAL_LEFT_MOVED = self.LEFT_MOVED
         left_now_moved = left_now_ticks * ((2*np.pi*self.WHEEL_RADIUS)/self.NUM_TICKS)
         
-        self.phi = (self.phi + (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE) % (2*np.pi)
-        
         c = (left_now_moved + right_now_moved) / 2
-        self.x = self.x - c * np.cos(self.phi) # If + does not work try with -
-        self.y = self.y + c * np.sin(self.phi)
+        d = (left_now_moved - right_now_moved) / self.WHEEL_DISTANCE
+        
+        self.x = self.x - (c * np.cos(self.phi + d/2)) # If + does not work try with -
+        self.y = self.y + (c * np.sin(self.phi + d/2))
+        self.phi = (self.phi + d) % (2*np.pi)
+        
+        
         
         if self.USE_KALMAN:
             self.filter.predict()
@@ -401,7 +404,7 @@ class NavigationNode(Node):
 
 
     def drive(self, msg_motor, msg_lidar):
-        #self.get_logger().info(f'Received messages')
+        self.get_logger().info(f'Received messages')
         
         self.counter += 1
         if self.counter == 0:
