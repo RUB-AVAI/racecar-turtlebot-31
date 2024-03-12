@@ -368,9 +368,9 @@ class NavigationNode(Node):
         phi_history = self.phi_all[-window_size:]
 
         # Apply smoothing filter to clean and smooth the values        
-        self.x = np.convolve(x_history, np.ones(window_size)/window_size, mode='valid')
-        self.y = np.convolve(y_history, np.ones(window_size)/window_size, mode='valid')
-        self.phi = np.convolve(phi_history, np.ones(window_size)/window_size, mode='valid')
+        self.x = np.convolve(x_history, np.ones(window_size)/window_size, mode='valid')[-1]
+        self.y = np.convolve(y_history, np.ones(window_size)/window_size, mode='valid')[-1]
+        self.phi = np.convolve(phi_history, np.ones(window_size)/window_size, mode='valid')[-1]
 
 
     def updateMovement(self):
