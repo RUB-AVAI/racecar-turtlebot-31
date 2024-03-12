@@ -48,10 +48,6 @@ MODEL_PATH = "/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/best-int8_ed
 
 
 class CamImageProcessingNode(Node):
-    """
-    
-    """
-
     def __init__(self, capture):
         super().__init__("CamImageProcessingNode")
 
@@ -103,6 +99,10 @@ class CamImageProcessingNode(Node):
             if ret:
                 self.camera_frame = frame
                 self.camera_frame_stamp = self.get_clock().now()
+            else:
+                print("capture_image(): no image read")
+        else:
+            print("No stream opened")
             
     
     def publish(self):
@@ -152,7 +152,6 @@ class CamImageProcessingNode(Node):
         else:
             self.get_logger().warning("Found no frame to save")
 
-
     def save_image_with_bounding_boxes(self):
         # lay the bounding boxes over the camera image and save it to the visualisations folder
         image = self.current_yolo_frame
@@ -176,7 +175,6 @@ class CamImageProcessingNode(Node):
 
         else:
             self.get_logger().warning("Found no yolo frame to save")
-
 
     def yolo(self, input_img:np.ndarray, timestamp):
         raw_img = cv2.resize(input_img, (640, 640))
