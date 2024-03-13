@@ -13,41 +13,6 @@ from time import sleep
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/route.png"
 
 
-
-class KalmanFilter:
-    def __init__(self, initial_state, process_covariance, measurement_covariance, state_transition, identity_matrix_size):
-        self.state = np.array(initial_state, dtype=float)
-        self.state_estimate = self.state.copy()
-        
-        self.process_covariance = np.array(process_covariance, dtype=float)
-        self.measurement_covariance = np.array(measurement_covariance, dtype=float)
-        self.state_transition = np.array(state_transition, dtype=float)
-        self.identity_matrix = np.identity(identity_matrix_size)
-
-
-    def predict(self):
-        # Predict the next state
-        self.state = np.dot(self.state_transition, self.state)
-        # Update the state covariance matrix
-        self.process_covariance = np.dot(np.dot(self.state_transition, self.process_covariance),
-                                         self.state_transition.T)
-
-
-    def update(self, measurement):
-        # Compute Kalman gain
-        kalman_gain = np.dot(
-            np.dot(self.process_covariance, self.identity_matrix.T), 
-            np.linalg.inv(np.dot(np.dot(self.identity_matrix, self.process_covariance), self.identity_matrix.T) + self.measurement_covariance)
-        )
-
-        # Update the state estimate
-        self.state_estimate = self.state + np.dot(kalman_gain, measurement - np.dot(self.identity_matrix, self.state))
-
-        # Update the state covariance matrix
-        self.process_covariance = np.dot((self.identity_matrix - np.dot(kalman_gain, self.identity_matrix)), self.process_covariance)
-
-
-
 class NavigationNode(Node):
     def __init__(self):
         super().__init__('navigation_node')
@@ -78,7 +43,6 @@ class NavigationNode(Node):
         # Set if obstacle avoidance or velocity control should be used
         self.OBSTACLE_AVOIDANCE = True
         self.VELOCITY_CONTROL = True
-        self.USE_KALMAN = False
         
         # Set if live visualization should be created
         self.VISUALIZATION = False
@@ -104,20 +68,6 @@ class NavigationNode(Node):
         # Tracking
         self.x_all, self.y_all, self.phi_all = [], [], []
         
-        # Kalman Filter
-        process_covariance = [[0, 0], [0, 0]]
-        measurement_covariance = [[0, 0], [0, 0]]
-        state_transition = [[0, 0], [0, 0]]
-        
-        if self.USE_KALMAN:
-            self.filter = KalmanFilter(
-                initial_state=[self.x, self.y],
-                process_covariance=process_covariance,
-                measurement_covariance=measurement_covariance,
-                state_transition=state_transition,
-                identity_matrix_size=2
-            )
-        
         # Counts number of callback calls
         self.counter = -1
         
@@ -139,8 +89,8 @@ class NavigationNode(Node):
         self.delta_t = 10
 
         # Parameters for weighting of force-lets of obstacle avoidance
-        self.beta_1 = 37.5
-        self.beta_2 = 85
+        self.beta_1 = 20
+        self.beta_2 = 70
         
         # Parameters for weighting of force-lets for velocity control
         self.alpha_1 = 40
@@ -148,10 +98,10 @@ class NavigationNode(Node):
         
         # Parameters for speed control
         self.c = 0.20
-        self.c_u = 2.0
+        self.c_u = 3.0
         self.sigma_obs = 25.0
         self.sigma_tar = 22.0
-        self.v_obs = 80.0
+        self.v_obs = 70.0
         self.v_tar = 90.0
     
     
@@ -230,7 +180,7 @@ class NavigationNode(Node):
         :return: The integral value representing the summed influence of obstacles.
         """
         V_phi = 0
-        for theta_i, range in zip(self.THETA, self.ranges):
+        for theta_i, range in zip(self.THETA, self.CURRENT_RANGES):
             if range == 0.0:
                 continue
             if np.abs(theta_i) > 1.55:
@@ -267,12 +217,11 @@ class NavigationNode(Node):
         self.f_obs = 0
         
         if self.OBSTACLE_AVOIDANCE:
-            for theta_i, range in zip(self.THETA, self.ranges):
+            for theta_i, range in zip(self.THETA, self.CURRENT_RANGES):
                 if range == 0.0:
                     continue
                 if np.abs(theta_i) > 1.55:
                     continue
-                range *= 1000 # from meter to millimeter
                 self.f_obs += self.f_obs_i(theta_i, range)
             self.f_obs = np.clip(self.f_obs, -self.LAMBDA_TAR, self.LAMBDA_TAR)
         self.delta_phi = self.f_tar() + self.f_obs
@@ -348,7 +297,7 @@ class NavigationNode(Node):
             Motor(position=1, velocity=self.v_r)
         ]
         #self.get_logger().info(f'Published velocities')
-        self.motor_publisher.publish(new_motor_command)
+        #self.motor_publisher.publish(new_motor_command)
         
         
     def stop(self):
@@ -359,18 +308,6 @@ class NavigationNode(Node):
         ]
         #self.get_logger().info(f'Stopped')
         self.motor_publisher.publish(new_motor_command)
-        
-    
-    def clean_and_smooth_pose(self, window_size=20):
-        # Trim the history to the specified window size
-        x_history = self.x_all[-window_size:]
-        y_history = self.y_all[-window_size:]
-        phi_history = self.phi_all[-window_size:]
-
-        # Apply smoothing filter to clean and smooth the values        
-        self.x = np.convolve(x_history, np.ones(window_size)/window_size, mode='valid')[-1]
-        self.y = np.convolve(y_history, np.ones(window_size)/window_size, mode='valid')[-1]
-        self.phi = np.convolve(phi_history, np.ones(window_size)/window_size, mode='valid')[-1]
 
 
     def updateMovement(self):
@@ -398,12 +335,6 @@ class NavigationNode(Node):
         self.y_all.append(self.y)
         self.phi_all.append(self.phi)
         
-        self.clean_and_smooth_pose()
-        
-        if self.USE_KALMAN:
-            self.filter.predict()
-            self.filter.update([self.x, self.y])
-            self.x, self.y = self.filter.state_estimate
         
         #Publish the current position
         current_position = Position()
@@ -422,15 +353,18 @@ class NavigationNode(Node):
         self.counter += 1
         if self.counter == 0:
             self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
+            self.OLD_RANGES = np.array(msg_lidar.ranges) * 1000
             return        
 
-        self.ranges = msg_lidar.ranges
+        self.CURRENT_RANGES = np.array(msg_lidar.ranges) * 1000
         
         self.getDirection()
         self.getDeltaPhi()
         self.setVelocity()
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
+        
+        self.OLD_RANGES = self.CURRENT_RANGES
         
         if self.VISUALIZATION:
             self.visualize()
