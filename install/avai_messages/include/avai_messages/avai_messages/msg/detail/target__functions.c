@@ -14,6 +14,9 @@
 // Include directives for member types
 // Member `header`
 #include "std_msgs/msg/detail/header__functions.h"
+// Member `x_position`
+// Member `y_position`
+#include "rosidl_runtime_c/primitives_sequence_functions.h"
 
 bool
 avai_messages__msg__Target__init(avai_messages__msg__Target * msg)
@@ -27,7 +30,15 @@ avai_messages__msg__Target__init(avai_messages__msg__Target * msg)
     return false;
   }
   // x_position
+  if (!rosidl_runtime_c__double__Sequence__init(&msg->x_position, 0)) {
+    avai_messages__msg__Target__fini(msg);
+    return false;
+  }
   // y_position
+  if (!rosidl_runtime_c__double__Sequence__init(&msg->y_position, 0)) {
+    avai_messages__msg__Target__fini(msg);
+    return false;
+  }
   // round
   // turn_angle
   return true;
@@ -42,7 +53,9 @@ avai_messages__msg__Target__fini(avai_messages__msg__Target * msg)
   // header
   std_msgs__msg__Header__fini(&msg->header);
   // x_position
+  rosidl_runtime_c__double__Sequence__fini(&msg->x_position);
   // y_position
+  rosidl_runtime_c__double__Sequence__fini(&msg->y_position);
   // round
   // turn_angle
 }
@@ -60,11 +73,15 @@ avai_messages__msg__Target__are_equal(const avai_messages__msg__Target * lhs, co
     return false;
   }
   // x_position
-  if (lhs->x_position != rhs->x_position) {
+  if (!rosidl_runtime_c__double__Sequence__are_equal(
+      &(lhs->x_position), &(rhs->x_position)))
+  {
     return false;
   }
   // y_position
-  if (lhs->y_position != rhs->y_position) {
+  if (!rosidl_runtime_c__double__Sequence__are_equal(
+      &(lhs->y_position), &(rhs->y_position)))
+  {
     return false;
   }
   // round
@@ -93,9 +110,17 @@ avai_messages__msg__Target__copy(
     return false;
   }
   // x_position
-  output->x_position = input->x_position;
+  if (!rosidl_runtime_c__double__Sequence__copy(
+      &(input->x_position), &(output->x_position)))
+  {
+    return false;
+  }
   // y_position
-  output->y_position = input->y_position;
+  if (!rosidl_runtime_c__double__Sequence__copy(
+      &(input->y_position), &(output->y_position)))
+  {
+    return false;
+  }
   // round
   output->round = input->round;
   // turn_angle

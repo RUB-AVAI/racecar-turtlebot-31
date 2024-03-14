@@ -10,12 +10,14 @@ setup.py
 ../../build/group31_pkg/group31_pkg.egg-info/zip-safe
 resource/group31_pkg
 src/__init__.py
+src/calibration.py
 src/cluster.py
-src/data_fusion.py
 src/drive.py
+src/fuse_sensor_data.py
 src/navigation_node.py
 src/navigation_node2.py
 src/process_cam_image.py
+src/process_data.py
 src/receive_image.py
 src/stop.py
 src/utils.py

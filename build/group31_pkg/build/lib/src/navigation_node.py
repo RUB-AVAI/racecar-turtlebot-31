@@ -7,6 +7,7 @@ from message_filters import ApproximateTimeSynchronizer, Subscriber
 from avai_messages.msg import Motors, Motor, Position, Target
 from sensor_msgs.msg import LaserScan
 from time import sleep
+from utils import distance
 
 
 
@@ -18,7 +19,7 @@ class NavigationNode(Node):
         super().__init__('navigation_node')
         
         # Set if points from data fusion should be subscribed
-        self.GET_TARGETS = False
+        self.GET_TARGETS = True
         
         self.motor_subscription = Subscriber(self, Motors, '/motor_position')
         self.lidar_subscription = Subscriber(self, LaserScan, "/scan", qos_profile=rclpy.qos.qos_profile_sensor_data)
@@ -35,6 +36,8 @@ class NavigationNode(Node):
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         
+        self.delta_t = 10
+        
         # Positions of sensor entries starting from 180 to -179 with 180 being the back, 90 right, 1 front and -89 left
         #self.THETA = list(range(180, -180, -1))
         self.THETA = list(range(180, -180, -1))
@@ -42,36 +45,34 @@ class NavigationNode(Node):
 
         # Set if obstacle avoidance or velocity control should be used
         self.OBSTACLE_AVOIDANCE = True
-        self.VELOCITY_CONTROL = True
+        self.VELOCITY_CONTROL = False
         
         # Set if live visualization should be created
-        self.VISUALIZATION = True
+        self.VISUALIZATION = False
         
-        # Target parameter (changed in future for subscriber of target points)
-        self.TARGET_RADIUS = 25
+        # Target parameter
+        self.TARGET_RADIUS = 60
         if not self.GET_TARGETS:
-            self.TARGETS_X = [-2000] #[0, 1000, 1000, 0]
+            self.TARGETS_X = [-1000] #[0, 1000, 1000, 0]
             self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
             self.TARGET_X = self.TARGETS_X.pop(0)
             self.TARGET_Y = self.TARGETS_Y.pop(0)
         else:
-            self.target_subscriber = self.create_subscription(Target, "/target_position", self.target_callback, 1)
-            self.TARGET_X = 0
-            self.TARGET_Y = 0
-            self.ROUND = 1
+            self.target_subscriber = self.create_subscription(Target, "/target_position", self.target_callback, qos_profile=rclpy.qos.qos_profile_services_default)
         
         # Start position
         self.x = 0
         self.y = 0
         self.phi = 0
         
+        self.g_tar_value = 0
+        self.g_obs_value = 0
+        
         # Tracking
         self.x_all, self.y_all, self.phi_all = [], [], []
         
         # Counts number of callback calls
         self.counter = -1
-        
-        self.called = False
         
         self.params_round1()
         
@@ -81,20 +82,22 @@ class NavigationNode(Node):
         
     def params_round1(self):
         # Velocity parameter
-        self.LAMBDA = 70
+        self.LAMBDA = 130
+        self.ORIGINAL_LAMBDA = self.LAMBDA
+        self.DECAY = 0.97
+        self.DECAY_MIN_DISTANCE = 50
+        self.MIN_LAMBDA = 25
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = 5
-        
-        self.delta_t = 10
+        self.MIN_VELOCITY = -20
 
         # Parameters for weighting of force-lets of obstacle avoidance
         self.beta_1 = 20
-        self.beta_2 = 70
+        self.beta_2 = 85
         
         # Parameters for weighting of force-lets for velocity control
-        self.alpha_1 = 160
-        self.alpha_2 = 225
+        self.alpha_1 = 120 #160
+        self.alpha_2 = 200 #225
         
         # Parameters for speed control
         self.c = 0.5
@@ -105,37 +108,30 @@ class NavigationNode(Node):
         self.v_tar = 90.0    
     
     
-    def params_round1_old(self):
+    def params_round2(self):
+        self.VELOCITY_CONTROL = False
+        
         # Velocity parameter
-        self.LAMBDA = 70
+        self.LAMBDA = 130
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = 5
-        
-        self.delta_t = 10
+        self.MIN_VELOCITY = -20
 
         # Parameters for weighting of force-lets of obstacle avoidance
         self.beta_1 = 20
-        self.beta_2 = 70
+        self.beta_2 = 85
         
-        # Parameters for weighting of force-lets for velocity control
-        self.alpha_1 = 40
-        self.alpha_2 = 300
-        
-        # Parameters for speed control
-        self.c = 0.20
-        self.c_u = 3.0
-        self.sigma_obs = 25.0
-        self.sigma_tar = 22.0
-        self.v_obs = 70.0
-        self.v_tar = 90.0
-    
-    
-    def params_round2(self):
-        self.called = True
-        #TODO: Add parameter for the second round
-        pass
+        """
+        # Velocity parameter
+        self.LAMBDA = 200
+        self.LAMBDA_TAR = np.pi
+        self.MAX_VELOCITY = 255
+        self.MIN_VELOCITY = -100
 
+        # Parameters for weighting of force-lets of obstacle avoidance
+        self.beta_1 = 15
+        self.beta_2 = 50
+        """
 
     def set_visualization(self):
         layout = [
@@ -214,10 +210,7 @@ class NavigationNode(Node):
             lambda_i = self.lambda_vel(range)
             sigma_i = self.sigma(range)
             exp_arg = -((-theta_i)**2/(2*sigma_i**2))
-            #print(lambda_i, sigma_i, lambda_i * sigma_i**2 * np.exp(exp_arg) - np.exp(-1/2))
             V_phi += lambda_i * sigma_i**2 * np.exp(exp_arg) - np.exp(-1/2)
-        #print(V_phi)
-        #exit()
         self.v = np.clip(V_phi, -6*np.pi, 6*np.pi)
 
 
@@ -236,7 +229,6 @@ class NavigationNode(Node):
         self.a_phi()
         self.g_obs()
         self.g_tar()
-        print(f"A: {self.a}, V: {self.v},  C_OBS: {self.c_obs}, G_OBS: {self.g_obs_value}, C_TAR: {self.c_tar}, G_TAR: {self.g_tar_value}")
         return self.g_obs_value + self.g_tar_value
 
 
@@ -314,22 +306,23 @@ class NavigationNode(Node):
         omega = int((self.delta_phi * (self.WHEEL_DISTANCE/2))/self.delta_t) # mm/ms
         
         if not forward_velocity:
-            v = 0
+            self.v_l = int(np.clip(omega, -self.MAX_VELOCITY, self.MAX_VELOCITY))
+            self.v_r = int(np.clip(-omega, -self.MAX_VELOCITY, self.MAX_VELOCITY))
         elif self.VELOCITY_CONTROL:
             v = self.control_velocity()
+            self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+            self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
         else:
-            v = self.LAMBDA
+            self.v_l = int(np.clip(omega+self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
+            self.v_r = int(np.clip(-omega+self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
 
-        self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
-        self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
-        
         new_motor_command = Motors()
         new_motor_command.motors = [
             Motor(position=1, velocity=self.v_l), 
             Motor(position=1, velocity=self.v_r)
         ]
         #self.get_logger().info(f'Published velocities')
-        #self.motor_publisher.publish(new_motor_command)
+        self.motor_publisher.publish(new_motor_command)
         
         
     def stop(self):
@@ -377,27 +370,6 @@ class NavigationNode(Node):
         
         #self.get_logger().info(f'Published position')
         self.position_publisher.publish(current_position)
-    
-    def callback(self, msg_motor, msg_lidar):
-        self.counter += 1
-        if self.counter == 0:
-            self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
-            return        
-
-        self.RANGES = np.array(msg_lidar.ranges) * 1000
-        
-        if not self.GET_TARGETS:
-            self.drive_withot_targets()
-        elif self.GET_TARGETS:
-            if self.TURN_ANGLE is None:
-                self.drive_with_target
-            else:
-                self.turn()
-        
-        if self.VISUALIZATION:
-            self.visualize()
-        
-        print(f"POSITION: ({self.x},{self.y}), HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
 
 
     def drive_with_target(self, msg_motor):
@@ -406,6 +378,9 @@ class NavigationNode(Node):
         self.setVelocity()
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
+        
+        if self.LAMBDA > self.MIN_LAMBDA and distance(self.x, self.y, self.TARGET_X, self.TARGET_Y) < self.DECAY_MIN_DISTANCE:
+            self.LAMBDA = self.LAMBDA * self.DECAY
         
     
     def drive_withot_targets(self, msg_motor):
@@ -423,23 +398,9 @@ class NavigationNode(Node):
             else:
                 self.TARGET_X = self.TARGETS_X.pop(0)
                 self.TARGET_Y = self.TARGETS_Y.pop(0)
-     
-        
-    def turn(self, msg_motor):
-        self.psi = self.phi + np.deg2rad(self.TURN_ANGLE) % (2*np.pi)
-        self.TARGET_X = self.x
-        self.TARGET_Y = self.y
-        
-        self.getDeltaPhi()
-        self.setVelocity(forward_velocity=False)
-        self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
-        self.updateMovement()
+
     
-    
-    """
-    def drive(self, msg_motor, msg_lidar):
-        #self.get_logger().info(f'Received messages')
-        
+    def callback(self, msg_motor, msg_lidar):
         self.counter += 1
         if self.counter == 0:
             self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
@@ -447,41 +408,43 @@ class NavigationNode(Node):
 
         self.RANGES = np.array(msg_lidar.ranges) * 1000
         
-        self.getDirection()
-        self.getDeltaPhi()
-        self.setVelocity()
-        self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
-        self.updateMovement()
+        if self.GET_TARGETS:
+            self.drive_with_target(msg_motor)
+        else:
+            self.drive_withot_targets(msg_motor)
         
         if self.VISUALIZATION:
             self.visualize()
         
-        #print(f"POSITION: ({self.x},{self.y}), HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
+        print(f"POSITION: ({round(self.x, 2)},{round(self.y, 2)}), HEADING: {round(self.phi, 2)}, TARGET: {round(self.psi, 2)}, V_L:{round(self.v_l, 2)}, V_R:{round(self.v_r, 2)}, LAMBDA: {self.LAMBDA}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
         
-        if not self.GET_TARGETS:
-            if np.abs(self.TARGET_X-self.x) < self.TARGET_RADIUS and np.abs(self.TARGET_Y-self.y) < self.TARGET_RADIUS:
-                if not self.TARGETS_X:
-                    self.stop()
-                    sleep(3)
-                    raise SystemExit
-                else:
-                    self.TARGET_X = self.TARGETS_X.pop(0)
-                    self.TARGET_Y = self.TARGETS_Y.pop(0)
-    """
     
     def target_callback(self, msg):
         self.get_logger().info("Target Received")
         
-        self.TARGET_X = msg.x_position
-        self.TARGET_Y = msg.y_position
-        self.ROUND = msg.round
-        self.TURN_ANGLE = msg.turn_angle
+        self.LAMBDA = self.ORIGINAL_LAMBDA
+        
+        if msg.round == 0:
+            self.TARGET_X = msg.x_position[0]
+            self.TARGET_Y = msg.y_position[0]
+        elif msg.round == 1:
+            self.get_logger().info("[INFO] Start with second round")
+            self.params_round2()
+            
+            self.GET_TARGETS = False
+            
+            self.TARGETS_X = msg.x_position
+            self.TARGETS_Y = msg.y_position
+            
+            self.TARGET_X = self.TARGETS_X.pop(0)
+            self.TARGET_Y = self.TARGETS_Y.pop(0)
+        
+        
         
         if self.counter == -1:
             self.ts.registerCallback(self.callback)
-        
-        if self.ROUND == 2 and self.called == False:
-            self.params_round2()
+            
+            
 
 
 def main(args=None): 

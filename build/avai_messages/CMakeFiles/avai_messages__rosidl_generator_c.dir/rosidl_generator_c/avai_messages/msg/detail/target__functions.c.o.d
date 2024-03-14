@@ -72,4 +72,5 @@ CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_message
  /opt/ros/humble/include/rcutils/rcutils/visibility_control_macros.h \
  /opt/ros/humble/include/rcutils/rcutils/types/rcutils_ret.h \
  /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__functions.h \
- /opt/ros/humble/include/std_msgs/std_msgs/msg/rosidl_generator_c__visibility_control.h
+ /opt/ros/humble/include/std_msgs/std_msgs/msg/rosidl_generator_c__visibility_control.h \
+ /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence_functions.h

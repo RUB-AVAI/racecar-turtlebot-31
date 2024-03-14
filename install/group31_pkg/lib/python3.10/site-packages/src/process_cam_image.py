@@ -17,7 +17,7 @@ import yolov5.models.common
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=5, type=int)
+parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=6, type=int)
 parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
 args = parser.parse_args()
 

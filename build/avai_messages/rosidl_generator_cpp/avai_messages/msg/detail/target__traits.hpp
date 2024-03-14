@@ -38,15 +38,37 @@ inline void to_flow_style_yaml(
 
   // member: x_position
   {
-    out << "x_position: ";
-    rosidl_generator_traits::value_to_yaml(msg.x_position, out);
+    if (msg.x_position.size() == 0) {
+      out << "x_position: []";
+    } else {
+      out << "x_position: [";
+      size_t pending_items = msg.x_position.size();
+      for (auto item : msg.x_position) {
+        rosidl_generator_traits::value_to_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
     out << ", ";
   }
 
   // member: y_position
   {
-    out << "y_position: ";
-    rosidl_generator_traits::value_to_yaml(msg.y_position, out);
+    if (msg.y_position.size() == 0) {
+      out << "y_position: []";
+    } else {
+      out << "y_position: [";
+      size_t pending_items = msg.y_position.size();
+      for (auto item : msg.y_position) {
+        rosidl_generator_traits::value_to_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
     out << ", ";
   }
 
@@ -83,9 +105,19 @@ inline void to_block_style_yaml(
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "x_position: ";
-    rosidl_generator_traits::value_to_yaml(msg.x_position, out);
-    out << "\n";
+    if (msg.x_position.size() == 0) {
+      out << "x_position: []\n";
+    } else {
+      out << "x_position:\n";
+      for (auto item : msg.x_position) {
+        if (indentation > 0) {
+          out << std::string(indentation, ' ');
+        }
+        out << "- ";
+        rosidl_generator_traits::value_to_yaml(item, out);
+        out << "\n";
+      }
+    }
   }
 
   // member: y_position
@@ -93,9 +125,19 @@ inline void to_block_style_yaml(
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "y_position: ";
-    rosidl_generator_traits::value_to_yaml(msg.y_position, out);
-    out << "\n";
+    if (msg.y_position.size() == 0) {
+      out << "y_position: []\n";
+    } else {
+      out << "y_position:\n";
+      for (auto item : msg.y_position) {
+        if (indentation > 0) {
+          out << std::string(indentation, ' ');
+        }
+        out << "- ";
+        rosidl_generator_traits::value_to_yaml(item, out);
+        out << "\n";
+      }
+    }
   }
 
   // member: round
@@ -165,11 +207,11 @@ inline const char * name<avai_messages::msg::Target>()
 
 template<>
 struct has_fixed_size<avai_messages::msg::Target>
-  : std::integral_constant<bool, has_fixed_size<std_msgs::msg::Header>::value> {};
+  : std::integral_constant<bool, false> {};
 
 template<>
 struct has_bounded_size<avai_messages::msg::Target>
-  : std::integral_constant<bool, has_bounded_size<std_msgs::msg::Header>::value> {};
+  : std::integral_constant<bool, false> {};
 
 template<>
 struct is_message<avai_messages::msg::Target>

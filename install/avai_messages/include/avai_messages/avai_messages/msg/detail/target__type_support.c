@@ -17,6 +17,9 @@
 #include "std_msgs/msg/header.h"
 // Member `header`
 #include "std_msgs/msg/detail/header__rosidl_typesupport_introspection_c.h"
+// Member `x_position`
+// Member `y_position`
+#include "rosidl_runtime_c/primitives_sequence_functions.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -35,6 +38,116 @@ void avai_messages__msg__Target__rosidl_typesupport_introspection_c__Target_init
 void avai_messages__msg__Target__rosidl_typesupport_introspection_c__Target_fini_function(void * message_memory)
 {
   avai_messages__msg__Target__fini(message_memory);
+}
+
+size_t avai_messages__msg__Target__rosidl_typesupport_introspection_c__size_function__Target__x_position(
+  const void * untyped_member)
+{
+  const rosidl_runtime_c__double__Sequence * member =
+    (const rosidl_runtime_c__double__Sequence *)(untyped_member);
+  return member->size;
+}
+
+const void * avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_const_function__Target__x_position(
+  const void * untyped_member, size_t index)
+{
+  const rosidl_runtime_c__double__Sequence * member =
+    (const rosidl_runtime_c__double__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void * avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_function__Target__x_position(
+  void * untyped_member, size_t index)
+{
+  rosidl_runtime_c__double__Sequence * member =
+    (rosidl_runtime_c__double__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void avai_messages__msg__Target__rosidl_typesupport_introspection_c__fetch_function__Target__x_position(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const double * item =
+    ((const double *)
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_const_function__Target__x_position(untyped_member, index));
+  double * value =
+    (double *)(untyped_value);
+  *value = *item;
+}
+
+void avai_messages__msg__Target__rosidl_typesupport_introspection_c__assign_function__Target__x_position(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  double * item =
+    ((double *)
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_function__Target__x_position(untyped_member, index));
+  const double * value =
+    (const double *)(untyped_value);
+  *item = *value;
+}
+
+bool avai_messages__msg__Target__rosidl_typesupport_introspection_c__resize_function__Target__x_position(
+  void * untyped_member, size_t size)
+{
+  rosidl_runtime_c__double__Sequence * member =
+    (rosidl_runtime_c__double__Sequence *)(untyped_member);
+  rosidl_runtime_c__double__Sequence__fini(member);
+  return rosidl_runtime_c__double__Sequence__init(member, size);
+}
+
+size_t avai_messages__msg__Target__rosidl_typesupport_introspection_c__size_function__Target__y_position(
+  const void * untyped_member)
+{
+  const rosidl_runtime_c__double__Sequence * member =
+    (const rosidl_runtime_c__double__Sequence *)(untyped_member);
+  return member->size;
+}
+
+const void * avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_const_function__Target__y_position(
+  const void * untyped_member, size_t index)
+{
+  const rosidl_runtime_c__double__Sequence * member =
+    (const rosidl_runtime_c__double__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void * avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_function__Target__y_position(
+  void * untyped_member, size_t index)
+{
+  rosidl_runtime_c__double__Sequence * member =
+    (rosidl_runtime_c__double__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void avai_messages__msg__Target__rosidl_typesupport_introspection_c__fetch_function__Target__y_position(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const double * item =
+    ((const double *)
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_const_function__Target__y_position(untyped_member, index));
+  double * value =
+    (double *)(untyped_value);
+  *value = *item;
+}
+
+void avai_messages__msg__Target__rosidl_typesupport_introspection_c__assign_function__Target__y_position(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  double * item =
+    ((double *)
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_function__Target__y_position(untyped_member, index));
+  const double * value =
+    (const double *)(untyped_value);
+  *item = *value;
+}
+
+bool avai_messages__msg__Target__rosidl_typesupport_introspection_c__resize_function__Target__y_position(
+  void * untyped_member, size_t size)
+{
+  rosidl_runtime_c__double__Sequence * member =
+    (rosidl_runtime_c__double__Sequence *)(untyped_member);
+  rosidl_runtime_c__double__Sequence__fini(member);
+  return rosidl_runtime_c__double__Sequence__init(member, size);
 }
 
 static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Target__rosidl_typesupport_introspection_c__Target_message_member_array[5] = {
@@ -60,34 +173,34 @@ static rosidl_typesupport_introspection_c__MessageMember avai_messages__msg__Tar
     rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     NULL,  // members of sub message
-    false,  // is array
+    true,  // is array
     0,  // array size
     false,  // is upper bound
     offsetof(avai_messages__msg__Target, x_position),  // bytes offset in struct
     NULL,  // default value
-    NULL,  // size() function pointer
-    NULL,  // get_const(index) function pointer
-    NULL,  // get(index) function pointer
-    NULL,  // fetch(index, &value) function pointer
-    NULL,  // assign(index, value) function pointer
-    NULL  // resize(index) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__size_function__Target__x_position,  // size() function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_const_function__Target__x_position,  // get_const(index) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_function__Target__x_position,  // get(index) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__fetch_function__Target__x_position,  // fetch(index, &value) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__assign_function__Target__x_position,  // assign(index, value) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__resize_function__Target__x_position  // resize(index) function pointer
   },
   {
     "y_position",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     NULL,  // members of sub message
-    false,  // is array
+    true,  // is array
     0,  // array size
     false,  // is upper bound
     offsetof(avai_messages__msg__Target, y_position),  // bytes offset in struct
     NULL,  // default value
-    NULL,  // size() function pointer
-    NULL,  // get_const(index) function pointer
-    NULL,  // get(index) function pointer
-    NULL,  // fetch(index, &value) function pointer
-    NULL,  // assign(index, value) function pointer
-    NULL  // resize(index) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__size_function__Target__y_position,  // size() function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_const_function__Target__y_position,  // get_const(index) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__get_function__Target__y_position,  // get(index) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__fetch_function__Target__y_position,  // fetch(index, &value) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__assign_function__Target__y_position,  // assign(index, value) function pointer
+    avai_messages__msg__Target__rosidl_typesupport_introspection_c__resize_function__Target__y_position  // resize(index) function pointer
   },
   {
     "round",  // name

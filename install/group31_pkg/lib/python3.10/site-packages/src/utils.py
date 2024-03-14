@@ -1,9 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import math
+from scipy.interpolate import interp1d
+from fuse_sensor_data import FOV, VISUALISATION
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/global_map"
-
+BLUE = 0
+ORANGE = 1
+YELLOW = 2
 
 def get_timestamp_as_float(msg):
     return msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
@@ -34,11 +39,13 @@ def rotate_point_around_origin(x, y, angle):
     angle = np.deg2rad(angle)
     return x * np.cos(angle) - y * np.sin(angle), y * np.cos(angle) + x * np.sin(angle)
 
-def estimate_cone_position(cluster_msg):
+def average_cluster_position(cluster_msg):
         cone_x_pos = np.mean(cluster_msg.x_positions)
         cone_y_pos = np.mean(cluster_msg.y_positions)
         
         return cone_x_pos, cone_y_pos
+
+
 
 def center_of_range(range):
     return np.mean(range)
@@ -48,7 +55,48 @@ def bb_ratio(box):
     delta_y = np.abs(box.min_y - box.max_y)
     return delta_y / delta_x
 
-def could_be_cone(cluster, max_size=150, max_range=4000):
+def bb_surface(box):
+    delta_x = np.abs(box.min_x - box.max_x)
+    delta_y = np.abs(box.min_y - box.max_y)
+    return delta_y * delta_x
+
+def distance(x1, y1, x2, y2):
+    return np.linalg.norm((x1 - x2, y1 - y2))
+
+
+data = np.load("data/data_1_merged.npy")
+f = interp1d(data[:, 2], data[:, 0], bounds_error=True)
+
+def estimate_cone_range(bounding_box):
+    try:
+        surface = bb_surface(bounding_box)
+        range = f(surface)
+    except ValueError:
+        return None
+    return range
+
+def estimate_cone_angle(bounding_box):
+    # we fitted a linear regression model to data we collected
+    # regression model: f(x) = 213.02497443 - 0.10669489 * x
+    
+    box_x_position = (bounding_box.min_x + bounding_box.max_x) / 2
+    return 213.02497443 - 0.10669489 * box_x_position
+
+def estimate_cone_position(bounding_box):
+    estimated_range = estimate_cone_range(bounding_box)
+    if estimated_range is None:
+        # cone does not lie in lidar range
+        return None
+    estimated_angle = estimate_cone_angle(bounding_box)
+    radiant = estimated_angle / 360 * 2 * np.pi
+    x = np.cos(radiant) * estimated_range
+    y = np.sin(radiant) * estimated_range
+    
+    return (x, y)
+
+
+
+def could_be_cone(cluster, max_size=200, max_range=4000):
     # rule out the ones that are too far away
     if np.mean(cluster.ranges) > max_range:
         return False
@@ -65,6 +113,37 @@ def could_be_cone(cluster, max_size=150, max_range=4000):
 
 fig, ax = plt.subplots()
 
+def plot_clusters_and_cones(clusters, cone_positions, labels):
+    IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/cones_and_clusters"
+    
+    plt.axis("equal")
+    ax.clear()
+
+    blindspot = plt.Circle((0, 0), 90, color="red", fill=False)
+    ax.add_patch(blindspot)
+    
+    
+    
+    colors = ["blue", "orange", "yellow"]
+    
+    for label, position in zip(labels, cone_positions):
+        # scatter each cluster individually so they get different colors
+        cone = plt.Circle((position[0], position[1]), 100, color = colors[label], fill=True)
+        ax.add_patch(cone)
+        
+    for cluster in clusters:
+        # scatter each cluster individually so they get different colors
+        ax.scatter(cluster.x_positions, cluster.y_positions, marker=".")
+        
+    limit = 5000 # mm
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_box_aspect(1)
+        
+    fig.tight_layout()
+    fig.savefig(IMSAVE_PATH)
+    
+
 def plot_clusters(clusters):
     IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/pl"
     plt.axis("equal")
@@ -76,10 +155,34 @@ def plot_clusters(clusters):
     for cluster in clusters:
         # scatter each cluster individually so they get different colors
         ax.scatter(cluster.x_positions, cluster.y_positions, marker=".")
-        limit = 5000 # mm
-        ax.set_xlim([-limit, limit])
-        ax.set_ylim([-limit, limit])
-        ax.set_box_aspect(1)
+    limit = 5000 # mm
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_box_aspect(1)
+        
+    fig.tight_layout()
+    fig.savefig(IMSAVE_PATH)
+
+
+def plot_cones(positions, labels):
+    IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/estimated_cone_positions"
+    plt.axis("equal")
+    ax.clear()
+
+    blindspot = plt.Circle((0, 0), 90, color="red", fill=False)
+    ax.add_patch(blindspot)
+    
+    colors = ["blue", "orange", "yellow"]
+    
+    for label, position in zip(labels, positions):
+        # scatter each cluster individually so they get different colors
+        cone = plt.Circle((position[0], position[1]), 100, color = colors[label], fill=True)
+        ax.add_patch(cone)
+        
+    limit = 5000 # mm
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_box_aspect(1)
         
     fig.tight_layout()
     fig.savefig(IMSAVE_PATH)
@@ -124,6 +227,10 @@ def preprocess_bounding_boxes(yolo_msg, log_to_console=False):
     yolo_msg.bounding_boxes = processed_boxes
     return yolo_msg
 
+
+
+
+
 class Map:
     def __init__(self, size=20000, epsilon=100, min_hist=3) -> None:
         # all distances are in mm
@@ -132,14 +239,25 @@ class Map:
         self.epsilon = epsilon
         self.min_hist = min_hist
         self.dim = (int(size / self.discretization_steps), int(size / self.discretization_steps), 2)
-        self.data = np.zeros(self.dim)
+        self.data = np.zeros(self.dim, dtype=np.int8)
         self.data[:, :, 0] = -1
         
         self.y_errors = []
         self.x_errors = []
         
+        self.start_pos = (0, 0)
+        
+        
+        self.last_seen_size = 10
+        self.last_seen = [(None, None)] * self.last_seen_size
+        self.last_seen_idx = -1
+        
+        self.last_blue = (None, None)
+        self.last_yellow = (None, None)
+        
         # plot
         self.fig, self.ax = plt.subplots()
+        self.last_target = (0, 0)
 
     def set(self, x_position_t, y_position_t, facing_direction_t, x_position_cone, y_position_cone, cone):
         # the cone position is given in the local coordinate system of the turtlebot
@@ -160,31 +278,130 @@ class Map:
         
         x = round(x)
         y = round(y)
-        hits = self.check_vicinity(x, y)
+        hits = self.check_vicinity(x, y, cone)
         if len(hits) == 1:
             # print(f"new cone: {x}, {y}")
-            for hit in hits:
-                self.data[hit[0], hit[1], 1] += 1
-                x_error = x - hit[0]
-                y_error = y - hit[1]
-                self.x_errors.append(x_error)
-                self.y_errors.append(y_error)
-            #     print(f"existing cone: {hit[0]}, {hit[1]}")
-            #     print(f"errors: {x_error}  {y_error}")
+            hit = hits[0]
+            self.data[hit[0], hit[1], 1] += 1
+            if self.data[hit[0], hit[1], 1] >= self.min_hist:
+                self.last_seen_idx = (self.last_seen_idx + 1) % self.last_seen_size
+                self.last_seen[self.last_seen_idx % self.last_seen_size] = (hit[0], hit[1])
+                
+                # old approach
+                if self.data[hit[0], hit[1], 0] == BLUE:
+                    self.last_blue = (hit[0], hit[1])
+                elif self.data[hit[0], hit[1], 0] == YELLOW:
+                    self.last_yellow = (hit[0], hit[1])
+                    
+            x_error = x - hit[0]
+            y_error = y - hit[1]
+            self.x_errors.append(x_error)
+            self.y_errors.append(y_error)
+            # print(f"existing cone: {hit[0]}, {hit[1]}")
+            # print(f"errors: {x_error}  {y_error}")
         elif len(hits) > 1:
-            pass
-            # print(hits)
+            print(hits)
+            print("not adding a cone because of multiambiguity")
         else:
             self.data[x, y, 0] = cone
             self.data[x, y, 1] = 1
+            
+            
+    def estimate_new_target(self, turtlebot_x, turtlebot_y):
+        # # returns (x, y, angle). eiter x and y are NOne or angle is None, since tbot should only drive or turn
+        # TURN_ANGLE = 20
+        # N = 5
+        # history = []
+        
+        # for i in range(N):
+        #     history.append(self.last_seen[(self.last_seen_idx - i) % self.last_seen_size])
+        
+        
+        
+        # yellows = 0
+        # blues = 0
+        # last_blue = None
+        # last_yellow = None
+        
+        # for i, (x, y) in enumerate(history):
+        #     if x is None:
+        #         break
+            
+        #     if self.data[x, y, 0] == YELLOW:
+        #         if last_yellow is None:
+        #             last_yellow = (x, y)
+        #         yellows += 1
+        #     if self.data[x, y, 0] == BLUE:
+        #         if last_blue is None:
+        #             last_blue = (x, y)
+        #         blues += 1
+        
+        # if yellows == N:
+        #     # only saw yellows, turn left
+        #     pass
+        #     # return None, None, -TURN_ANGLE
+        # elif blues == N:
+        #     # only saw blues, turn right
+        #     pass
+        #     # return None, None, TURN_ANGLE
+        # elif last_blue and last_yellow:
+        #     # drive to center of blue and yellow
+        #     (bx, by) = last_blue
+        #     (yx, yy) = last_yellow
+        #     bx *= self.discretization_steps
+        #     by *= self.discretization_steps
+        #     yx *= self.discretization_steps
+        #     yy *= self.discretization_steps
+            
+        #     bx -= self.size / 2
+        #     by -= self.size / 2
+        #     yx -= self.size / 2
+        #     yy -= self.size / 2
+            
+        #     return ((bx + yx) / 2, (by + yy) / 2, None)
+        # return None, None, None
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if self.last_blue[0] is not None and self.last_yellow[0] is not None:
+            (bx, by) = self.last_blue
+            (yx, yy) = self.last_yellow
+            bx *= self.discretization_steps
+            by *= self.discretization_steps
+            yx *= self.discretization_steps
+            yy *= self.discretization_steps
+            
+            bx -= self.size / 2
+            by -= self.size / 2
+            yx -= self.size / 2
+            yy -= self.size / 2
+            X = (bx + yx) / 2
+            Y = (by + yy) / 2
+            
+            distance_new_target = distance(turtlebot_x, turtlebot_y, X, Y)
+            distance_old_target = distance(turtlebot_x, turtlebot_y, self.last_target[0], self.last_target[1])
+            if  distance_new_target > distance_old_target and distance_new_target < 2000 :
+                self.last_target = (X, Y)
+                return (X, Y, None)
+            else:
+                return (self.last_target[0], self.last_target[1], None)
+        else:
+            return None, None, None
         
     
-    def check_vicinity(self, X, Y):
+    def check_vicinity(self, X, Y, color):
         epsilon = int(self.epsilon / self.discretization_steps)
         hits = []
         for x in range(X - epsilon, X + epsilon + 1):
             for y in range(Y - epsilon, Y + epsilon):
-                if self.data[x, y, 0] != -1:
+                if self.data[x, y, 0] == color:
                     hits.append((x, y, self.data[x, y]))
         return hits
     
@@ -204,14 +421,21 @@ class Map:
         
         x_pos_t += self.size / 2
         y_pos_t += self.size / 2
+        target_x = self.size / 2 + self.last_target[0]
+        target_y = self.size / 2 + self.last_target[1]
         
         # prepare plot 
         self.ax.clear()
+        
+        # turtlebot
         turtlebot = plt.Circle((x_pos_t, y_pos_t), 100, color="red", fill=True)
         self.ax.add_patch(turtlebot)
+        
+        # last target
+        target = plt.Circle((target_x, target_y), 50, color="green", fill=True)
+        self.ax.add_patch(target)
+        
         cone_positions = self.get_cones()
-        
-        
         cone_size = 100
         fill_cones = True
         colors = ["blue", "orange", "yellow"]

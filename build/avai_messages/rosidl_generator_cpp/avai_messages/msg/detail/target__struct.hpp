@@ -43,8 +43,6 @@ struct Target_
     if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
-      this->x_position = 0.0;
-      this->y_position = 0.0;
       this->round = 0;
       this->turn_angle = 0.0;
     }
@@ -56,8 +54,6 @@ struct Target_
     if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
-      this->x_position = 0.0;
-      this->y_position = 0.0;
       this->round = 0;
       this->turn_angle = 0.0;
     }
@@ -68,10 +64,10 @@ struct Target_
     std_msgs::msg::Header_<ContainerAllocator>;
   _header_type header;
   using _x_position_type =
-    double;
+    std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>>;
   _x_position_type x_position;
   using _y_position_type =
-    double;
+    std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>>;
   _y_position_type y_position;
   using _round_type =
     int8_t;
@@ -88,13 +84,13 @@ struct Target_
     return *this;
   }
   Type & set__x_position(
-    const double & _arg)
+    const std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>> & _arg)
   {
     this->x_position = _arg;
     return *this;
   }
   Type & set__y_position(
-    const double & _arg)
+    const std::vector<double, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<double>> & _arg)
   {
     this->y_position = _arg;
     return *this;

@@ -277,14 +277,16 @@ CMakeFiles/avai_messages__rosidl_typesupport_introspection_c__pyext.dir/rosidl_g
   rosidl_generator_c/avai_messages/msg/detail/position__type_support.h \
   rosidl_generator_c/avai_messages/msg/detail/position__struct.h \
   rosidl_generator_c/avai_messages/msg/detail/position__functions.h \
-  rosidl_generator_c/avai_messages/msg/detail/targets__type_support.h \
-  rosidl_generator_c/avai_messages/msg/detail/targets__struct.h \
-  rosidl_generator_c/avai_messages/msg/detail/targets__functions.h
+  rosidl_generator_c/avai_messages/msg/detail/target__type_support.h \
+  rosidl_generator_c/avai_messages/msg/detail/target__struct.h \
+  rosidl_generator_c/avai_messages/msg/detail/target__functions.h
 
 
-rosidl_generator_c/avai_messages/msg/detail/targets__struct.h:
+rosidl_generator_c/avai_messages/msg/detail/target__functions.h:
 
-rosidl_generator_c/avai_messages/msg/detail/targets__type_support.h:
+rosidl_generator_c/avai_messages/msg/detail/target__struct.h:
+
+rosidl_generator_c/avai_messages/msg/detail/target__type_support.h:
 
 rosidl_generator_c/avai_messages/msg/detail/position__struct.h:
 
@@ -293,8 +295,6 @@ rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__type_support.h
 rosidl_generator_c/avai_messages/msg/detail/cluster__type_support.h:
 
 rosidl_generator_c/avai_messages/msg/detail/yolo_output__functions.h:
-
-rosidl_generator_c/avai_messages/msg/detail/targets__functions.h:
 
 rosidl_generator_c/avai_messages/msg/detail/yolo_output__struct.h:
 
