@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import math
 from scipy.interpolate import interp1d
-from data_fusion import FOV
+from data_fusion import FOV, VISUALISATION
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/global_map"
 BLUE = 0
@@ -249,6 +249,8 @@ class Map:
         self.last_seen = [(None, None)] * self.last_seen_size
         self.last_seen_idx = -1
         
+        self.last_blue = (None, None)
+        self.last_yellow = (None, None)
         # plot
         self.fig, self.ax = plt.subplots()
 
@@ -279,6 +281,12 @@ class Map:
             if self.data[hit[0], hit[1], 1] >= self.min_hist:
                 self.last_seen_idx = (self.last_seen_idx + 1) % self.last_seen_size
                 self.last_seen[self.last_seen_idx % self.last_seen_size] = (hit[0], hit[1])
+                
+                # old approach
+                if self.data[hit[0], hit[1], 0] == BLUE:
+                    self.last_blue = (hit[0], hit[1])
+                elif self.data[hit[0], hit[1], 0] == YELLOW:
+                    self.last_yellow = (hit[0], hit[1])
             x_error = x - hit[0]
             y_error = y - hit[1]
             self.x_errors.append(x_error)
@@ -294,44 +302,71 @@ class Map:
             
             
     def estimate_new_target(self):
-        # returns (x, y, angle). eiter x and y are NOne or angle is None, since tbot should only drive or turn
-        TURN_ANGLE = 20
-        N = 2
-        history = []
+        # # returns (x, y, angle). eiter x and y are NOne or angle is None, since tbot should only drive or turn
+        # TURN_ANGLE = 20
+        # N = 5
+        # history = []
         
-        for i in range(N):
-            history.append(self.last_seen[(self.last_seen_idx - i) % self.last_seen_size])
+        # for i in range(N):
+        #     history.append(self.last_seen[(self.last_seen_idx - i) % self.last_seen_size])
         
         
         
-        yellows = 0
-        blues = 0
-        last_blue = None
-        last_yellow = None
+        # yellows = 0
+        # blues = 0
+        # last_blue = None
+        # last_yellow = None
         
-        for i, (x, y) in enumerate(history):
-            if x is None:
-                return None, None, None
+        # for i, (x, y) in enumerate(history):
+        #     if x is None:
+        #         break
             
-            if self.data[x, y, 0] == YELLOW:
-                if last_yellow is None:
-                    last_yellow = (x, y)
-                yellows += 1
-            if self.data[x, y, 0] == BLUE:
-                if last_blue is None:
-                    last_blue = (x, y)
-                blues += 1
+        #     if self.data[x, y, 0] == YELLOW:
+        #         if last_yellow is None:
+        #             last_yellow = (x, y)
+        #         yellows += 1
+        #     if self.data[x, y, 0] == BLUE:
+        #         if last_blue is None:
+        #             last_blue = (x, y)
+        #         blues += 1
         
-        if yellows == N:
-            # only saw yellows, turn left
-            return None, None, -TURN_ANGLE
-        elif blues == N:
-            # only saw blues, turn right
-            return None, None, TURN_ANGLE
-        elif last_blue and last_yellow:
-            # drive to center of blue and yellow
-            (bx, by) = last_blue
-            (yx, yy) = last_yellow
+        # if yellows == N:
+        #     # only saw yellows, turn left
+        #     pass
+        #     # return None, None, -TURN_ANGLE
+        # elif blues == N:
+        #     # only saw blues, turn right
+        #     pass
+        #     # return None, None, TURN_ANGLE
+        # elif last_blue and last_yellow:
+        #     # drive to center of blue and yellow
+        #     (bx, by) = last_blue
+        #     (yx, yy) = last_yellow
+        #     bx *= self.discretization_steps
+        #     by *= self.discretization_steps
+        #     yx *= self.discretization_steps
+        #     yy *= self.discretization_steps
+            
+        #     bx -= self.size / 2
+        #     by -= self.size / 2
+        #     yx -= self.size / 2
+        #     yy -= self.size / 2
+            
+        #     return ((bx + yx) / 2, (by + yy) / 2, None)
+        # return None, None, None
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if self.last_blue[0] is not None and self.last_yellow[0] is not None:
+            (bx, by) = self.last_blue
+            (yx, yy) = self.last_yellow
             bx *= self.discretization_steps
             by *= self.discretization_steps
             yx *= self.discretization_steps
@@ -343,33 +378,9 @@ class Map:
             yy -= self.size / 2
             
             return ((bx + yx) / 2, (by + yy) / 2, None)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        # if self.last_seen[BLUE] is not None and self.last_seen[YELLOW] is not None:
-        #     (bx, by) = self.last_seen[BLUE]
-        #     (yx, yy) = self.last_seen[YELLOW]
-        #     bx *= self.discretization_steps
-        #     by *= self.discretization_steps
-        #     yx *= self.discretization_steps
-        #     yy *= self.discretization_steps
-            
-        #     bx -= self.size / 2
-        #     by -= self.size / 2
-        #     yx -= self.size / 2
-        #     yy -= self.size / 2
-            
-        #     return ((bx + yx) / 2, (by + yy) / 2)
-        # else:
-        #     print("could not find blue and yellow cones to create a point")
-        #     return None, None
+        else:
+            print("could not find blue and yellow cones to create a point")
+            return None, None, None
         
     
     def check_vicinity(self, X, Y):

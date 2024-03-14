@@ -42,7 +42,7 @@ class NavigationNode(Node):
 
         # Set if obstacle avoidance or velocity control should be used
         self.OBSTACLE_AVOIDANCE = True
-        self.VELOCITY_CONTROL = True
+        self.VELOCITY_CONTROL = False
         
         # Set if live visualization should be created
         self.VISUALIZATION = False
@@ -96,8 +96,8 @@ class NavigationNode(Node):
         self.beta_2 = 70
         
         # Parameters for weighting of force-lets for velocity control
-        self.alpha_1 = 160
-        self.alpha_2 = 225
+        self.alpha_1 = 120 #160
+        self.alpha_2 = 200 #225
         
         # Parameters for speed control
         self.c = 0.5

@@ -7,14 +7,15 @@ from rclpy.node import Node
 from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position, Target
 
 #camera fov:
-FOV = (148, 212)
+FOV = (145, 215)
 assert (180 - FOV[0] == FOV[1] - 180)
 
-MIN_HISTORY = 3
+MIN_HISTORY = 1
 CLUSTER = 0
 POSITION = 1
 LOG_INFO = False
 TARGET_UPDATES_PER_SECOND = 0.5
+VISUALISATION = False
 
 class DataFusionNode(Node):
     def __init__(self):
@@ -70,8 +71,9 @@ class DataFusionNode(Node):
         current_pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
         if current_pos is None:
             current_pos = self.default_position
-            
-        self.map.save_plot(current_pos.x_position, current_pos.y_position)
+        
+        if VISUALISATION:    
+            self.map.save_plot(current_pos.x_position, current_pos.y_position)
 
 
     def position_listener_callback(self, msg):
@@ -164,13 +166,13 @@ class DataFusionNode(Node):
             return
         
         # order the clusters from close to far
-        labeled_clusters = np.array(labeled_clusters)
-        calc_distance = lambda x1, y1, x2, y2: np.linalg.norm((x1-x2, y1-y2))
+        # labeled_clusters = np.array(labeled_clusters)
+        # calc_distance = lambda x1, y1, x2, y2: np.linalg.norm((x1-x2, y1-y2))
         
         
         
-        distances = [calc_distance(position_msg.x_position, position_msg.y_position, average_cluster_position(cluster)[0], average_cluster_position(cluster)[1]) for cluster in labeled_clusters[:, 0]]
-        labeled_clusters = labeled_clusters[np.argsort(distances)]
+        # distances = [calc_distance(position_msg.x_position, position_msg.y_position, average_cluster_position(cluster)[0], average_cluster_position(cluster)[1]) for cluster in labeled_clusters[:, 0]]
+        # labeled_clusters = labeled_clusters[np.argsort(distances)]
         
         for cluster, label in labeled_clusters:
             # compute x and y position of cluster
@@ -204,7 +206,8 @@ class DataFusionNode(Node):
                 estimated_cone_positions.append(estimated_position)
                 labels.append(box.cone)
         
-        plot_clusters_and_cones(filtered_clusters, estimated_cone_positions, labels)
+        if VISUALISATION:
+            plot_clusters_and_cones(filtered_clusters, estimated_cone_positions, labels)
         
         # fuse
         epsilon = 100 #mm
