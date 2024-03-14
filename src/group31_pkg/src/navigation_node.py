@@ -36,6 +36,8 @@ class NavigationNode(Node):
         self.WHEEL_RADIUS = 33 #mm
         self.NUM_TICKS = 4096
         
+        self.delta_t = 10
+        
         # Positions of sensor entries starting from 180 to -179 with 180 being the back, 90 right, 1 front and -89 left
         #self.THETA = list(range(180, -180, -1))
         self.THETA = list(range(180, -180, -1))
@@ -88,8 +90,6 @@ class NavigationNode(Node):
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
         self.MIN_VELOCITY = -20
-        
-        self.delta_t = 10
 
         # Parameters for weighting of force-lets of obstacle avoidance
         self.beta_1 = 20
@@ -109,9 +109,29 @@ class NavigationNode(Node):
     
     
     def params_round2(self):
-        #TODO: Add parameter for the second round
-        pass
+        self.VELOCITY_CONTROL = False
+        
+        # Velocity parameter
+        self.LAMBDA = 130
+        self.LAMBDA_TAR = 2*np.pi
+        self.MAX_VELOCITY = 255
+        self.MIN_VELOCITY = -20
 
+        # Parameters for weighting of force-lets of obstacle avoidance
+        self.beta_1 = 20
+        self.beta_2 = 85
+        
+        """
+        # Velocity parameter
+        self.LAMBDA = 200
+        self.LAMBDA_TAR = np.pi
+        self.MAX_VELOCITY = 255
+        self.MIN_VELOCITY = -100
+
+        # Parameters for weighting of force-lets of obstacle avoidance
+        self.beta_1 = 15
+        self.beta_2 = 50
+        """
 
     def set_visualization(self):
         layout = [
@@ -378,18 +398,7 @@ class NavigationNode(Node):
             else:
                 self.TARGET_X = self.TARGETS_X.pop(0)
                 self.TARGET_Y = self.TARGETS_Y.pop(0)
-     
-    """
-    def turn(self, msg_motor):
-        self.psi = self.phi + np.deg2rad(self.TURN_ANGLE) % (2*np.pi)
-        self.TARGET_X = self.x
-        self.TARGET_Y = self.y
-        
-        self.getDeltaPhi()
-        self.setVelocity(forward_velocity=False)
-        self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
-        self.updateMovement()
-    """
+
     
     def callback(self, msg_motor, msg_lidar):
         self.counter += 1
