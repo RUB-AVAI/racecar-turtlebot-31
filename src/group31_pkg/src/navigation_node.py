@@ -94,7 +94,7 @@ class NavigationNode(Node):
         self.delta_t = 10
 
         # Parameters for weighting of force-lets of obstacle avoidance
-        self.beta_1 = 25
+        self.beta_1 = 20
         self.beta_2 = 85
         
         # Parameters for weighting of force-lets for velocity control
@@ -438,7 +438,7 @@ class NavigationNode(Node):
         if self.VISUALIZATION:
             self.visualize()
         
-        print(f"POSITION: ({round(self.x, 2)},{round(self.y, 2)}), HEADING: {round(self.phi, 2)}, TARGET: {round(self.psi, 2)}, V_L:{round(self.v_l, 2)}, V_R:{round(self.v_r, 2)}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
+        print(f"POSITION: ({round(self.x, 2)},{round(self.y, 2)}), HEADING: {round(self.phi, 2)}, TARGET: {round(self.psi, 2)}, V_L:{round(self.v_l, 2)}, V_R:{round(self.v_r, 2)}, LAMBDA: {self.LAMBDA}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
         
     
     def target_callback(self, msg):
