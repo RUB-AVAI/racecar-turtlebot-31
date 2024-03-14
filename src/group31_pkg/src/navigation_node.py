@@ -84,7 +84,7 @@ class NavigationNode(Node):
         
     def params_round1(self):
         # Velocity parameter
-        self.LAMBDA = 130
+        self.LAMBDA = 160
         self.ORIGINAL_LAMBDA = self.LAMBDA
         self.DECAY = 0.97
         self.DECAY_MIN_DISTANCE = 50
@@ -112,16 +112,17 @@ class NavigationNode(Node):
     
     def params_round2(self):
         self.VELOCITY_CONTROL = False
+        self.OBSTACLE_AVOIDANCE = True
         
         # Velocity parameter
-        self.LAMBDA = 130
+        self.LAMBDA = 160
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
         self.MIN_VELOCITY = -20
 
         # Parameters for weighting of force-lets of obstacle avoidance
-        self.beta_1 = 20
-        self.beta_2 = 85
+        self.beta_1 = 10
+        self.beta_2 = 60
         
         """
         # Velocity parameter
