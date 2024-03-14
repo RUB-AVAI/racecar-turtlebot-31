@@ -419,7 +419,7 @@ class NavigationNode(Node):
         if self.VISUALIZATION:
             self.visualize()
         
-        print(f"POSITION: ({round(self.x, 2)},{round(self.y, 2)}), HEADING: {round(self.phi, 2)}, TARGET: {round(self.psi, 2)}, V_L:{round(self.v_l, 2)}, V_R:{round(self.v_r, 2)}, LAMBDA: {self.LAMBDA}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
+        print(f"POSITION: ({round(self.x, 2)},{round(self.y, 2)}), HEADING: {round(self.phi, 2)}, TARGET: {round(self.psi, 2)}, V_L:{round(self.v_l, 2)}, V_R:{round(self.v_r, 2)}, LAMBDA: {self.LAMBDA}, TARGET: ({self.TARGET_X},{self.TARGET_Y}), MOTOR_LEFT: {self.LEFT_MOVED}, MOTOR_RIGHT: {self.RIGHT_MOVED}")
         
     
     def target_callback(self, msg):
