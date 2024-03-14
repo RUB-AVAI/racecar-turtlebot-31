@@ -85,7 +85,7 @@ class NavigationNode(Node):
         
     def params_round1(self):
         # Velocity parameter
-        self.LAMBDA = 140
+        self.LAMBDA = 100
         self.ORIGINAL_LAMBDA = self.LAMBDA
         self.DECAY = 0.98
         self.DECAY_MIN_DISTANCE = 500
