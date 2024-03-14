@@ -18,7 +18,7 @@ class NavigationNode(Node):
         super().__init__('navigation_node')
         
         # Set if points from data fusion should be subscribed
-        self.GET_TARGETS = False
+        self.GET_TARGETS = True
         
         self.motor_subscription = Subscriber(self, Motors, '/motor_position')
         self.lidar_subscription = Subscriber(self, LaserScan, "/scan", qos_profile=rclpy.qos.qos_profile_sensor_data)
@@ -45,7 +45,7 @@ class NavigationNode(Node):
         self.VELOCITY_CONTROL = True
         
         # Set if live visualization should be created
-        self.VISUALIZATION = True
+        self.VISUALIZATION = False
         
         # Target parameter (changed in future for subscriber of target points)
         self.TARGET_RADIUS = 25
@@ -64,6 +64,9 @@ class NavigationNode(Node):
         self.x = 0
         self.y = 0
         self.phi = 0
+        
+        self.g_tar_value = 0
+        self.g_obs_value = 0
         
         # Tracking
         self.x_all, self.y_all, self.phi_all = [], [], []
@@ -310,15 +313,16 @@ class NavigationNode(Node):
         omega = int((self.delta_phi * (self.WHEEL_DISTANCE/2))/self.delta_t) # mm/ms
         
         if not forward_velocity:
-            v = 0
+            self.v_l = int(omega)
+            self.v_r = int(-omega)
         elif self.VELOCITY_CONTROL:
             v = self.control_velocity()
+            self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
+            self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
         else:
-            v = self.LAMBDA
+            self.v_l = int(np.clip(omega+self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
+            self.v_r = int(np.clip(-omega+self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
 
-        self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
-        self.v_r = int(np.clip(-omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
-        
         new_motor_command = Motors()
         new_motor_command.motors = [
             Motor(position=1, velocity=self.v_l), 
@@ -422,7 +426,7 @@ class NavigationNode(Node):
         if not self.GET_TARGETS:
             self.drive_withot_targets(msg_motor)
         elif self.GET_TARGETS:
-            if self.TURN_ANGLE is None:
+            if self.TURN_ANGLE == 0.0:
                 self.drive_with_target(msg_motor)
             else:
                 self.turn(msg_motor)
