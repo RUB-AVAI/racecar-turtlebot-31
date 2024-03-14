@@ -10,12 +10,12 @@ from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Posit
 FOV = (145, 215)
 assert (180 - FOV[0] == FOV[1] - 180)
 
-MIN_HISTORY = 1
+MIN_HISTORY = 4
 CLUSTER = 0
 POSITION = 1
 LOG_INFO = False
 TARGET_UPDATES_PER_SECOND = 0.5
-VISUALISATION = False
+VISUALISATION = True
 
 class DataFusionNode(Node):
     def __init__(self):
@@ -27,7 +27,7 @@ class DataFusionNode(Node):
         self.target_publisher = self.create_publisher(Target, "/target_position", qos_profile=rclpy.qos.qos_profile_services_default)
         self.target_updater = self.create_timer(1 / TARGET_UPDATES_PER_SECOND, self.update_target)
         
-        self.map = Map(size=40000, min_hist=MIN_HISTORY)
+        self.map = Map(size=25000, min_hist=MIN_HISTORY)
         
         self.buffer_size = 100
         self.yolo_msgs = [None] * self.buffer_size
@@ -85,7 +85,10 @@ class DataFusionNode(Node):
     
     
     def update_target(self):
-        x,y,angle = self.map.estimate_new_target()
+        pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
+        if pos is None:
+            pos = self.default_position
+        x,y,angle = self.map.estimate_new_target(pos.x_position, pos.y_position)
         print(f"angle: {angle}, x: {x}, y: {y}")
         if x is None and y is None and angle is None:
             return
@@ -201,6 +204,8 @@ class DataFusionNode(Node):
         labels = []
         
         for box in yolo_msg.bounding_boxes:
+            if box.confidence < 0.7:
+                continue
             estimated_position = estimate_cone_position(box)
             if estimated_position is not None:
                 estimated_cone_positions.append(estimated_position)
@@ -210,7 +215,7 @@ class DataFusionNode(Node):
             plot_clusters_and_cones(filtered_clusters, estimated_cone_positions, labels)
         
         # fuse
-        epsilon = 100 #mm
+        epsilon = 150#mm
         labeled_clusters = []
         for cluster in filtered_clusters:
             cluster_position = average_cluster_position(cluster)
