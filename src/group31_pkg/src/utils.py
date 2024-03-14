@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import math
 from scipy.interpolate import interp1d
-from data_fusion import FOV, VISUALISATION
+from fuse_sensor_data import FOV, VISUALISATION
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/global_map"
 BLUE = 0
