@@ -180,7 +180,7 @@ class NavigationNode(Node):
         :return: The integral value representing the summed influence of obstacles.
         """
         V_phi = 0
-        for theta_i, range in zip(self.THETA, self.CURRENT_RANGES):
+        for theta_i, range in zip(self.THETA, self.RANGES):
             if range == 0.0:
                 continue
             if np.abs(theta_i) > 1.55:
@@ -217,7 +217,7 @@ class NavigationNode(Node):
         self.f_obs = 0
         
         if self.OBSTACLE_AVOIDANCE:
-            for theta_i, range in zip(self.THETA, self.CURRENT_RANGES):
+            for theta_i, range in zip(self.THETA, self.RANGES):
                 if range == 0.0:
                     continue
                 if np.abs(theta_i) > 1.55:
@@ -297,7 +297,7 @@ class NavigationNode(Node):
             Motor(position=1, velocity=self.v_r)
         ]
         #self.get_logger().info(f'Published velocities')
-        #self.motor_publisher.publish(new_motor_command)
+        self.motor_publisher.publish(new_motor_command)
         
         
     def stop(self):
@@ -348,23 +348,20 @@ class NavigationNode(Node):
 
 
     def drive(self, msg_motor, msg_lidar):
-        self.get_logger().info(f'Received messages')
+        #self.get_logger().info(f'Received messages')
         
         self.counter += 1
         if self.counter == 0:
             self.TOTAL_LEFT_MOVED, self.TOTAL_RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
-            self.OLD_RANGES = np.array(msg_lidar.ranges) * 1000
             return        
 
-        self.CURRENT_RANGES = np.array(msg_lidar.ranges) * 1000
+        self.RANGES = np.array(msg_lidar.ranges) * 1000
         
         self.getDirection()
         self.getDeltaPhi()
         self.setVelocity()
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
-        
-        self.OLD_RANGES = self.CURRENT_RANGES
         
         if self.VISUALIZATION:
             self.visualize()
