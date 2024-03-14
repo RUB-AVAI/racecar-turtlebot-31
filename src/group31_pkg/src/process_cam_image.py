@@ -6,7 +6,7 @@ import argparse
 
 # ROS2 imports
 from rclpy.node import Node
-from avai_messages.msg import BoundingBox, YoloOutput
+from avai_messages.msg import BoundingBox, YoloOutput, ClusteredLidarData
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
@@ -17,7 +17,6 @@ import yolov5.models.common
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=5, type=int)
 parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
 args = parser.parse_args()
 
@@ -29,14 +28,12 @@ QUEUE_SIZE = 10
 if args.fps < 1:
     raise ValueError("Argument has to be greater or equal 1")
 
-PUBLISH = (args.fps is not None)
 SAVE_IMAGE_RAW = False
 SAVE_IMAGE_WITH_BOUNDING_BOXES = False
 PUBLISH_IMAGE_WITH_BOUNDING_BOXES = (args.bb is not None)
 
     
 
-FPS_PUBLISH = args.fps #seconds
 FPS_IMAGE_SAVING_RAW = 0.2
 FPS_IMAGE_SAVING_BOUNDING_BOXES = FPS_IMAGE_SAVING_RAW
 FPS_IMAGE_PUBLISH_BB = args.bb
@@ -51,10 +48,6 @@ class CamImageProcessingNode(Node):
     def __init__(self, capture):
         super().__init__("CamImageProcessingNode")
 
-        if SAVE_IMAGE_WITH_BOUNDING_BOXES and not PUBLISH:
-            self.get_logger().error("cannot save images with bounding boxes without publishing")
-            exit()
-
 
         self.capture = capture
         self.i = 0
@@ -66,17 +59,14 @@ class CamImageProcessingNode(Node):
         self.current_yolo_output = None
 
         #YOLO model
-        if PUBLISH:
-            self.interpreter = yolov5.models.common.DetectMultiBackend(MODEL_PATH)
-            self.interpreter = yolov5.models.common.AutoShape(self.interpreter)
+
+        self.interpreter = yolov5.models.common.DetectMultiBackend(MODEL_PATH)
+        self.interpreter = yolov5.models.common.AutoShape(self.interpreter)
         
         # initialize publisher
         self.publisher_ = self.create_publisher(YoloOutput, TOPIC, qos_profile=rclpy.qos.qos_profile_sensor_data)
         self.publisher_image_bb = self.create_publisher(Image, "/bb_images", qos_profile=rclpy.qos.qos_profile_services_default)
-        
-        if PUBLISH:
-            # initialize publisher callback
-            self.publish_callback = self.create_timer(1.0 / FPS_PUBLISH, self.publish)
+        self.clustered_lidar_subscription = self.create_subscription(ClusteredLidarData, "/clusterered_lidar_data", self.clustered_lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
 
         if SAVE_IMAGE_RAW:
             # initialize image save callback
@@ -105,7 +95,7 @@ class CamImageProcessingNode(Node):
             print("No stream opened")
             
     
-    def publish(self):
+    def clustered_lidar_listener_callback(self, msg):
         # publish yolo output
         self.capture_image()
         if self.camera_frame is not None:
