@@ -7,6 +7,7 @@ from message_filters import ApproximateTimeSynchronizer, Subscriber
 from avai_messages.msg import Motors, Motor, Position, Target
 from sensor_msgs.msg import LaserScan
 from time import sleep
+from utils import distance
 
 
 
@@ -48,7 +49,7 @@ class NavigationNode(Node):
         self.VISUALIZATION = False
         
         # Target parameter (changed in future for subscriber of target points)
-        self.TARGET_RADIUS = 25
+        self.TARGET_RADIUS = 60
         if not self.GET_TARGETS:
             self.TARGETS_X = [-1000] #[0, 1000, 1000, 0]
             self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
@@ -84,16 +85,20 @@ class NavigationNode(Node):
         
     def params_round1(self):
         # Velocity parameter
-        self.LAMBDA = 70
+        self.LAMBDA = 140
+        self.ORIGINAL_LAMBDA = self.LAMBDA
+        self.DECAY = 0.92
+        self.DECAY_MIN_DISTANCE = 500
+        self.MIN_LAMBDA = 25
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = 5
+        self.MIN_VELOCITY = -20
         
         self.delta_t = 10
 
         # Parameters for weighting of force-lets of obstacle avoidance
         self.beta_1 = 20
-        self.beta_2 = 70
+        self.beta_2 = 85
         
         # Parameters for weighting of force-lets for velocity control
         self.alpha_1 = 120 #160
@@ -386,6 +391,9 @@ class NavigationNode(Node):
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
         
+        if self.LAMBDA > self.MIN_LAMBDA and distance(self.x, self.y, self.TARGET_X, self.TARGET_Y) < self.DECAY_MIN_DISTANCE:
+            self.LAMBDA = self.LAMBDA * self.DECAY
+        
     
     def drive_withot_targets(self, msg_motor):
         self.getDirection()
@@ -434,7 +442,7 @@ class NavigationNode(Node):
         if self.VISUALIZATION:
             self.visualize()
         
-        print(f"POSITION: ({self.x},{self.y}), HEADING: {self.phi}, TARGET: {self.psi}, V_L:{self.v_l}, V_R:{self.v_r}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
+        print(f"POSITION: ({round(self.x, 2)},{round(self.y, 2)}), HEADING: {round(self.phi, 2)}, TARGET: {round(self.psi, 2)}, V_L:{round(self.v_l, 2)}, V_R:{round(self.v_r, 2)}, LAMBDA: {self.LAMBDA}, TARGET: ({self.TARGET_X},{self.TARGET_Y})")
         
     
     def target_callback(self, msg):
@@ -444,6 +452,8 @@ class NavigationNode(Node):
         self.TARGET_Y = msg.y_position
         self.ROUND = msg.round
         self.TURN_ANGLE = msg.turn_angle
+        
+        self.LAMBDA = self.ORIGINAL_LAMBDA
         
         if self.counter == -1:
             self.ts.registerCallback(self.callback)
