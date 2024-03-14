@@ -110,7 +110,7 @@ class NavigationNode(Node):
     
     def params_round1_old(self):
         # Velocity parameter
-        self.LAMBDA = 70
+        self.LAMBDA = 120
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
         self.MIN_VELOCITY = 5
@@ -313,8 +313,8 @@ class NavigationNode(Node):
         omega = int((self.delta_phi * (self.WHEEL_DISTANCE/2))/self.delta_t) # mm/ms
         
         if not forward_velocity:
-            self.v_l = int(omega)
-            self.v_r = int(-omega)
+            self.v_l = int(np.clip(omega, -self.MAX_VELOCITY, self.MAX_VELOCITY))
+            self.v_r = int(np.clip(-omega, -self.MAX_VELOCITY, self.MAX_VELOCITY))
         elif self.VELOCITY_CONTROL:
             v = self.control_velocity()
             self.v_l = int(np.clip(omega+v, self.MIN_VELOCITY, self.MAX_VELOCITY))
