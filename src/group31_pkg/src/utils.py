@@ -1,9 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import math
+from scipy.interpolate import interp1d
+from data_fusion import FOV
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/global_map"
-
+BLUE = 0
+ORANGE = 1
+YELLOW = 2
 
 def get_timestamp_as_float(msg):
     return msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
@@ -34,7 +39,7 @@ def rotate_point_around_origin(x, y, angle):
     angle = np.deg2rad(angle)
     return x * np.cos(angle) - y * np.sin(angle), y * np.cos(angle) + x * np.sin(angle)
 
-def estimate_cone_position(cluster_msg):
+def average_cluster_position(cluster_msg):
         cone_x_pos = np.mean(cluster_msg.x_positions)
         cone_y_pos = np.mean(cluster_msg.y_positions)
         
@@ -48,7 +53,45 @@ def bb_ratio(box):
     delta_y = np.abs(box.min_y - box.max_y)
     return delta_y / delta_x
 
-def could_be_cone(cluster, max_size=150, max_range=4000):
+def bb_surface(box):
+    delta_x = np.abs(box.min_x - box.max_x)
+    delta_y = np.abs(box.min_y - box.max_y)
+    return delta_y * delta_x
+
+
+data = np.load("data/merged_data.npy")
+f = interp1d(data[:, 2], data[:, 0], bounds_error=True)
+
+def estimate_cone_range(bounding_box):
+    try:
+        surface = bb_surface(bounding_box)
+        range = f(surface)
+    except ValueError:
+        return None
+    return range
+
+def estimate_cone_angle(bounding_box):
+    # we fitted a linear regression model to data we collected
+    # regression model: f(x) = 213.02497443 - 0.10669489 * x
+    
+    box_x_position = (bounding_box.min_x + bounding_box.max_x) / 2
+    return 213.02497443 - 0.10669489 * box_x_position
+
+def estimate_cone_position(bounding_box):
+    estimated_range = estimate_cone_range(bounding_box)
+    if estimated_range is None:
+        # cone does not lie in lidar range
+        return None
+    estimated_angle = estimate_cone_angle(bounding_box)
+    radiant = estimated_angle / 360 * 2 * np.pi
+    x = np.cos(radiant) * estimated_range
+    y = np.sin(radiant) * estimated_range
+    
+    return (x, y)
+
+
+
+def could_be_cone(cluster, max_size=200, max_range=4000):
     # rule out the ones that are too far away
     if np.mean(cluster.ranges) > max_range:
         return False
@@ -65,6 +108,37 @@ def could_be_cone(cluster, max_size=150, max_range=4000):
 
 fig, ax = plt.subplots()
 
+def plot_clusters_and_cones(clusters, cone_positions, labels):
+    IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/cones_and_clusters"
+    
+    plt.axis("equal")
+    ax.clear()
+
+    blindspot = plt.Circle((0, 0), 90, color="red", fill=False)
+    ax.add_patch(blindspot)
+    
+    
+    
+    colors = ["blue", "orange", "yellow"]
+    
+    for label, position in zip(labels, cone_positions):
+        # scatter each cluster individually so they get different colors
+        cone = plt.Circle((position[0], position[1]), 100, color = colors[label], fill=True)
+        ax.add_patch(cone)
+        
+    for cluster in clusters:
+        # scatter each cluster individually so they get different colors
+        ax.scatter(cluster.x_positions, cluster.y_positions, marker=".")
+        
+    limit = 5000 # mm
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_box_aspect(1)
+        
+    fig.tight_layout()
+    fig.savefig(IMSAVE_PATH)
+    
+
 def plot_clusters(clusters):
     IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/pl"
     plt.axis("equal")
@@ -76,10 +150,34 @@ def plot_clusters(clusters):
     for cluster in clusters:
         # scatter each cluster individually so they get different colors
         ax.scatter(cluster.x_positions, cluster.y_positions, marker=".")
-        limit = 5000 # mm
-        ax.set_xlim([-limit, limit])
-        ax.set_ylim([-limit, limit])
-        ax.set_box_aspect(1)
+    limit = 5000 # mm
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_box_aspect(1)
+        
+    fig.tight_layout()
+    fig.savefig(IMSAVE_PATH)
+
+
+def plot_cones(positions, labels):
+    IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/estimated_cone_positions"
+    plt.axis("equal")
+    ax.clear()
+
+    blindspot = plt.Circle((0, 0), 90, color="red", fill=False)
+    ax.add_patch(blindspot)
+    
+    colors = ["blue", "orange", "yellow"]
+    
+    for label, position in zip(labels, positions):
+        # scatter each cluster individually so they get different colors
+        cone = plt.Circle((position[0], position[1]), 100, color = colors[label], fill=True)
+        ax.add_patch(cone)
+        
+    limit = 5000 # mm
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_box_aspect(1)
         
     fig.tight_layout()
     fig.savefig(IMSAVE_PATH)
@@ -124,6 +222,10 @@ def preprocess_bounding_boxes(yolo_msg, log_to_console=False):
     yolo_msg.bounding_boxes = processed_boxes
     return yolo_msg
 
+
+
+
+
 class Map:
     def __init__(self, size=20000, epsilon=100, min_hist=3) -> None:
         # all distances are in mm
@@ -135,8 +237,14 @@ class Map:
         self.data = np.zeros(self.dim)
         self.data[:, :, 0] = -1
         
+        self.data_listed = []
+        
         self.y_errors = []
         self.x_errors = []
+        
+        self.start_pos = (0, 0)
+        
+        self.last_seen = [None, None, None]
         
         # plot
         self.fig, self.ax = plt.subplots()
@@ -172,11 +280,68 @@ class Map:
             #     print(f"existing cone: {hit[0]}, {hit[1]}")
             #     print(f"errors: {x_error}  {y_error}")
         elif len(hits) > 1:
-            pass
-            # print(hits)
+            print(hits)
+            print("not adding a cone")
         else:
             self.data[x, y, 0] = cone
             self.data[x, y, 1] = 1
+            self.data_listed.append((x, y, cone))
+            self.last_seen[cone] = (x, y)
+    
+    
+    def find_nearest_cone(self, X, Y, label, accepted_idxs=np.inf):
+        smallest_distance = np.inf
+        nearest_cone = None
+        for cone in np.where((self.get_cones()[label])[2] < accepted_idxs):
+            distance = np.linalg.norm(X - cone[0], Y - cone[1])
+            if distance < smallest_distance:
+                nearest_cone = cone
+                smallest_distance = distance
+        return nearest_cone
+            
+            
+    def estimate_new_target(self):
+        # blue_cone = None
+        # yellow_cone = None
+        # success = False
+        # for i in range(1, self.data_listed + 1):
+        #     (x, y, cone) = self.data_listed[-i]
+        #     if cone == 0 and blue_cone is None: #blue
+        #         blue_cone = (x * self.discretization_steps, y * self.discretization_steps)
+        #     elif cone == 2 and yellow_cone is None: # yellow
+        #         yellow_cone = (x * self.discretization_steps, y * self.discretization_steps)
+        #     elif blue_cone and yellow_cone:
+        #         success = True
+        #         break
+        
+        # if success:
+        #     # return middle between both cones
+        
+        if self.last_seen[BLUE] is not None and self.last_seen[YELLOW] is not None:
+            (bx, by) = self.last_seen[BLUE]
+            (yx, yy) = self.last_seen[YELLOW]
+            bx *= self.discretization_steps
+            by *= self.discretization_steps
+            yx *= self.discretization_steps
+            yy *= self.discretization_steps
+            
+            bx -= self.size / 2
+            by -= self.size / 2
+            yx -= self.size / 2
+            yy -= self.size / 2
+            
+            return ((bx + yx) / 2, (by + yy) / 2)
+        else:
+            print("could not find blue and yellow cones to create a point")
+            return None, None
+            
+        
+        
+        
+            
+            
+            
+        
         
     
     def check_vicinity(self, X, Y):
