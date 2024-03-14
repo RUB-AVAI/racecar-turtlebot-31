@@ -17,7 +17,7 @@ import yolov5.models.common
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=2, type=int)
+parser.add_argument("-f", "--fps", help="number of yolo predictions per second. When not set it will default to 2", default=5, type=int)
 parser.add_argument("-b", "--bb", help="number of images with overlayed bounding boxes published per second. When not set it will not publish any", type=int)
 args = parser.parse_args()
 
@@ -43,15 +43,11 @@ FPS_IMAGE_PUBLISH_BB = args.bb
 
 IMSAVE_PATH_RAW = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_raw.png"
 IMSAVE_PATH_BOUNDING_BOXES = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/camera_image_with_bounding_boxes.png"
-MODEL_PATH = "/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/best-int8_edgetpu.tflite"
+MODEL_PATH = "/home/ubuntu/turtlebot-avai/src/group31_pkg/src/model/small_best-int8_edgetpu.tflite"
 
 
 
 class CamImageProcessingNode(Node):
-    """
-    
-    """
-
     def __init__(self, capture):
         super().__init__("CamImageProcessingNode")
 
@@ -103,6 +99,10 @@ class CamImageProcessingNode(Node):
             if ret:
                 self.camera_frame = frame
                 self.camera_frame_stamp = self.get_clock().now()
+            else:
+                print("capture_image(): no image read")
+        else:
+            print("No stream opened")
             
     
     def publish(self):
@@ -152,7 +152,6 @@ class CamImageProcessingNode(Node):
         else:
             self.get_logger().warning("Found no frame to save")
 
-
     def save_image_with_bounding_boxes(self):
         # lay the bounding boxes over the camera image and save it to the visualisations folder
         image = self.current_yolo_frame
@@ -177,10 +176,10 @@ class CamImageProcessingNode(Node):
         else:
             self.get_logger().warning("Found no yolo frame to save")
 
-
     def yolo(self, input_img:np.ndarray, timestamp):
         raw_img = cv2.resize(input_img, (640, 640))
         raw_img_bgb = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
+        
         detect = self.interpreter(raw_img_bgb)
 
         # xmin, ymin, xmax, ymax, confidence, class, name
