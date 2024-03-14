@@ -87,7 +87,7 @@ class NavigationNode(Node):
         # Velocity parameter
         self.LAMBDA = 100
         self.ORIGINAL_LAMBDA = self.LAMBDA
-        self.DECAY = 0.93
+        self.DECAY = 0.985
         self.DECAY_MIN_DISTANCE = 1000
         self.MIN_LAMBDA = 25
         self.LAMBDA_TAR = 2*np.pi
