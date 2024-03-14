@@ -6,22 +6,24 @@ import matplotlib.pyplot as plt
 from rclpy.node import Node
 from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position, Target
 import argparse
+from time import time
 
 #camera fov:
 FOV = (145, 215)
 assert (180 - FOV[0] == FOV[1] - 180)
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-o", "--offset", help="allowed offset between fused messages", default=0.1, type=float)
+parser.add_argument("-o", "--offset", help="allowed offset between fused messages", default=0.15, type=float)
 args = parser.parse_args()
 
 
-MIN_HISTORY = 2
+MIN_HISTORY = 3
 CLUSTER = 0
 POSITION = 1
+YOLO = 2
 LOG_INFO = False
-TARGET_UPDATES_PER_SECOND = 0.5
-VISUALISATION = False
+TARGET_UPDATES_PER_SECOND = 10
+VISUALISATION = True
 
 class DataFusionNode(Node):
     def __init__(self):
@@ -31,11 +33,13 @@ class DataFusionNode(Node):
         self.yolo_output_subscription = self.create_subscription(YoloOutput, "/cone_classification", self.yolo_output_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.target_publisher = self.create_publisher(Target, "/target_position", qos_profile=rclpy.qos.qos_profile_services_default)
-        self.target_updater = self.create_timer(1 / TARGET_UPDATES_PER_SECOND, self.update_target)
+        # self.target_updater = self.create_timer(1 / TARGET_UPDATES_PER_SECOND, self.update_target)
         
         self.map = Map(size=25000, min_hist=MIN_HISTORY)
         
-        self.buffer_size = 100
+        self.init_time = time()
+        
+        self.buffer_size = 20
         self.yolo_msgs = [None] * self.buffer_size
         self.yolo_msgs_idx = 0
         self.cluster_msgs = [None] * self.buffer_size
@@ -48,10 +52,14 @@ class DataFusionNode(Node):
         self.default_position.y_position=0.0 # in mm
         self.default_position.facing_direction=0.0 # in degrees
         
+        self.round = 0
+        
         
     
 
     def clustered_lidar_listener_callback(self, msg):
+        if self.round == 1:
+            return
         if LOG_INFO:
             self.get_logger().info("Clustered Lidar Data Received")
         self.cluster_msgs_idx += 1
@@ -59,6 +67,8 @@ class DataFusionNode(Node):
         
 
     def yolo_output_listener_callback(self, msg):
+        if self.round == 1:
+            return
         if LOG_INFO:
             self.get_logger().info("Yolo Output Received")
         # for box in msg.bounding_boxes:
@@ -70,27 +80,32 @@ class DataFusionNode(Node):
         self.yolo_msgs_idx += 1
         self.yolo_msgs[self.yolo_msgs_idx % self.buffer_size] = msg
         
+        if self.round == 0:
         
-    
-        self.update_map(msg)
-        
-        current_pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
-        if current_pos is None:
-            current_pos = self.default_position
-        
-        if VISUALISATION:    
-            self.map.save_plot(current_pos.x_position, current_pos.y_position)
+            self.update_map(msg)
+            
+            current_pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
+            if current_pos is None:
+                current_pos = self.default_position
+            
+            if VISUALISATION:    
+                self.map.save_plot(current_pos.x_position, current_pos.y_position)
+            
 
 
     def position_listener_callback(self, msg):
-            if LOG_INFO:
-                self.get_logger().info("Position Received")
-            self.pos_msgs_idx += 1
-            msg.facing_direction = -msg.facing_direction % 360
-            self.pos_msgs[self.pos_msgs_idx % self.buffer_size] = msg
+        if self.round == 1:
+            return
+        if LOG_INFO:
+            self.get_logger().info("Position Received")
+        self.pos_msgs_idx += 1
+        msg.facing_direction = -msg.facing_direction % 360
+        self.pos_msgs[self.pos_msgs_idx % self.buffer_size] = msg
     
     
     def update_target(self):
+        if self.round == 1:
+            return
         pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
         if pos is None:
             pos = self.default_position
@@ -104,18 +119,18 @@ class DataFusionNode(Node):
         
         if angle:
             target.turn_angle = float(angle)
-            target.x_position = 0.0
-            target.y_position = 0.0
+            target.x_position = [0.0]
+            target.y_position = [0.0]
         else:
             target.turn_angle = 0.0
-            target.x_position = float(x)
-            target.y_position = float(y)
+            target.x_position = [float(x)]
+            target.y_position = [float(y)]
         
         
         self.target_publisher.publish(target)
     
     
-    def match_message(self, yolo_msg, type, max_offset=args.offset):
+    def match_message(self, main_message, type, max_offset=args.offset):
         """Because of the inference of the yolo model, the yolo messages arrive later than the other messages. Therefore this function  
          searches the buffer for a message with the corresponding timestamp.
          The type argument specifies to look for cluster or position
@@ -124,28 +139,29 @@ class DataFusionNode(Node):
             Cluster: Returns the matching Cluster message or None if no matching message was found
         """
         
-        if type != CLUSTER and type != POSITION:
+        if type != CLUSTER and type != POSITION and type != YOLO:
             raise KeyError()
             
         # because of the inference of the yolo model, we search the other messages for the appropriate timestamp
-        yolo_timestamp = get_timestamp_as_float(yolo_msg)
-        print(f"yolo_timestamp: {yolo_timestamp}")
+        main_timestamp = get_timestamp_as_float(main_message)
+        print(f"main timestamp: {main_timestamp}")
 
-        # find nearest cluster message
+        # find nearest message
         prev_distance = np.inf
-        prev_msg = None
         for i in range(self.buffer_size):
              if type==  CLUSTER:
                  msg = self.cluster_msgs[(self.cluster_msgs_idx - i) % self.buffer_size]
              elif type==POSITION:
                  msg = self.pos_msgs[(self.pos_msgs_idx - i) % self.buffer_size]
+             elif type==YOLO:
+                 msg = self.yolo_msgs[(self.yolo_msgs_idx - i) % self.buffer_size]
              if msg is None:
                  break
              timestamp = get_timestamp_as_float(msg)
-             print(f"cluster_timestamp: {timestamp}")
+             print(f"timestamp: {timestamp}")
              
              
-             distance = np.abs(timestamp - yolo_timestamp)
+             distance = np.abs(timestamp - main_timestamp)
              if distance < max_offset:
                  return msg
              if(i>0):
@@ -155,12 +171,9 @@ class DataFusionNode(Node):
                      prev_distance = distance
     
     
-    def update_map(self, yolo_msg = None):
-        if yolo_msg is None:
-            yolo_msg = self.yolo_msgs[self.yolo_msgs_idx]
+    def update_map(self, yolo_msg):
         
-        
-        # find the cluster message and position messages from the buffer that fit the yolo message best
+        # find the yolo message and position messages from the buffer that fit the yolo message best
         cluster_msg = self.match_message(yolo_msg, CLUSTER)
         position_msg = self.match_message(yolo_msg, POSITION)
         
@@ -190,10 +203,37 @@ class DataFusionNode(Node):
             # compute x and y position of cluster
             cone_x_pos, cone_y_pos = average_cluster_position(cluster)
             
-            
             self.map.set(position_msg.x_position, position_msg.y_position, position_msg.facing_direction, 
-                         cone_x_pos, cone_y_pos, label)
-    
+                         cone_x_pos, cone_y_pos, label)    
+        
+        self.update_target()
+        
+        # check if in finish zone
+        if time() - self.init_time > 20: # let some time pass before checking, because we also start in finish zone
+            
+            n_orange_cones = len(self.map.orange_cones)
+            print(f"number of orange cones seen: {n_orange_cones})")
+        
+            if n_orange_cones >= 4:
+                self.target_zone()
+                
+            
+        
+    def target_zone(self):
+        self.map.filter_orange_cones()
+        if len(self.map.orange_cones) >= 4:
+            self.round == 1
+        
+        target = Target()
+        target.header.stamp = self.get_clock().now().to_msg()
+        target.round = 0
+        
+        target.x_position = self.map.targets_x
+        target.y_position = self.map.targets_y
+        target.turn_angle = 0.0
+        
+        self.target_publisher.publish(target)
+        
     
     def fuse_data3(self, yolo_msg, cluster_msg):
         # rule out clusters which are not in fov
@@ -224,7 +264,7 @@ class DataFusionNode(Node):
             plot_clusters_and_cones(filtered_clusters, estimated_cone_positions, labels)
         
         # fuse
-        epsilon = 150#mm
+        epsilon = 200#mm
         labeled_clusters = []
         for cluster in filtered_clusters:
             cluster_position = average_cluster_position(cluster)

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import math
 from scipy.interpolate import interp1d
-from data_fusion import FOV, VISUALISATION
+from fuse_sensor_data import FOV, VISUALISATION
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/global_map"
 BLUE = 0
@@ -242,6 +242,8 @@ class Map:
         self.data = np.zeros(self.dim, dtype=np.int8)
         self.data[:, :, 0] = -1
         
+        self.orange_cones = []
+        
         self.y_errors = []
         self.x_errors = []
         
@@ -254,6 +256,9 @@ class Map:
         
         self.last_blue = (None, None)
         self.last_yellow = (None, None)
+        
+        self.targets_x = []
+        self.targets_y = []
         
         # plot
         self.fig, self.ax = plt.subplots()
@@ -284,14 +289,16 @@ class Map:
             hit = hits[0]
             self.data[hit[0], hit[1], 1] += 1
             if self.data[hit[0], hit[1], 1] >= self.min_hist:
-                self.last_seen_idx = (self.last_seen_idx + 1) % self.last_seen_size
-                self.last_seen[self.last_seen_idx % self.last_seen_size] = (hit[0], hit[1])
                 
-                # old approach
+                # self.last_seen_idx = (self.last_seen_idx + 1) % self.last_seen_size
+                # self.last_seen[self.last_seen_idx % self.last_seen_size] = (hit[0], hit[1])
+                
                 if self.data[hit[0], hit[1], 0] == BLUE:
                     self.last_blue = (hit[0], hit[1])
                 elif self.data[hit[0], hit[1], 0] == YELLOW:
                     self.last_yellow = (hit[0], hit[1])
+                elif self.data[hit[0], hit[1], 0] == ORANGE and self.data[hit[0], hit[1], 1] == self.min_hist: # it is the first time the orange cone is added
+                    self.orange_cones.append((hit[0], hit[1]))
                     
             x_error = x - hit[0]
             y_error = y - hit[1]
@@ -307,67 +314,7 @@ class Map:
             self.data[x, y, 1] = 1
             
             
-    def estimate_new_target(self, turtlebot_x, turtlebot_y):
-        # # returns (x, y, angle). eiter x and y are NOne or angle is None, since tbot should only drive or turn
-        # TURN_ANGLE = 20
-        # N = 5
-        # history = []
-        
-        # for i in range(N):
-        #     history.append(self.last_seen[(self.last_seen_idx - i) % self.last_seen_size])
-        
-        
-        
-        # yellows = 0
-        # blues = 0
-        # last_blue = None
-        # last_yellow = None
-        
-        # for i, (x, y) in enumerate(history):
-        #     if x is None:
-        #         break
-            
-        #     if self.data[x, y, 0] == YELLOW:
-        #         if last_yellow is None:
-        #             last_yellow = (x, y)
-        #         yellows += 1
-        #     if self.data[x, y, 0] == BLUE:
-        #         if last_blue is None:
-        #             last_blue = (x, y)
-        #         blues += 1
-        
-        # if yellows == N:
-        #     # only saw yellows, turn left
-        #     pass
-        #     # return None, None, -TURN_ANGLE
-        # elif blues == N:
-        #     # only saw blues, turn right
-        #     pass
-        #     # return None, None, TURN_ANGLE
-        # elif last_blue and last_yellow:
-        #     # drive to center of blue and yellow
-        #     (bx, by) = last_blue
-        #     (yx, yy) = last_yellow
-        #     bx *= self.discretization_steps
-        #     by *= self.discretization_steps
-        #     yx *= self.discretization_steps
-        #     yy *= self.discretization_steps
-            
-        #     bx -= self.size / 2
-        #     by -= self.size / 2
-        #     yx -= self.size / 2
-        #     yy -= self.size / 2
-            
-        #     return ((bx + yx) / 2, (by + yy) / 2, None)
-        # return None, None, None
-        
-        
-        
-        
-        
-        
-        
-        
+    def estimate_new_target(self, turtlebot_x, turtlebot_y, max_distance=1800):
         
         
         if self.last_blue[0] is not None and self.last_yellow[0] is not None:
@@ -387,17 +334,34 @@ class Map:
             
             distance_new_target = distance(turtlebot_x, turtlebot_y, X, Y)
             distance_old_target = distance(turtlebot_x, turtlebot_y, self.last_target[0], self.last_target[1])
-            if  distance_new_target > distance_old_target and distance_new_target < 2000 :
+            if  distance_new_target > distance_old_target and distance_new_target < max_distance :
                 self.last_target = (X, Y)
+                self.targets_x.append(X)
+                self.targets_y.append(Y)
                 return (X, Y, None)
             else:
-                return (self.last_target[0], self.last_target[1], None)
+                return (None, None, None)
         else:
             return None, None, None
+    
+    
+    def filter_orange_cones(self): 
+        # remove possible orange noise cones
+        n = len(self.orange_cones)
+        noise_points = []
+        for i, (x, y) in enumerate(self.orange_cones):
+            hits = self.check_vicinity(x, y, ORANGE, 2000)
+            if len(hits) < 2:
+                noise_points.append((x, y))
+        
+        for point in noise_points:
+            print(f"filtered out cone at position {point}")
+            self.orange_cones.remove(point)
         
     
-    def check_vicinity(self, X, Y, color):
-        epsilon = int(self.epsilon / self.discretization_steps)
+    def check_vicinity(self, X, Y, color, epsilon=None):
+        if epsilon is None:
+            epsilon = int(self.epsilon / self.discretization_steps)
         hits = []
         for x in range(X - epsilon, X + epsilon + 1):
             for y in range(Y - epsilon, Y + epsilon):
