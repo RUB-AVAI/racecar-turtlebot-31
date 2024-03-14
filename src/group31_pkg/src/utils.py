@@ -60,6 +60,9 @@ def bb_surface(box):
     delta_y = np.abs(box.min_y - box.max_y)
     return delta_y * delta_x
 
+def distance(x1, y1, x2, y2):
+    return np.linalg.norm((x1 - x2, y1 - y2))
+
 
 data = np.load("data/data_1_merged.npy")
 f = interp1d(data[:, 2], data[:, 0], bounds_error=True)
@@ -253,6 +256,7 @@ class Map:
         self.last_yellow = (None, None)
         # plot
         self.fig, self.ax = plt.subplots()
+        self.last_target = (0, 0)
 
     def set(self, x_position_t, y_position_t, facing_direction_t, x_position_cone, y_position_cone, cone):
         # the cone position is given in the local coordinate system of the turtlebot
@@ -273,7 +277,7 @@ class Map:
         
         x = round(x)
         y = round(y)
-        hits = self.check_vicinity(x, y)
+        hits = self.check_vicinity(x, y, cone)
         if len(hits) == 1:
             # print(f"new cone: {x}, {y}")
             hit = hits[0]
@@ -301,7 +305,7 @@ class Map:
             self.data[x, y, 1] = 1
             
             
-    def estimate_new_target(self):
+    def estimate_new_target(self, turtlebot_x, turtlebot_y):
         # # returns (x, y, angle). eiter x and y are NOne or angle is None, since tbot should only drive or turn
         # TURN_ANGLE = 20
         # N = 5
@@ -376,19 +380,24 @@ class Map:
             by -= self.size / 2
             yx -= self.size / 2
             yy -= self.size / 2
+            X = (bx + yx) / 2
+            Y = (by + yy) / 2
             
-            return ((bx + yx) / 2, (by + yy) / 2, None)
+            if distance(turtlebot_x, turtlebot_y, X, Y) > distance(turtlebot_x, turtlebot_y, self.last_target[0], self.last_target[1]):
+                self.last_target = (X, Y)
+                return (X, Y, None)
+            else:
+                return (self.last_target[0], self.last_target[1], None)
         else:
-            print("could not find blue and yellow cones to create a point")
             return None, None, None
         
     
-    def check_vicinity(self, X, Y):
+    def check_vicinity(self, X, Y, color):
         epsilon = int(self.epsilon / self.discretization_steps)
         hits = []
         for x in range(X - epsilon, X + epsilon + 1):
             for y in range(Y - epsilon, Y + epsilon):
-                if self.data[x, y, 0] != -1:
+                if self.data[x, y, 0] == color:
                     hits.append((x, y, self.data[x, y]))
         return hits
     
@@ -408,14 +417,23 @@ class Map:
         
         x_pos_t += self.size / 2
         y_pos_t += self.size / 2
+        target_x = self.size / 2 + self.last_target[0]
+        target_y = self.size / 2 + self.last_target[1]
         
         # prepare plot 
         self.ax.clear()
+        
+        # turtlebot
+        print((x_pos_t, y_pos_t))
         turtlebot = plt.Circle((x_pos_t, y_pos_t), 100, color="red", fill=True)
         self.ax.add_patch(turtlebot)
+        
+        # last target
+        target = plt.Circle((target_x, target_y), 50, color="green", fill=True)
+        self.ax.add_patch(target)
+        print(self.last_target)
+        
         cone_positions = self.get_cones()
-        
-        
         cone_size = 100
         fill_cones = True
         colors = ["blue", "orange", "yellow"]
