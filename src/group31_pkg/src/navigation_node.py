@@ -48,7 +48,7 @@ class NavigationNode(Node):
         self.VISUALIZATION = False
         
         # Target parameter (changed in future for subscriber of target points)
-        self.TARGET_RADIUS = 25
+        self.TARGET_RADIUS = 60
         if not self.GET_TARGETS:
             self.TARGETS_X = [-1000] #[0, 1000, 1000, 0]
             self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
@@ -85,9 +85,11 @@ class NavigationNode(Node):
     def params_round1(self):
         # Velocity parameter
         self.LAMBDA = 140
+        self.ORIGINAL_LAMBDA = self.LAMBDA
+        self.DECAY = 0.975
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = -20
+        self.MIN_VELOCITY = -100
         
         self.delta_t = 10
 
@@ -386,6 +388,8 @@ class NavigationNode(Node):
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
         
+        self.LAMBDA = self.LAMBDA * self.DECAY
+        
     
     def drive_withot_targets(self, msg_motor):
         self.getDirection()
@@ -444,6 +448,8 @@ class NavigationNode(Node):
         self.TARGET_Y = msg.y_position
         self.ROUND = msg.round
         self.TURN_ANGLE = msg.turn_angle
+        
+        self.LAMBDA = self.ORIGINAL_LAMBDA
         
         if self.counter == -1:
             self.ts.registerCallback(self.callback)
