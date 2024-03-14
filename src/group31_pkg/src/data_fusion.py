@@ -109,7 +109,7 @@ class DataFusionNode(Node):
         self.target_publisher.publish(target)
     
     
-    def match_message(self, yolo_msg, type):
+    def match_message(self, yolo_msg, type, max_offset=0.1):
         """Because of the inference of the yolo model, the yolo messages arrive later than the other messages. Therefore this function  
          searches the buffer for a message with the corresponding timestamp.
          The type argument specifies to look for cluster or position
@@ -138,7 +138,7 @@ class DataFusionNode(Node):
              
              distance = np.abs(timestamp - yolo_timestamp)
              if(i>0):
-                 if distance > prev_distance:
+                 if distance > prev_distance and distance < max_offset:
                      return prev_msg
                  else:
                      prev_distance = distance
