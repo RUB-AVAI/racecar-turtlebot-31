@@ -59,7 +59,9 @@ class NavigationNode(Node):
             self.TARGET_Y = self.TARGETS_Y.pop(0)
         else:
             self.target_subscriber = self.create_subscription(Target, "/target_position", self.target_callback, qos_profile=rclpy.qos.qos_profile_services_default)
-        
+            self.TARGET_X = 0
+            self.TARGET_Y = 0
+                        
         # Start position
         self.x = 0
         self.y = 0
