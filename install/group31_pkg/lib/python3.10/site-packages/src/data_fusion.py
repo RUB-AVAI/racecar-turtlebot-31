@@ -1,5 +1,5 @@
 import os
-from utils import get_timestamp_as_float, is_range_in_range, Map, estimate_cone_position, center_of_range, preprocess_bounding_boxes
+from utils import *
 import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,9 +7,11 @@ from rclpy.node import Node
 from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position
 
 #camera fov:
-FOV = (148, 212)
+FOV = (143, 217)
+MIN_HISTORY = 3
 CLUSTER = 0
 POSITION = 1
+LOG_INFO = False
 
 class DataFusionNode(Node):
     def __init__(self):
@@ -19,7 +21,7 @@ class DataFusionNode(Node):
         self.yolo_output_subscription = self.create_subscription(YoloOutput, "/cone_classification", self.yolo_output_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
         
-        self.map = Map()
+        self.map = Map(min_hist=MIN_HISTORY)
         
         self.buffer_size = 100
         self.yolo_msgs = [None] * self.buffer_size
@@ -33,22 +35,26 @@ class DataFusionNode(Node):
         self.default_position.x_position=0.0 # in mm
         self.default_position.y_position=0.0 # in mm
         self.default_position.facing_direction=0.0 # in degrees
+        
+        
     
 
     def clustered_lidar_listener_callback(self, msg):
-        self.get_logger().info("Clustered Lidar Data Received")
+        if LOG_INFO:
+            self.get_logger().info("Clustered Lidar Data Received")
         self.cluster_msgs_idx += 1
         self.cluster_msgs[self.cluster_msgs_idx % self.buffer_size] = msg
         
 
     def yolo_output_listener_callback(self, msg):
-        self.get_logger().info("Yolo Output Received")
-        for box in msg.bounding_boxes:
-            delta_x = np.abs(box.min_x - box.max_x)
-            delta_y = np.abs(box.min_y - box.max_y)
-            print(f"ratio for {box.cone}: {delta_y / delta_x}")
+        if LOG_INFO:
+            self.get_logger().info("Yolo Output Received")
+        # for box in msg.bounding_boxes:
+        #     delta_x = np.abs(box.min_x - box.max_x)
+        #     delta_y = np.abs(box.min_y - box.max_y)
+        #     print(f"ratio for {box.cone}: {delta_y / delta_x}")
             
-        msg = preprocess_bounding_boxes(msg, log_to_console=True)
+        # msg = preprocess_bounding_boxes(msg, log_to_console=True)
         self.yolo_msgs_idx += 1
         self.yolo_msgs[self.yolo_msgs_idx % self.buffer_size] = msg
         
@@ -65,7 +71,8 @@ class DataFusionNode(Node):
 
 
     def position_listener_callback(self, msg):
-            self.get_logger().info("Position Received")
+            if LOG_INFO:
+                self.get_logger().info("Position Received")
             self.pos_msgs_idx += 1
             msg.facing_direction = -msg.facing_direction % 360
             self.pos_msgs[self.pos_msgs_idx % self.buffer_size] = msg
@@ -105,7 +112,6 @@ class DataFusionNode(Node):
                  else:
                      prev_distance = distance
                      prev_msg = msg
-        
         return prev_msg
     
     
@@ -154,25 +160,39 @@ class DataFusionNode(Node):
              if (FOV[0] <= cluster.angles[0] and cluster.angles[0] <= FOV[1]) or (FOV[0] <= cluster.angles[-1] and cluster.angles[-1] <= FOV[1]):
                   clusters_in_fov.append(cluster)
         
+        # rule out clusters that are definitly not cones
+        filtered_clusters = []
+        for cluster in clusters_in_fov:
+            if could_be_cone(cluster):
+                filtered_clusters.append(cluster)
+        plot_clusters(filtered_clusters)
         labeled_clusters = []
+        
+        
+        d_first_iter = True
+        d_ranges_box = []
+        d_ranges_cluster = []
+        
+        
         for box in yolo_msg.bounding_boxes:
             box_left = (box.min_x - 320) / 320
             box_right = (box.max_x - 320) / 320
-            range_box = (box_left, box_right)
+            range_box = [box_left, box_right]
+            d_ranges_box.append(range_box)
             
             best_fitting_cluster = None
             range_best_fitting_cluster = None
             
-            possible_clusters = []
             
-            for cluster in clusters_in_fov:
+            for cluster in filtered_clusters:
                 cluster_left = (-(cluster.angles[-1] - 180) / (0.5 * (FOV[1] - FOV[0])))
                 cluster_right = (-(cluster.angles[0] - 180) / (0.5 * (FOV[1] - FOV[0])))
-                range_cluster = (max(cluster_left, -1), min(1, cluster_right))
+                range_cluster = [max(cluster_left, -1), min(1, cluster_right)]
+                if d_first_iter:
+                    d_ranges_cluster.append(range_cluster)
                 
                 # check if cluster is in bounding box
                 if is_range_in_range(range_cluster, range_box):
-                    possible_clusters.append(f"cluster:{range_cluster}, angles: {cluster.angles}, box:{range_box}, label: {box.cone}")
                     if best_fitting_cluster is None:
                         best_fitting_cluster = cluster
                         range_best_fitting_cluster = range_cluster
@@ -181,19 +201,21 @@ class DataFusionNode(Node):
                         if np.abs(center_of_range(range_cluster) - center_of_range(range_box)) < np.abs(center_of_range(range_best_fitting_cluster) - center_of_range(range_box)):
                             best_fitting_cluster = cluster
                             range_best_fitting_cluster = range_cluster
-
-                        # delta = np.abs(range_cluster[1] - range_cluster[0])
-                        
-                        # if delta > np.abs(range_best_fitting_cluster[0] - range_best_fitting_cluster[1]):
-                        #     best_fitting_cluster = cluster
-                        #     range_best_fitting_cluster = range_cluster
+            d_first_iter = False
             
             if best_fitting_cluster:
-                if len(possible_clusters) > 1:
-                    print(possible_clusters)
                 labeled_clusters.append((best_fitting_cluster, box.cone))
             else:
-                self.get_logger().warning("Found no cluster to match to bounding box")
+                pass
+                # self.get_logger().warning("Found no cluster to match to bounding box")
+        # d_ranges_box = np.array(d_ranges_box)
+        # d_ranges_box = d_ranges_box[np.argsort(d_ranges_box[:, 0])]
+        # if len(d_ranges_cluster) != 0:
+        #     d_ranges_cluster=np.array(d_ranges_cluster)
+        #     d_ranges_cluster = d_ranges_cluster[np.argsort(d_ranges_cluster[:, 0])]
+    
+        # print(f"boxes: {d_ranges_box}")
+        # print(f"cluster: {d_ranges_cluster}")
         return labeled_clusters
                        
         

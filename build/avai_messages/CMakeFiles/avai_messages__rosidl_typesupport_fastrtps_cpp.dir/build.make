@@ -87,7 +87,7 @@ rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_se
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/Cluster.idl
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/ClusteredLidarData.idl
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/Position.idl
-rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/Targets.idl
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: rosidl_adapter/avai_messages/msg/Target.idl
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -209,11 +209,11 @@ rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/position__
 rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/position__rosidl_typesupport_fastrtps_cpp.hpp: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/position__rosidl_typesupport_fastrtps_cpp.hpp
 
-rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp
-	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp
 
-rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/targets__rosidl_typesupport_fastrtps_cpp.hpp: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp
-	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/targets__rosidl_typesupport_fastrtps_cpp.hpp
+rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/target__rosidl_typesupport_fastrtps_cpp.hpp: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/target__rosidl_typesupport_fastrtps_cpp.hpp
 
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/flags.make
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp.o: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp
@@ -355,19 +355,19 @@ CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/position__type_support.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/position__type_support.cpp -o CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/position__type_support.cpp.s
 
-CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/flags.make
-CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp
-CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o -MF CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o.d -o CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp
+CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/flags.make
+CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp
+CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o -MF CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o.d -o CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp
 
-CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp > CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.i
+CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp > CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.i
 
-CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp -o CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.s
+CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp -o CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.s
 
 # Object files for target avai_messages__rosidl_typesupport_fastrtps_cpp
 avai_messages__rosidl_typesupport_fastrtps_cpp_OBJECTS = \
@@ -381,7 +381,7 @@ avai_messages__rosidl_typesupport_fastrtps_cpp_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/cluster__type_support.cpp.o" \
 "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/clustered_lidar_data__type_support.cpp.o" \
 "CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/position__type_support.cpp.o" \
-"CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o"
+"CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o"
 
 # External object files for target avai_messages__rosidl_typesupport_fastrtps_cpp
 avai_messages__rosidl_typesupport_fastrtps_cpp_EXTERNAL_OBJECTS =
@@ -396,7 +396,7 @@ libavai_messages__rosidl_typesupport_fastrtps_cpp.so: CMakeFiles/avai_messages__
 libavai_messages__rosidl_typesupport_fastrtps_cpp.so: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/cluster__type_support.cpp.o
 libavai_messages__rosidl_typesupport_fastrtps_cpp.so: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/clustered_lidar_data__type_support.cpp.o
 libavai_messages__rosidl_typesupport_fastrtps_cpp.so: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/position__type_support.cpp.o
-libavai_messages__rosidl_typesupport_fastrtps_cpp.so: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp.o
+libavai_messages__rosidl_typesupport_fastrtps_cpp.so: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp.o
 libavai_messages__rosidl_typesupport_fastrtps_cpp.so: CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/build.make
 libavai_messages__rosidl_typesupport_fastrtps_cpp.so: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_fastrtps_cpp.so
 libavai_messages__rosidl_typesupport_fastrtps_cpp.so: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
@@ -428,7 +428,7 @@ CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typ
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motor__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/motors__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/position__type_support.cpp
-CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/targets__type_support.cpp
+CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/target__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vector3_sensor__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/vehicle_lights__type_support.cpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/dds_fastrtps/yolo_output__type_support.cpp
@@ -436,7 +436,7 @@ CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typ
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/motor__rosidl_typesupport_fastrtps_cpp.hpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/motors__rosidl_typesupport_fastrtps_cpp.hpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/position__rosidl_typesupport_fastrtps_cpp.hpp
-CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/targets__rosidl_typesupport_fastrtps_cpp.hpp
+CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/target__rosidl_typesupport_fastrtps_cpp.hpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_fastrtps_cpp.hpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/vehicle_lights__rosidl_typesupport_fastrtps_cpp.hpp
 CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_cpp.dir/depend: rosidl_typesupport_fastrtps_cpp/avai_messages/msg/detail/yolo_output__rosidl_typesupport_fastrtps_cpp.hpp

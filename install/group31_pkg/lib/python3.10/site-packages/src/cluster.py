@@ -6,6 +6,7 @@ from sensor_msgs.msg import LaserScan
 from avai_messages.msg import ClusteredLidarData, Cluster
 import os
 from sklearn.cluster import DBSCAN
+from copy import copy
 
 
 
@@ -29,7 +30,7 @@ class LidarProcessingNode(Node):
         self.i = 0
 
         # cluster parameters
-        self.eps = 0.1 * 1000 # in millimeters
+        self.eps = 0.2 * 1000 # in millimeters
         self.min_samples = 2 # try 4 or 8
         if CLUSTER:
             self.dbscan = DBSCAN(eps=self.eps, min_samples=self.min_samples)
@@ -59,8 +60,8 @@ class LidarProcessingNode(Node):
         A_unclustered = []
         R_unclustered = []
         
-        ranges = self.ranges
-        timestamp = self.timestamp
+        ranges = copy(self.ranges)
+        timestamp = copy(self.timestamp)
 
         # convert ranges into cartesian coordinates
         for angle, range in enumerate(ranges):
@@ -124,7 +125,7 @@ class LidarProcessingNode(Node):
             # create and publish message
             msg = ClusteredLidarData()
             msg.clusters = clusters
-            msg.header.stamp = timestamp.to_msg()
+            msg.header.stamp = timestamp
             msg.header.frame_id = f"{self.i}"
             self.i += 1
             self.publisher_.publish(msg)
@@ -147,7 +148,7 @@ class LidarProcessingNode(Node):
     def lidar_listener_callback(self, msg):
         self.get_logger().info("Lidar Data Received")
         self.ranges = np.array(msg.ranges) * 1000 #convert ranges from meters to millimeters
-        self.timestamp = self.get_clock().now()
+        self.timestamp = msg.header.stamp
         self.process_data()
         if SAVE_VISUALISATION:
             self.save_map()
