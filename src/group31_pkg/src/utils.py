@@ -45,6 +45,8 @@ def average_cluster_position(cluster_msg):
         
         return cone_x_pos, cone_y_pos
 
+
+
 def center_of_range(range):
     return np.mean(range)
 
@@ -59,7 +61,7 @@ def bb_surface(box):
     return delta_y * delta_x
 
 
-data = np.load("data/merged_data.npy")
+data = np.load("data/data_1_merged.npy")
 f = interp1d(data[:, 2], data[:, 0], bounds_error=True)
 
 def estimate_cone_range(bounding_box):
@@ -234,17 +236,18 @@ class Map:
         self.epsilon = epsilon
         self.min_hist = min_hist
         self.dim = (int(size / self.discretization_steps), int(size / self.discretization_steps), 2)
-        self.data = np.zeros(self.dim)
+        self.data = np.zeros(self.dim, dtype=np.int8)
         self.data[:, :, 0] = -1
-        
-        self.data_listed = []
         
         self.y_errors = []
         self.x_errors = []
         
         self.start_pos = (0, 0)
         
-        self.last_seen = [None, None, None]
+        
+        self.last_seen_size = 10
+        self.last_seen = [(None, None)] * self.last_seen_size
+        self.last_seen_idx = -1
         
         # plot
         self.fig, self.ax = plt.subplots()
@@ -271,55 +274,64 @@ class Map:
         hits = self.check_vicinity(x, y)
         if len(hits) == 1:
             # print(f"new cone: {x}, {y}")
-            for hit in hits:
-                self.data[hit[0], hit[1], 1] += 1
-                x_error = x - hit[0]
-                y_error = y - hit[1]
-                self.x_errors.append(x_error)
-                self.y_errors.append(y_error)
-            #     print(f"existing cone: {hit[0]}, {hit[1]}")
-            #     print(f"errors: {x_error}  {y_error}")
+            hit = hits[0]
+            self.data[hit[0], hit[1], 1] += 1
+            if self.data[hit[0], hit[1], 1] >= self.min_hist:
+                self.last_seen_idx = (self.last_seen_idx + 1) % self.last_seen_size
+                self.last_seen[self.last_seen_idx % self.last_seen_size] = (hit[0], hit[1])
+            x_error = x - hit[0]
+            y_error = y - hit[1]
+            self.x_errors.append(x_error)
+            self.y_errors.append(y_error)
+            # print(f"existing cone: {hit[0]}, {hit[1]}")
+            # print(f"errors: {x_error}  {y_error}")
         elif len(hits) > 1:
             print(hits)
-            print("not adding a cone")
+            print("not adding a cone because of multiambiguity")
         else:
             self.data[x, y, 0] = cone
             self.data[x, y, 1] = 1
-            self.data_listed.append((x, y, cone))
-            self.last_seen[cone] = (x, y)
-    
-    
-    def find_nearest_cone(self, X, Y, label, accepted_idxs=np.inf):
-        smallest_distance = np.inf
-        nearest_cone = None
-        for cone in np.where((self.get_cones()[label])[2] < accepted_idxs):
-            distance = np.linalg.norm(X - cone[0], Y - cone[1])
-            if distance < smallest_distance:
-                nearest_cone = cone
-                smallest_distance = distance
-        return nearest_cone
             
             
     def estimate_new_target(self):
-        # blue_cone = None
-        # yellow_cone = None
-        # success = False
-        # for i in range(1, self.data_listed + 1):
-        #     (x, y, cone) = self.data_listed[-i]
-        #     if cone == 0 and blue_cone is None: #blue
-        #         blue_cone = (x * self.discretization_steps, y * self.discretization_steps)
-        #     elif cone == 2 and yellow_cone is None: # yellow
-        #         yellow_cone = (x * self.discretization_steps, y * self.discretization_steps)
-        #     elif blue_cone and yellow_cone:
-        #         success = True
-        #         break
+        # returns (x, y, angle). eiter x and y are NOne or angle is None, since tbot should only drive or turn
+        TURN_ANGLE = 20
+        N = 2
+        history = []
         
-        # if success:
-        #     # return middle between both cones
+        for i in range(N):
+            history.append(self.last_seen[(self.last_seen_idx - i) % self.last_seen_size])
         
-        if self.last_seen[BLUE] is not None and self.last_seen[YELLOW] is not None:
-            (bx, by) = self.last_seen[BLUE]
-            (yx, yy) = self.last_seen[YELLOW]
+        
+        
+        yellows = 0
+        blues = 0
+        last_blue = None
+        last_yellow = None
+        
+        for i, (x, y) in enumerate(history):
+            if x is None:
+                return None, None, None
+            
+            if self.data[x, y, 0] == YELLOW:
+                if last_yellow is None:
+                    last_yellow = (x, y)
+                yellows += 1
+            if self.data[x, y, 0] == BLUE:
+                if last_blue is None:
+                    last_blue = (x, y)
+                blues += 1
+        
+        if yellows == N:
+            # only saw yellows, turn left
+            return None, None, -TURN_ANGLE
+        elif blues == N:
+            # only saw blues, turn right
+            return None, None, TURN_ANGLE
+        elif last_blue and last_yellow:
+            # drive to center of blue and yellow
+            (bx, by) = last_blue
+            (yx, yy) = last_yellow
             bx *= self.discretization_steps
             by *= self.discretization_steps
             yx *= self.discretization_steps
@@ -330,18 +342,34 @@ class Map:
             yx -= self.size / 2
             yy -= self.size / 2
             
-            return ((bx + yx) / 2, (by + yy) / 2)
-        else:
-            print("could not find blue and yellow cones to create a point")
-            return None, None
-            
+            return ((bx + yx) / 2, (by + yy) / 2, None)
         
         
         
-            
-            
-            
         
+        
+        
+        
+        
+        
+        
+        # if self.last_seen[BLUE] is not None and self.last_seen[YELLOW] is not None:
+        #     (bx, by) = self.last_seen[BLUE]
+        #     (yx, yy) = self.last_seen[YELLOW]
+        #     bx *= self.discretization_steps
+        #     by *= self.discretization_steps
+        #     yx *= self.discretization_steps
+        #     yy *= self.discretization_steps
+            
+        #     bx -= self.size / 2
+        #     by -= self.size / 2
+        #     yx -= self.size / 2
+        #     yy -= self.size / 2
+            
+        #     return ((bx + yx) / 2, (by + yy) / 2)
+        # else:
+        #     print("could not find blue and yellow cones to create a point")
+        #     return None, None
         
     
     def check_vicinity(self, X, Y):

@@ -4,7 +4,7 @@ import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
-from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position, Targets
+from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position, Target
 
 #camera fov:
 FOV = (148, 212)
@@ -23,10 +23,10 @@ class DataFusionNode(Node):
         self.clustered_lidar_subscription = self.create_subscription(ClusteredLidarData, "/clusterered_lidar_data", self.clustered_lidar_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.yolo_output_subscription = self.create_subscription(YoloOutput, "/cone_classification", self.yolo_output_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
-        self.target_publisher = self.create_publisher(Targets, "/target_position", qos_profile=rclpy.qos.qos_profile_services_default)
+        self.target_publisher = self.create_publisher(Target, "/target_position", qos_profile=rclpy.qos.qos_profile_services_default)
         self.target_updater = self.create_timer(1 / TARGET_UPDATES_PER_SECOND, self.update_target)
         
-        self.map = Map(min_hist=MIN_HISTORY)
+        self.map = Map(size=40000, min_hist=MIN_HISTORY)
         
         self.buffer_size = 100
         self.yolo_msgs = [None] * self.buffer_size
@@ -82,6 +82,28 @@ class DataFusionNode(Node):
             self.pos_msgs[self.pos_msgs_idx % self.buffer_size] = msg
     
     
+    def update_target(self):
+        x,y,angle = self.map.estimate_new_target()
+        print(f"angle: {angle}, x: {x}, y: {y}")
+        if x is None and y is None and angle is None:
+            return
+        target = Target()
+        target.header.stamp = self.get_clock().now().to_msg()
+        target.round = 0
+        
+        if angle:
+            target.turn_angle = float(angle)
+            target.x_position = 0.0
+            target.y_position = 0.0
+        else:
+            target.turn_angle = 0.0
+            target.x_position = x
+            target.y_position = y
+        
+        
+        self.target_publisher.publish(target)
+    
+    
     def match_message(self, yolo_msg, type):
         """Because of the inference of the yolo model, the yolo messages arrive later than the other messages. Therefore this function  
          searches the buffer for a message with the corresponding timestamp.
@@ -119,17 +141,6 @@ class DataFusionNode(Node):
         return prev_msg
     
     
-    def update_target(self):
-        x,y = self.map.estimate_new_target()
-        if x is None:
-            return
-        target = Targets()
-        target.x_position = x
-        target.y_position = y
-        target.round = 0
-        self.target_publisher.publish(target)
-    
-    
     def update_map(self, yolo_msg = None):
         if yolo_msg is None:
             yolo_msg = self.yolo_msgs[self.yolo_msgs_idx]
@@ -148,6 +159,18 @@ class DataFusionNode(Node):
             return
         
         labeled_clusters = self.fuse_data3(yolo_msg, cluster_msg)
+        
+        if(len(labeled_clusters)) == 0:
+            return
+        
+        # order the clusters from close to far
+        labeled_clusters = np.array(labeled_clusters)
+        calc_distance = lambda x1, y1, x2, y2: np.linalg.norm((x1-x2, y1-y2))
+        
+        
+        
+        distances = [calc_distance(position_msg.x_position, position_msg.y_position, average_cluster_position(cluster)[0], average_cluster_position(cluster)[1]) for cluster in labeled_clusters[:, 0]]
+        labeled_clusters = labeled_clusters[np.argsort(distances)]
         
         for cluster, label in labeled_clusters:
             # compute x and y position of cluster
