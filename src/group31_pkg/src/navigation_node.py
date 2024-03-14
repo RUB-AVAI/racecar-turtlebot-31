@@ -89,7 +89,7 @@ class NavigationNode(Node):
         self.DECAY = 0.975
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = -100
+        self.MIN_VELOCITY = -50
         
         self.delta_t = 10
 
@@ -388,7 +388,8 @@ class NavigationNode(Node):
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
         
-        self.LAMBDA = self.LAMBDA * self.DECAY
+        if self.LAMBDA > 50.0:
+            self.LAMBDA = self.LAMBDA * self.DECAY
         
     
     def drive_withot_targets(self, msg_motor):
