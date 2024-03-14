@@ -61,9 +61,13 @@ cdr_serialize(
     ros_message.header,
     cdr);
   // Member: x_position
-  cdr << ros_message.x_position;
+  {
+    cdr << ros_message.x_position;
+  }
   // Member: y_position
-  cdr << ros_message.y_position;
+  {
+    cdr << ros_message.y_position;
+  }
   // Member: round
   cdr << ros_message.round;
   // Member: turn_angle
@@ -82,10 +86,14 @@ cdr_deserialize(
     cdr, ros_message.header);
 
   // Member: x_position
-  cdr >> ros_message.x_position;
+  {
+    cdr >> ros_message.x_position;
+  }
 
   // Member: y_position
-  cdr >> ros_message.y_position;
+  {
+    cdr >> ros_message.y_position;
+  }
 
   // Member: round
   cdr >> ros_message.round;
@@ -116,14 +124,22 @@ get_serialized_size(
     ros_message.header, current_alignment);
   // Member: x_position
   {
-    size_t item_size = sizeof(ros_message.x_position);
-    current_alignment += item_size +
+    size_t array_size = ros_message.x_position.size();
+
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    size_t item_size = sizeof(ros_message.x_position[0]);
+    current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
   // Member: y_position
   {
-    size_t item_size = sizeof(ros_message.y_position);
-    current_alignment += item_size +
+    size_t array_size = ros_message.y_position.size();
+
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    size_t item_size = sizeof(ros_message.y_position[0]);
+    current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
   // Member: round
@@ -183,7 +199,11 @@ max_serialized_size_Target(
 
   // Member: x_position
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     last_member_size = array_size * sizeof(uint64_t);
     current_alignment += array_size * sizeof(uint64_t) +
@@ -192,7 +212,11 @@ max_serialized_size_Target(
 
   // Member: y_position
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     last_member_size = array_size * sizeof(uint64_t);
     current_alignment += array_size * sizeof(uint64_t) +

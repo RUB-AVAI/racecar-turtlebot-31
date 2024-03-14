@@ -13,7 +13,7 @@ from copy import copy
 #global variables
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/lidar_map"
 CLUSTER = True
-SAVE_VISUALISATION = True
+SAVE_VISUALISATION = False
 
 TOPIC = "/clusterered_lidar_data"
 QUEUE_SIZE = 1
@@ -30,8 +30,8 @@ class LidarProcessingNode(Node):
         self.i = 0
 
         # cluster parameters
-        self.eps = 0.2 * 1000 # in millimeters
-        self.min_samples = 2 # try 4 or 8
+        self.eps = 0.15 * 1000 # in millimeters
+        self.min_samples = 1 # try 4 or 8
         if CLUSTER:
             self.dbscan = DBSCAN(eps=self.eps, min_samples=self.min_samples)
 

@@ -20,13 +20,16 @@ extern "C"
 // Include directives for member types
 // Member 'header'
 #include "std_msgs/msg/detail/header__struct.h"
+// Member 'x_position'
+// Member 'y_position'
+#include "rosidl_runtime_c/primitives_sequence.h"
 
 /// Struct defined in msg/Target in the package avai_messages.
 typedef struct avai_messages__msg__Target
 {
   std_msgs__msg__Header header;
-  double x_position;
-  double y_position;
+  rosidl_runtime_c__double__Sequence x_position;
+  rosidl_runtime_c__double__Sequence y_position;
   int8_t round;
   double turn_angle;
 } avai_messages__msg__Target;

@@ -34,6 +34,8 @@ extern "C"
 {
 #endif
 
+#include "rosidl_runtime_c/primitives_sequence.h"  // x_position, y_position
+#include "rosidl_runtime_c/primitives_sequence_functions.h"  // x_position, y_position
 #include "std_msgs/msg/detail/header__functions.h"  // header
 
 // forward declare type support functions
@@ -80,12 +82,18 @@ static bool _Target__cdr_serialize(
 
   // Field name: x_position
   {
-    cdr << ros_message->x_position;
+    size_t size = ros_message->x_position.size;
+    auto array_ptr = ros_message->x_position.data;
+    cdr << static_cast<uint32_t>(size);
+    cdr.serializeArray(array_ptr, size);
   }
 
   // Field name: y_position
   {
-    cdr << ros_message->y_position;
+    size_t size = ros_message->y_position.size;
+    auto array_ptr = ros_message->y_position.data;
+    cdr << static_cast<uint32_t>(size);
+    cdr.serializeArray(array_ptr, size);
   }
 
   // Field name: round
@@ -126,12 +134,34 @@ static bool _Target__cdr_deserialize(
 
   // Field name: x_position
   {
-    cdr >> ros_message->x_position;
+    uint32_t cdrSize;
+    cdr >> cdrSize;
+    size_t size = static_cast<size_t>(cdrSize);
+    if (ros_message->x_position.data) {
+      rosidl_runtime_c__double__Sequence__fini(&ros_message->x_position);
+    }
+    if (!rosidl_runtime_c__double__Sequence__init(&ros_message->x_position, size)) {
+      fprintf(stderr, "failed to create array for field 'x_position'");
+      return false;
+    }
+    auto array_ptr = ros_message->x_position.data;
+    cdr.deserializeArray(array_ptr, size);
   }
 
   // Field name: y_position
   {
-    cdr >> ros_message->y_position;
+    uint32_t cdrSize;
+    cdr >> cdrSize;
+    size_t size = static_cast<size_t>(cdrSize);
+    if (ros_message->y_position.data) {
+      rosidl_runtime_c__double__Sequence__fini(&ros_message->y_position);
+    }
+    if (!rosidl_runtime_c__double__Sequence__init(&ros_message->y_position, size)) {
+      fprintf(stderr, "failed to create array for field 'y_position'");
+      return false;
+    }
+    auto array_ptr = ros_message->y_position.data;
+    cdr.deserializeArray(array_ptr, size);
   }
 
   // Field name: round
@@ -167,14 +197,24 @@ size_t get_serialized_size_avai_messages__msg__Target(
     &(ros_message->header), current_alignment);
   // field.name x_position
   {
-    size_t item_size = sizeof(ros_message->x_position);
-    current_alignment += item_size +
+    size_t array_size = ros_message->x_position.size;
+    auto array_ptr = ros_message->x_position.data;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    (void)array_ptr;
+    size_t item_size = sizeof(array_ptr[0]);
+    current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
   // field.name y_position
   {
-    size_t item_size = sizeof(ros_message->y_position);
-    current_alignment += item_size +
+    size_t array_size = ros_message->y_position.size;
+    auto array_ptr = ros_message->y_position.data;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    (void)array_ptr;
+    size_t item_size = sizeof(array_ptr[0]);
+    current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
   // field.name round
@@ -239,7 +279,11 @@ size_t max_serialized_size_avai_messages__msg__Target(
   }
   // member: x_position
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     last_member_size = array_size * sizeof(uint64_t);
     current_alignment += array_size * sizeof(uint64_t) +
@@ -247,7 +291,11 @@ size_t max_serialized_size_avai_messages__msg__Target(
   }
   // member: y_position
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     last_member_size = array_size * sizeof(uint64_t);
     current_alignment += array_size * sizeof(uint64_t) +

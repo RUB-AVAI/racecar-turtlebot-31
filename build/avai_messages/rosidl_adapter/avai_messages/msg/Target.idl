@@ -9,9 +9,9 @@ module avai_messages {
     struct Target {
       std_msgs::msg::Header header;
 
-      double x_position;
+      sequence<double> x_position;
 
-      double y_position;
+      sequence<double> y_position;
 
       int8 round;
 
