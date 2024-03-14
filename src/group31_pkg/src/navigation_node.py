@@ -7,6 +7,7 @@ from message_filters import ApproximateTimeSynchronizer, Subscriber
 from avai_messages.msg import Motors, Motor, Position, Target
 from sensor_msgs.msg import LaserScan
 from time import sleep
+from utils import distance
 
 
 
@@ -86,10 +87,12 @@ class NavigationNode(Node):
         # Velocity parameter
         self.LAMBDA = 140
         self.ORIGINAL_LAMBDA = self.LAMBDA
-        self.DECAY = 0.975
+        self.DECAY = 0.92
+        self.DECAY_MIN_DISTANCE = 500
+        self.MIN_LAMBDA = 25
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = -50
+        self.MIN_VELOCITY = -20
         
         self.delta_t = 10
 
@@ -388,7 +391,7 @@ class NavigationNode(Node):
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
         
-        if self.LAMBDA > 50.0:
+        if self.LAMBDA > self.MIN_LAMBDA and distance(self.x, self.y, self.TARGET_X, self.TARGET_Y) < self.DECAY_MIN_DISTANCE:
             self.LAMBDA = self.LAMBDA * self.DECAY
         
     
