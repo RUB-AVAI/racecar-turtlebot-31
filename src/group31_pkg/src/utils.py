@@ -254,6 +254,7 @@ class Map:
         
         self.last_blue = (None, None)
         self.last_yellow = (None, None)
+        
         # plot
         self.fig, self.ax = plt.subplots()
         self.last_target = (0, 0)
@@ -291,6 +292,7 @@ class Map:
                     self.last_blue = (hit[0], hit[1])
                 elif self.data[hit[0], hit[1], 0] == YELLOW:
                     self.last_yellow = (hit[0], hit[1])
+                    
             x_error = x - hit[0]
             y_error = y - hit[1]
             self.x_errors.append(x_error)
@@ -383,7 +385,9 @@ class Map:
             X = (bx + yx) / 2
             Y = (by + yy) / 2
             
-            if distance(turtlebot_x, turtlebot_y, X, Y) > distance(turtlebot_x, turtlebot_y, self.last_target[0], self.last_target[1]):
+            distance_new_target = distance(turtlebot_x, turtlebot_y, X, Y)
+            distance_old_target = distance(turtlebot_x, turtlebot_y, self.last_target[0], self.last_target[1])
+            if  distance_new_target > distance_old_target and distance_new_target < 2000 :
                 self.last_target = (X, Y)
                 return (X, Y, None)
             else:
@@ -424,14 +428,12 @@ class Map:
         self.ax.clear()
         
         # turtlebot
-        print((x_pos_t, y_pos_t))
         turtlebot = plt.Circle((x_pos_t, y_pos_t), 100, color="red", fill=True)
         self.ax.add_patch(turtlebot)
         
         # last target
         target = plt.Circle((target_x, target_y), 50, color="green", fill=True)
         self.ax.add_patch(target)
-        print(self.last_target)
         
         cone_positions = self.get_cones()
         cone_size = 100

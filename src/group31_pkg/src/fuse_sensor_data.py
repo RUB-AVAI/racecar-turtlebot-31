@@ -5,17 +5,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
 from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position, Target
+import argparse
 
 #camera fov:
 FOV = (145, 215)
 assert (180 - FOV[0] == FOV[1] - 180)
 
-MIN_HISTORY = 4
+parser = argparse.ArgumentParser()
+parser.add_argument("-o", "--offset", help="allowed offset between fused messages", default=0.1, type=float)
+args = parser.parse_args()
+
+
+MIN_HISTORY = 2
 CLUSTER = 0
 POSITION = 1
 LOG_INFO = False
 TARGET_UPDATES_PER_SECOND = 0.5
-VISUALISATION = True
+VISUALISATION = False
 
 class DataFusionNode(Node):
     def __init__(self):
@@ -102,14 +108,14 @@ class DataFusionNode(Node):
             target.y_position = 0.0
         else:
             target.turn_angle = 0.0
-            target.x_position = x
-            target.y_position = y
+            target.x_position = float(x)
+            target.y_position = float(y)
         
         
         self.target_publisher.publish(target)
     
     
-    def match_message(self, yolo_msg, type):
+    def match_message(self, yolo_msg, type, max_offset=args.offset):
         """Because of the inference of the yolo model, the yolo messages arrive later than the other messages. Therefore this function  
          searches the buffer for a message with the corresponding timestamp.
          The type argument specifies to look for cluster or position
@@ -123,6 +129,7 @@ class DataFusionNode(Node):
             
         # because of the inference of the yolo model, we search the other messages for the appropriate timestamp
         yolo_timestamp = get_timestamp_as_float(yolo_msg)
+        print(f"yolo_timestamp: {yolo_timestamp}")
 
         # find nearest cluster message
         prev_distance = np.inf
@@ -135,15 +142,17 @@ class DataFusionNode(Node):
              if msg is None:
                  break
              timestamp = get_timestamp_as_float(msg)
+             print(f"cluster_timestamp: {timestamp}")
+             
              
              distance = np.abs(timestamp - yolo_timestamp)
+             if distance < max_offset:
+                 return msg
              if(i>0):
                  if distance > prev_distance:
-                     return prev_msg
+                     return None
                  else:
                      prev_distance = distance
-                     prev_msg = msg
-        return prev_msg
     
     
     def update_map(self, yolo_msg = None):
