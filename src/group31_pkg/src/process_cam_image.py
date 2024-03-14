@@ -25,8 +25,6 @@ args = parser.parse_args()
 TOPIC = "/cone_classification"
 QUEUE_SIZE = 10
 
-if args.fps < 1:
-    raise ValueError("Argument has to be greater or equal 1")
 
 SAVE_IMAGE_RAW = False
 SAVE_IMAGE_WITH_BOUNDING_BOXES = False
