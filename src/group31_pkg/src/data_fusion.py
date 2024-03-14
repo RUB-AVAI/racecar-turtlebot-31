@@ -10,7 +10,7 @@ from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Posit
 FOV = (145, 215)
 assert (180 - FOV[0] == FOV[1] - 180)
 
-MIN_HISTORY = 4
+MIN_HISTORY = 2
 CLUSTER = 0
 POSITION = 1
 LOG_INFO = False
@@ -102,8 +102,8 @@ class DataFusionNode(Node):
             target.y_position = 0.0
         else:
             target.turn_angle = 0.0
-            target.x_position = x
-            target.y_position = y
+            target.x_position = float(x)
+            target.y_position = float(y)
         
         
         self.target_publisher.publish(target)
