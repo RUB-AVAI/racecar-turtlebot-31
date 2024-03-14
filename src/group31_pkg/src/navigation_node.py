@@ -84,10 +84,10 @@ class NavigationNode(Node):
         
     def params_round1(self):
         # Velocity parameter
-        self.LAMBDA = 70
+        self.LAMBDA = 140
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = 5
+        self.MIN_VELOCITY = -20
         
         self.delta_t = 10
 
