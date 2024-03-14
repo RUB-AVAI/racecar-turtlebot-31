@@ -424,7 +424,7 @@ class NavigationNode(Node):
         
         self.LAMBDA = self.ORIGINAL_LAMBDA
         
-        if msg.round == 0:
+        if msg.round == 0 and msg.x_position:
             self.TARGET_X = msg.x_position[0]
             self.TARGET_Y = msg.y_position[0]
         elif msg.round == 1:
