@@ -1832,6 +1832,7 @@ CMakeFiles/avai_messages__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_f
   rosidl_generator_c/avai_messages/msg/detail/target__functions.h \
   /usr/include/c++/11/stdlib.h \
   rosidl_generator_c/avai_messages/msg/rosidl_generator_c__visibility_control.h \
+  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence_functions.h \
   /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/header__functions.h \
   /opt/ros/humble/include/std_msgs/std_msgs/msg/rosidl_generator_c__visibility_control.h
 

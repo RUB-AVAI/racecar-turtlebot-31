@@ -17,13 +17,14 @@ parser.add_argument("-o", "--offset", help="allowed offset between fused message
 args = parser.parse_args()
 
 
-MIN_HISTORY = 3
+MIN_HISTORY = 2
 CLUSTER = 0
 POSITION = 1
 YOLO = 2
 LOG_INFO = False
 TARGET_UPDATES_PER_SECOND = 10
-VISUALISATION = True
+VISUALISATION = False
+
 
 class DataFusionNode(Node):
     def __init__(self):
@@ -35,7 +36,7 @@ class DataFusionNode(Node):
         self.target_publisher = self.create_publisher(Target, "/target_position", qos_profile=rclpy.qos.qos_profile_services_default)
         # self.target_updater = self.create_timer(1 / TARGET_UPDATES_PER_SECOND, self.update_target)
         
-        self.map = Map(size=25000, min_hist=MIN_HISTORY)
+        self.map = Map(size=25000, min_hist=MIN_HISTORY, epsilon=10)
         
         self.init_time = time()
         
@@ -183,7 +184,7 @@ class DataFusionNode(Node):
             self.get_logger().warning("Found no message to match to yolo message timestamp")
             return
         
-        labeled_clusters = self.fuse_data3(yolo_msg, cluster_msg)
+        labeled_clusters = self.fuse_data(yolo_msg, cluster_msg)
         
         if(len(labeled_clusters)) == 0:
             return
@@ -207,7 +208,7 @@ class DataFusionNode(Node):
         self.update_target()
         
         # check if in finish zone
-        if time() - self.init_time > 0: # let some time pass before checking, because we also start in finish zone
+        if time() - self.init_time > 20: # let some time pass before checking, because we also start in finish zone
             
             n_orange_cones = len(self.map.orange_cones)
             # print(f"number of orange cones seen: {n_orange_cones}")
@@ -219,25 +220,40 @@ class DataFusionNode(Node):
         
     def target_zone(self):
         self.map.filter_orange_cones()
+        
+        if self.round == 2: return
+            
+        
         if len(self.map.orange_cones) >= 4:
-            self.round = 1
+            min_distance = np.inf
+            for (x,y) in self.map.orange_cones:
+                pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
+                if pos is None:
+                    pos = self.default_position
+                dist = distance(x, y, pos.x_position, pos.y_position)
+                if dist < min_distance:
+                    min_distance = dist
+            
+            print(min_distance)
+            if min_distance > 2500:
+                return        
             print("round 1 started")
+            np.save(f"data/map{time()}", self.map)
+            self.round == 2
         
-        target = Target()
-        target.header.stamp = self.get_clock().now().to_msg()
-        target.round = 1
-        
-        target.x_position = self.map.targets_x
-        target.y_position = self.map.targets_y
-        target.turn_angle = 0.0
-        
-        print(self.map.targets_x)
-        print(self.map.targets_y)
-        
-        self.target_publisher.publish(target)
+            target = Target()
+            target.header.stamp = self.get_clock().now().to_msg()
+            target.round = 0
+            
+            target.x_position = [self.map.last_target[0] - 1500]
+            target.y_position = [self.map.last_target[1]]
+            target.turn_angle = 0.0
+            
+            
+            self.target_publisher.publish(target)
         
     
-    def fuse_data3(self, yolo_msg, cluster_msg):
+    def fuse_data(self, yolo_msg, cluster_msg):
         # rule out clusters which are not in fov
         clusters_in_fov = []
         for cluster in cluster_msg.clusters:
@@ -285,134 +301,6 @@ class DataFusionNode(Node):
         
         return labeled_clusters
     
-    # def fuse_data2(self, yolo_msg, cluster_msg):
-        
-    #     labeled_clusters = []
-        
-        
-        
-    #     if cluster_msg:
-    #         # rule out clusters which are not in fov
-    #         clusters_in_fov = []
-    #         for cluster in cluster_msg.clusters:
-    #             if (FOV[0] <= cluster.angles[0] and cluster.angles[0] <= FOV[1]) or (FOV[0] <= cluster.angles[-1] and cluster.angles[-1] <= FOV[1]):
-    #                 clusters_in_fov.append(cluster)
-            
-    #         # rule out clusters that are definitly not cones
-    #         filtered_clusters = []
-    #         for cluster in clusters_in_fov:
-    #             if could_be_cone(cluster):
-    #                 filtered_clusters.append(cluster)
-            
-    #         plot_clusters(filtered_clusters)
-        
-                
-    #     # check the boundaries:
-    #     # even if the boxes are at the boundaries, they might not have the coordinates set to 0 / 640
-    #     if yolo_msg:
-    #         buffer = 10 #px
-    #         bounding_boxes = yolo_msg.bounding_boxes
-    #         box_left_edge = []
-    #         box_right_edge = []
-    #         box_ = []
-    #         for i, box in enumerate(bounding_boxes):
-    #             if box.min_x < buffer:
-    #                 box_left_edge.append(box)
-    #                 bounding_boxes.remove(i)
-                
-    #             elif box.max_x > 640 - buffer:
-    #                 box_right_edge.append(box)
-    #                 bounding_boxes.remove(i)
-    #         if box_left_edge:
-    #             print(f"left: label: {box_left_edge.cone}, coordinates: {box_left_edge.min_x}, {box_left_edge.max_x}, ratio: {bb_ratio(box_left_edge)}")
-    #         if box_right_edge:
-    #             print(f"right: label: {box_right_edge.cone}, coordinates: {box_right_edge.min_x}, {box_right_edge.max_x}, ratio: {bb_ratio(box_right_edge)}")
-        
-    #     if len(box_left_edge) == 1:
-    #         # check if there is a cluster that matches
-    #         possible_cluster = filtered_clusters[-1]
-            
-    #     elif len(box_left_edge) > 1:
-    #         print("found two boxes at left boundary")
-            
-    # def fuse_data(self, yolo_msg, cluster_msg):
-    #     """This function fuses the information of the clusters and the output of the yolo model. It tries to match the clusters found by the lidar
-    #     to the bounding boxes generated by the yolo model.
-
-    #     Args:
-    #         yolo_msg (_type_): yolo message object received by Subscriber
-    #         cluster_msg (_type_): cluster message object received by Subsriber
-
-    #     Returns:
-    #         list: returns a list with all found matches. One entry of the list is a tupel of a Cluster object and the label of the matched bounding box (0, 1 or 2)
-    #     """
-        
-    #     # rule out clusters which are not in fov
-    #     clusters_in_fov = []
-    #     for cluster in cluster_msg.clusters:
-    #          if (FOV[0] <= cluster.angles[0] and cluster.angles[0] <= FOV[1]) or (FOV[0] <= cluster.angles[-1] and cluster.angles[-1] <= FOV[1]):
-    #               clusters_in_fov.append(cluster)
-        
-    #     # rule out clusters that are definitly not cones
-    #     filtered_clusters = []
-    #     for cluster in clusters_in_fov:
-    #         if could_be_cone(cluster):
-    #             filtered_clusters.append(cluster)
-    #     plot_clusters(filtered_clusters)
-    #     labeled_clusters = []
-        
-        
-    #     d_first_iter = True
-    #     d_ranges_box = []
-    #     d_ranges_cluster = []
-        
-        
-    #     for box in yolo_msg.bounding_boxes:
-    #         box_left = (box.min_x - 320) / 320
-    #         box_right = (box.max_x - 320) / 320
-    #         range_box = [box_left, box_right]
-    #         d_ranges_box.append(range_box)
-            
-    #         best_fitting_cluster = None
-    #         range_best_fitting_cluster = None
-            
-            
-    #         for cluster in filtered_clusters:
-    #             cluster_left = (-(cluster.angles[-1] - 180) / (0.5 * (FOV[1] - FOV[0])))
-    #             cluster_right = (-(cluster.angles[0] - 180) / (0.5 * (FOV[1] - FOV[0])))
-    #             range_cluster = [max(cluster_left, -1), min(1, cluster_right)]
-    #             if d_first_iter:
-    #                 d_ranges_cluster.append(range_cluster)
-                
-    #             # check if cluster is in bounding box
-    #             if is_range_in_range(range_cluster, range_box):
-    #                 if best_fitting_cluster is None:
-    #                     best_fitting_cluster = cluster
-    #                     range_best_fitting_cluster = range_cluster
-    #                 else:
-    #                     # check if the center of the cluster is closer to the center of the box than the current best cluster
-    #                     if np.abs(center_of_range(range_cluster) - center_of_range(range_box)) < np.abs(center_of_range(range_best_fitting_cluster) - center_of_range(range_box)):
-    #                         best_fitting_cluster = cluster
-    #                         range_best_fitting_cluster = range_cluster
-    #         d_first_iter = False
-            
-    #         if best_fitting_cluster:
-    #             labeled_clusters.append((best_fitting_cluster, box.cone))
-    #         else:
-    #             pass
-    #             # self.get_logger().warning("Found no cluster to match to bounding box")
-    #     # d_ranges_box = np.array(d_ranges_box)
-    #     # d_ranges_box = d_ranges_box[np.argsort(d_ranges_box[:, 0])]
-    #     # if len(d_ranges_cluster) != 0:
-    #     #     d_ranges_cluster=np.array(d_ranges_cluster)
-    #     #     d_ranges_cluster = d_ranges_cluster[np.argsort(d_ranges_cluster[:, 0])]
-    
-    #     # print(f"boxes: {d_ranges_box}")
-    #     # print(f"cluster: {d_ranges_cluster}")
-    #     return labeled_clusters
-                       
-        
-
 
 def main(args=None):
     rclpy.init(args=args)
