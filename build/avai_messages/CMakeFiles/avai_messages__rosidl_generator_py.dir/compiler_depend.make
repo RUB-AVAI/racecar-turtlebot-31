@@ -2025,7 +2025,8 @@ CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messa
   /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/string.h \
   /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence.h \
   rosidl_generator_c/avai_messages/msg/detail/target__functions.h \
-  rosidl_generator_c/avai_messages/msg/rosidl_generator_c__visibility_control.h
+  rosidl_generator_c/avai_messages/msg/rosidl_generator_c__visibility_control.h \
+  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence_functions.h
 
 CMakeFiles/avai_messages__rosidl_generator_py.dir/rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c.o: rosidl_generator_py/avai_messages/msg/_vector3_sensor_s.c \
   /usr/include/stdc-predef.h \

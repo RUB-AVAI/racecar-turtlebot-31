@@ -5,6 +5,10 @@
 
 # Import statements for member types
 
+# Member 'x_position'
+# Member 'y_position'
+import array  # noqa: E402, I100
+
 import builtins  # noqa: E402, I100
 
 import math  # noqa: E402, I100
@@ -70,16 +74,16 @@ class Target(metaclass=Metaclass_Target):
 
     _fields_and_field_types = {
         'header': 'std_msgs/Header',
-        'x_position': 'double',
-        'y_position': 'double',
+        'x_position': 'sequence<double>',
+        'y_position': 'sequence<double>',
         'round': 'int8',
         'turn_angle': 'double',
     }
 
     SLOT_TYPES = (
         rosidl_parser.definition.NamespacedType(['std_msgs', 'msg'], 'Header'),  # noqa: E501
-        rosidl_parser.definition.BasicType('double'),  # noqa: E501
-        rosidl_parser.definition.BasicType('double'),  # noqa: E501
+        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('double')),  # noqa: E501
+        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.BasicType('double')),  # noqa: E501
         rosidl_parser.definition.BasicType('int8'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
     )
@@ -90,8 +94,8 @@ class Target(metaclass=Metaclass_Target):
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
         from std_msgs.msg import Header
         self.header = kwargs.get('header', Header())
-        self.x_position = kwargs.get('x_position', float())
-        self.y_position = kwargs.get('y_position', float())
+        self.x_position = array.array('d', kwargs.get('x_position', []))
+        self.y_position = array.array('d', kwargs.get('y_position', []))
         self.round = kwargs.get('round', int())
         self.turn_angle = kwargs.get('turn_angle', float())
 
@@ -162,13 +166,26 @@ class Target(metaclass=Metaclass_Target):
 
     @x_position.setter
     def x_position(self, value):
+        if isinstance(value, array.array):
+            assert value.typecode == 'd', \
+                "The 'x_position' array.array() must have the type code of 'd'"
+            self._x_position = value
+            return
         if __debug__:
+            from collections.abc import Sequence
+            from collections.abc import Set
+            from collections import UserList
+            from collections import UserString
             assert \
-                isinstance(value, float), \
-                "The 'x_position' field must be of type 'float'"
-            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'x_position' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._x_position = value
+                ((isinstance(value, Sequence) or
+                  isinstance(value, Set) or
+                  isinstance(value, UserList)) and
+                 not isinstance(value, str) and
+                 not isinstance(value, UserString) and
+                 all(isinstance(v, float) for v in value) and
+                 all(not (val < -1.7976931348623157e+308 or val > 1.7976931348623157e+308) or math.isinf(val) for val in value)), \
+                "The 'x_position' field must be a set or sequence and each value of type 'float' and each double in [-179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000, 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000]"
+        self._x_position = array.array('d', value)
 
     @builtins.property
     def y_position(self):
@@ -177,13 +194,26 @@ class Target(metaclass=Metaclass_Target):
 
     @y_position.setter
     def y_position(self, value):
+        if isinstance(value, array.array):
+            assert value.typecode == 'd', \
+                "The 'y_position' array.array() must have the type code of 'd'"
+            self._y_position = value
+            return
         if __debug__:
+            from collections.abc import Sequence
+            from collections.abc import Set
+            from collections import UserList
+            from collections import UserString
             assert \
-                isinstance(value, float), \
-                "The 'y_position' field must be of type 'float'"
-            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'y_position' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._y_position = value
+                ((isinstance(value, Sequence) or
+                  isinstance(value, Set) or
+                  isinstance(value, UserList)) and
+                 not isinstance(value, str) and
+                 not isinstance(value, UserString) and
+                 all(isinstance(v, float) for v in value) and
+                 all(not (val < -1.7976931348623157e+308 or val > 1.7976931348623157e+308) or math.isinf(val) for val in value)), \
+                "The 'y_position' field must be a set or sequence and each value of type 'float' and each double in [-179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000, 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000]"
+        self._y_position = array.array('d', value)
 
     @builtins.property  # noqa: A003
     def round(self):  # noqa: A003

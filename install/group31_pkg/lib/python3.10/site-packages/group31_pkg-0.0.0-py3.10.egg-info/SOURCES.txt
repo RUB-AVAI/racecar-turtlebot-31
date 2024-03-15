@@ -12,10 +12,8 @@ resource/group31_pkg
 src/__init__.py
 src/calibration.py
 src/cluster.py
-src/drive.py
 src/fuse_sensor_data.py
 src/navigation_node.py
-src/navigation_node2.py
 src/process_cam_image.py
 src/process_data.py
 src/receive_image.py
