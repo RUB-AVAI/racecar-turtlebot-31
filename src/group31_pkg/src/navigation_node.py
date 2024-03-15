@@ -372,6 +372,7 @@ class NavigationNode(Node):
         current_position.x_position = self.x
         current_position.y_position = self.y
         current_position.facing_direction = np.rad2deg(self.phi) % 360
+        print(f"published facing direction: {np.rad2deg(self.phi) % 360}")
         
         #self.get_logger().info(f'Published position')
         self.position_publisher.publish(current_position)
