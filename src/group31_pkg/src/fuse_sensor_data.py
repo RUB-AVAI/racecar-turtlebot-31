@@ -244,8 +244,8 @@ class DataFusionNode(Node):
             target.header.stamp = self.get_clock().now().to_msg()
             target.round = 0
             
-            target.x_position = [0.0]
-            target.y_position = [0.0]
+            target.x_position = [self.map.last_target[0] - 1500]
+            target.y_position = [self.map.last_target[1]]
             target.turn_angle = 0.0
             
             
