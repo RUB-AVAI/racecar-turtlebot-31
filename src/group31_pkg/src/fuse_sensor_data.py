@@ -23,7 +23,8 @@ POSITION = 1
 YOLO = 2
 LOG_INFO = False
 TARGET_UPDATES_PER_SECOND = 10
-VISUALISATION = True
+VISUALISATION = False
+
 
 class DataFusionNode(Node):
     def __init__(self):
