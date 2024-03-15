@@ -237,6 +237,7 @@ class DataFusionNode(Node):
             if min_distance > 2500:
                 return        
             print("round 1 started")
+            np.save(f"data/map{time()}", self.map)
             self.round == 2
         
             target = Target()
