@@ -53,7 +53,7 @@ class NavigationNode(Node):
         self.VISUALIZATION = False
         
         # Target parameter
-        self.TARGET_RADIUS = 300
+        self.TARGET_RADIUS = 500
         if not self.GET_TARGETS:
             self.TARGETS_X = [-1000] #[0, 1000, 1000, 0]
             self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
@@ -93,11 +93,11 @@ class NavigationNode(Node):
         self.MIN_LAMBDA = 25
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = -20
+        self.MIN_VELOCITY = -150
 
         # Parameters for weighting of force-lets of obstacle avoidance
-        self.beta_1 = 20
-        self.beta_2 = 85
+        self.beta_1 = 30
+        self.beta_2 = 80
         
         # Parameters for weighting of force-lets for velocity control
         self.alpha_1 = 120 #160
@@ -129,7 +129,7 @@ class NavigationNode(Node):
 
         # Velocity parameter
         self.LAMBDA = 200
-        self.LAMBDA_TAR = np.pi
+        self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
         self.MIN_VELOCITY = -100
 
