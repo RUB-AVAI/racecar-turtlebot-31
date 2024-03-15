@@ -26,6 +26,8 @@ class NavigationNode(Node):
         self.ts = ApproximateTimeSynchronizer([self.motor_subscription, self.lidar_subscription], queue_size=10, slop=0.1)
         if not self.GET_TARGETS:
             self.ts.registerCallback(self.callback)
+            
+        self.position_subscriber = self.create_subscription(Target, "/corrected_position", self.position_callback, qos_profile=rclpy.qos.qos_profile_services_default)
         
         self.motor_publisher = self.create_publisher(Motors, '/motor_velocity', 10)
         self.position_publisher = self.create_publisher(Position, '/position', qos_profile=rclpy.qos.qos_profile_sensor_data)
@@ -442,11 +444,15 @@ class NavigationNode(Node):
             self.TARGET_X = self.TARGETS_X.pop(0)
             self.TARGET_Y = self.TARGETS_Y.pop(0)
         
-        
-        
         if self.counter == -1:
             self.ts.registerCallback(self.callback)
-            
+    
+    
+    def position_callback(self, msg):
+        self.get_logger().info("Postion updated")
+        
+        self.x = msg.x_position
+        self.y = msg.y_position
             
 
 
