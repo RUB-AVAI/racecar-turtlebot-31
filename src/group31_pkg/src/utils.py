@@ -307,8 +307,9 @@ class Map:
             # print(f"existing cone: {hit[0]}, {hit[1]}")
             # print(f"errors: {x_error}  {y_error}")
         elif len(hits) > 1:
-            print(hits)
-            print("not adding a cone because of multiambiguity")
+            pass
+            # print(hits)
+            # print("not adding a cone because of multiambiguity")
         else:
             self.data[x, y, 0] = cone
             self.data[x, y, 1] = 1
@@ -361,10 +362,11 @@ class Map:
     
     def check_vicinity(self, X, Y, color, epsilon=None):
         if epsilon is None:
-            epsilon = int(self.epsilon / self.discretization_steps)
+            epsilon = self.epsilon
+        epsilon = int(epsilon / self.discretization_steps)
         hits = []
         for x in range(X - epsilon, X + epsilon + 1):
-            for y in range(Y - epsilon, Y + epsilon):
+            for y in range(Y - epsilon, Y + epsilon + 1):
                 if self.data[x, y, 0] == color:
                     hits.append((x, y, self.data[x, y]))
         return hits
@@ -379,9 +381,10 @@ class Map:
                     valid_positions[i].append(cone_pos * self.discretization_steps)
         
         return valid_positions
+    
             
         
-    def save_plot(self, x_pos_t = 0, y_pos_t = 0):
+    def save_plot(self, x_pos_t = 0, y_pos_t = 0, all_targets = False):
         
         x_pos_t += self.size / 2
         y_pos_t += self.size / 2
@@ -395,16 +398,22 @@ class Map:
         turtlebot = plt.Circle((x_pos_t, y_pos_t), 100, color="red", fill=True)
         self.ax.add_patch(turtlebot)
         
-        # last target
-        target = plt.Circle((target_x, target_y), 50, color="green", fill=True)
-        self.ax.add_patch(target)
-        
+        if not all_targets:
+            
+            # last target
+            target = plt.Circle((target_x, target_y), 50, color="green", fill=True)
+            self.ax.add_patch(target)
+            
+        else:
+            for i in range(len(self.targets_x)):
+                target = plt.Circle((self.size / 2 + self.targets_x[i], self.size / 2 + self.targets_y[i]), 50, color="green", fill=True)
+                self.ax.add_patch(target)
+
         cone_positions = self.get_cones()
         cone_size = 100
         fill_cones = True
         colors = ["blue", "orange", "yellow"]
         
-        # blue
         for i, cones in enumerate(cone_positions):
             for cone in cones:
                 cone = plt.Circle((cone[0], cone[1]), cone_size, color=colors[i], fill=fill_cones)

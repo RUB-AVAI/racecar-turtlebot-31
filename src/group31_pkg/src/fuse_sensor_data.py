@@ -89,13 +89,13 @@ class DataFusionNode(Node):
                 current_pos = self.default_position
             
             if VISUALISATION:    
-                self.map.save_plot(current_pos.x_position, current_pos.y_position)
+                self.map.save_plot(current_pos.x_position, current_pos.y_position, all_targets=(self.round == 1))
             
 
 
     def position_listener_callback(self, msg):
         if self.round == 1:
-            return
+            self.map.save_plot(msg.x_position, msg.y_position, all_targets=True)
         if LOG_INFO:
             self.get_logger().info("Position Received")
         self.pos_msgs_idx += 1
@@ -110,7 +110,7 @@ class DataFusionNode(Node):
         if pos is None:
             pos = self.default_position
         x,y,angle = self.map.estimate_new_target(pos.x_position, pos.y_position)
-        print(f"angle: {angle}, x: {x}, y: {y}")
+        # print(f"angle: {angle}, x: {x}, y: {y}")
         if x is None and y is None and angle is None:
             return
         target = Target()
@@ -144,7 +144,6 @@ class DataFusionNode(Node):
             
         # because of the inference of the yolo model, we search the other messages for the appropriate timestamp
         main_timestamp = get_timestamp_as_float(main_message)
-        print(f"main timestamp: {main_timestamp}")
 
         # find nearest message
         prev_distance = np.inf
@@ -158,7 +157,6 @@ class DataFusionNode(Node):
              if msg is None:
                  break
              timestamp = get_timestamp_as_float(msg)
-             print(f"timestamp: {timestamp}")
              
              
              distance = np.abs(timestamp - main_timestamp)
@@ -209,10 +207,10 @@ class DataFusionNode(Node):
         self.update_target()
         
         # check if in finish zone
-        if time() - self.init_time > 20: # let some time pass before checking, because we also start in finish zone
+        if time() - self.init_time > 0: # let some time pass before checking, because we also start in finish zone
             
             n_orange_cones = len(self.map.orange_cones)
-            print(f"number of orange cones seen: {n_orange_cones})")
+            # print(f"number of orange cones seen: {n_orange_cones}")
         
             if n_orange_cones >= 4:
                 self.target_zone()
@@ -222,15 +220,19 @@ class DataFusionNode(Node):
     def target_zone(self):
         self.map.filter_orange_cones()
         if len(self.map.orange_cones) >= 4:
-            self.round == 1
+            self.round = 1
+            print("round 1 started")
         
         target = Target()
         target.header.stamp = self.get_clock().now().to_msg()
-        target.round = 0
+        target.round = 1
         
         target.x_position = self.map.targets_x
         target.y_position = self.map.targets_y
         target.turn_angle = 0.0
+        
+        print(self.map.targets_x)
+        print(self.map.targets_y)
         
         self.target_publisher.publish(target)
         
