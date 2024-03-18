@@ -213,7 +213,7 @@ class DataFusionNode(Node):
             n_orange_cones = len(self.map.orange_cones)
             # print(f"number of orange cones seen: {n_orange_cones}")
         
-            if n_orange_cones >= 4:
+            if n_orange_cones >= 2:
                 self.target_zone()
                 
             
@@ -224,7 +224,7 @@ class DataFusionNode(Node):
         if self.round == 2: return
             
         
-        if len(self.map.orange_cones) >= 4:
+        if len(self.map.orange_cones) >= 2:
             min_distance = np.inf
             pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
             if pos is None:
@@ -240,7 +240,7 @@ class DataFusionNode(Node):
                     min_distance = dist
             
             print(f"min distance: {min_distance}")
-            if min_distance > 1500:
+            if min_distance > 2000:
                 return
             
             self.init_time = time()
@@ -254,9 +254,9 @@ class DataFusionNode(Node):
             target.header.stamp = self.get_clock().now().to_msg()
             target.round = 0
             
-            self.map.last_target = (float(self.map.last_target[0] - 2000), float(self.map.last_target[1]))
+            self.map.last_target = (float(self.map.last_target[0] - 3000), float(self.map.last_target[1]))
             
-            target.x_position = [float(self.map.last_target[0] - 2000)]
+            target.x_position = [float(self.map.last_target[0] - 3000)]
             target.y_position = [float(self.map.last_target[1])]
             target.turn_angle = 0.0
             
