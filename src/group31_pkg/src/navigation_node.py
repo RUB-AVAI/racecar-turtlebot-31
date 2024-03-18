@@ -391,7 +391,7 @@ class NavigationNode(Node):
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
         
-        if self.LAMBDA > self.MIN_LAMBDA:
+        if self.LAMBDA <= self.MIN_LAMBDA:
             self.DEACTIVATE_TURNING = True
         
         if self.LAMBDA > self.MIN_LAMBDA and distance(self.x, self.y, self.TARGET_X, self.TARGET_Y) < self.DECAY_MIN_DISTANCE:
