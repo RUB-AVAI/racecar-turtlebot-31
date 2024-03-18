@@ -61,8 +61,6 @@ class DataFusionNode(Node):
     
 
     def clustered_lidar_listener_callback(self, msg):
-        if self.round == 1:
-            return
         if LOG_INFO:
             self.get_logger().info("Clustered Lidar Data Received")
         self.cluster_msgs_idx += 1
@@ -70,8 +68,6 @@ class DataFusionNode(Node):
         
 
     def yolo_output_listener_callback(self, msg):
-        if self.round == 1:
-            return
         if LOG_INFO:
             self.get_logger().info("Yolo Output Received")
         # for box in msg.bounding_boxes:
@@ -97,8 +93,6 @@ class DataFusionNode(Node):
 
 
     def position_listener_callback(self, msg):
-        if self.round == 1:
-            self.map.save_plot(msg.x_position, msg.y_position, all_targets=True)
         if LOG_INFO:
             self.get_logger().info("Position Received")
         self.pos_msgs_idx += 1
@@ -107,8 +101,6 @@ class DataFusionNode(Node):
     
     
     def update_target(self):
-        if self.round == 1:
-            return
         pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
         if pos is None:
             pos = self.default_position
@@ -223,6 +215,8 @@ class DataFusionNode(Node):
         
         self.update_target()
         
+        return
+        
         # check if in finish zone
         if time() - self.init_time > 20: # let some time pass before checking, because we also start in finish zone
             
@@ -236,8 +230,6 @@ class DataFusionNode(Node):
         
     def target_zone(self):
         self.map.filter_orange_cones()
-        
-        if self.round == 2: return
             
         
         if len(self.map.orange_cones) >= 2:
@@ -260,7 +252,6 @@ class DataFusionNode(Node):
                 return
             
             self.init_time = time()
-            self.map = Map(size=40000, min_hist=MIN_HISTORY, epsilon=10)        
             print("new round started")
             
             
@@ -269,11 +260,14 @@ class DataFusionNode(Node):
             target.header.stamp = self.get_clock().now().to_msg()
             target.round = 0
             
-            self.map.last_target = (float(self.map.last_target[0] - 1000), float(self.map.last_target[1]))
             
             target.x_position = [float(self.map.last_target[0] - 1000)]
             target.y_position = [float(self.map.last_target[1])]
             target.turn_angle = 0.0
+            
+            self.map = Map(size=40000, min_hist=MIN_HISTORY, epsilon=10)        
+            self.map.last_target = (target.x_position, target.y_position)
+            
             
             
             self.target_publisher.publish(target)

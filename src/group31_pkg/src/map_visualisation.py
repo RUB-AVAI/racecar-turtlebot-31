@@ -7,7 +7,7 @@ import cv2
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN, MeanShift
 from copy import copy
 
 IMSAVE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/../../visualisations/map.png"
@@ -21,7 +21,7 @@ class MapVisualisation_Node(Node):
         self.position_subsciber = self.create_subscription(Position, "/position", self.position_callback, qos_profile=rclpy.qos.qos_profile_sensor_data)
         self.target_subscriber = self.create_subscription(Target, "/target_position", self.target_callback, qos_profile=rclpy.qos.qos_profile_services_default)
         
-        # self.create_timer(0.2, self.update_plot)
+        # self.create_timer(0.5, self.update_plot)
         
         self.all_cones = [[], [], []]
         self.colors = ["blue", "orange", "yellow"]
@@ -36,7 +36,7 @@ class MapVisualisation_Node(Node):
         
         self.fig, self.ax = plt.subplots()
         
-        self.eps = 0.15 * 1000 # in millimeters
+        self.eps = 300 # in millimeters
         self.min_samples = 3 # try 4 or 8
 
         self.dbscan = DBSCAN(eps=self.eps, min_samples=self.min_samples)
@@ -45,8 +45,10 @@ class MapVisualisation_Node(Node):
     def cone_callback(self, msg):
         self.get_logger().info("Received Cones message")
         
+        
         for cone in msg.cones:
             self.all_cones[cone.color].append([cone.x_position, cone.y_position])
+        
         
             
     def position_callback(self, msg):
@@ -86,14 +88,19 @@ class MapVisualisation_Node(Node):
         
         
         for color, cones_one_color in enumerate(all_cones):
+            
             if len(cones_one_color) == 0:
                 continue
             cones_one_color = np.array(cones_one_color)
+            
+            # self.ax.scatter(cones_one_color[:, 0], cones_one_color[:, 1], color = self.colors[color], marker=".")
+            # continue
+            
             labels = self.dbscan.fit_predict(cones_one_color)
             unique_labels = np.unique(labels)
             
-            clusters_x_positions = [[]] * len(unique_labels)
-            clusters_y_positions = [[]] * len(unique_labels)
+            clusters_x_positions = [[] for _ in range(len(unique_labels))]
+            clusters_y_positions = [[] for _ in range(len(unique_labels))]
             
             
             for i, cone in enumerate(cones_one_color):
@@ -107,13 +114,13 @@ class MapVisualisation_Node(Node):
                 average_x = np.mean(clusters_x_positions[label])
                 average_y = np.mean(clusters_y_positions[label])
                 
-                print(label, average_x, average_y)
+
                 
                 patch = plt.Circle((average_x, average_y), 100, color = self.colors[color], fill=True)
                 self.ax.add_patch(patch)
             
             
-            self.fig.savefig(IMSAVE_PATH)
+        self.fig.savefig(IMSAVE_PATH)
             
                 
         
