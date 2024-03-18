@@ -4,6 +4,10 @@ msg/Cluster.idl
 msg/Cluster.msg
 msg/ClusteredLidarData.idl
 msg/ClusteredLidarData.msg
+msg/Cone.idl
+msg/Cone.msg
+msg/Cones.idl
+msg/Cones.msg
 msg/Melody.idl
 msg/Melody.msg
 msg/Motor.idl

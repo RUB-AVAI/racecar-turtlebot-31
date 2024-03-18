@@ -4,7 +4,7 @@ import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
 from rclpy.node import Node
-from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position, Target
+from avai_messages.msg import YoloOutput, BoundingBox, ClusteredLidarData, Position, Target, Cone, Cones
 import argparse
 from time import time
 
@@ -35,6 +35,8 @@ class DataFusionNode(Node):
         self.pos_subscription = self.create_subscription(Position, "/position", self.position_listener_callback, rclpy.qos.qos_profile_sensor_data)
         self.target_publisher = self.create_publisher(Target, "/target_position", qos_profile=rclpy.qos.qos_profile_services_default)
         # self.target_updater = self.create_timer(1 / TARGET_UPDATES_PER_SECOND, self.update_target)
+        
+        self.cone_publisher = self.create_publisher(Cones, "/cone_visualisation", qos_profile=rclpy.qos.qos_profile_services_default)
         
         self.map = Map(size=40000, min_hist=MIN_HISTORY, epsilon=10)
         
@@ -198,12 +200,26 @@ class DataFusionNode(Node):
         # distances = [calc_distance(position_msg.x_position, position_msg.y_position, average_cluster_position(cluster)[0], average_cluster_position(cluster)[1]) for cluster in labeled_clusters[:, 0]]
         # labeled_clusters = labeled_clusters[np.argsort(distances)]
         
+        cones = []
         for cluster, label in labeled_clusters:
             # compute x and y position of cluster
             cone_x_pos, cone_y_pos = average_cluster_position(cluster)
             
             self.map.set(position_msg.x_position, position_msg.y_position, position_msg.facing_direction, 
-                         cone_x_pos, cone_y_pos, label)    
+                         cone_x_pos, cone_y_pos, label) 
+            
+            cone = Cone()
+            cone.x_position = cone_x_pos
+            cone.y_position = cone_y_pos
+            cone.color = label
+            cones.append(cone)
+            
+        if len(cones) > 0:
+            msg = Cones()
+            msg.cones = cones
+            msg.header.stamp = self.get_clock().now().to_msg()
+            
+            self.cone_publisher.publish(msg)   
         
         self.update_target()
         
@@ -248,15 +264,14 @@ class DataFusionNode(Node):
             print("new round started")
             
             
-            # np.save(f"data/map{time()}", self.map)
         
             target = Target()
             target.header.stamp = self.get_clock().now().to_msg()
             target.round = 0
             
-            self.map.last_target = (float(self.map.last_target[0] - 3000), float(self.map.last_target[1]))
+            self.map.last_target = (float(self.map.last_target[0] - 1000), float(self.map.last_target[1]))
             
-            target.x_position = [float(self.map.last_target[0] - 3000)]
+            target.x_position = [float(self.map.last_target[0] - 1000)]
             target.y_position = [float(self.map.last_target[1])]
             target.turn_angle = 0.0
             

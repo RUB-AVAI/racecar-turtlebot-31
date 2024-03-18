@@ -11,6 +11,8 @@
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Cluster.msg",
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/ClusteredLidarData.msg",
     "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Position.msg",
-    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Target.msg"
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Target.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Cone.msg",
+    "/home/ubuntu/turtlebot-avai/src/avai_messages:msg/Cones.msg"
   ]
 }

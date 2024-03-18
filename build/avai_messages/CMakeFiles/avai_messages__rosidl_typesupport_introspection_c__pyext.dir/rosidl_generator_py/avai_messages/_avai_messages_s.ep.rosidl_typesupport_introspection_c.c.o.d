@@ -239,4 +239,10 @@ CMakeFiles/avai_messages__rosidl_typesupport_introspection_c__pyext.dir/rosidl_g
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/position__functions.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/target__type_support.h \
  /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/target__struct.h \
- /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/target__functions.h
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/target__functions.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cone__type_support.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cone__struct.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cone__functions.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cones__type_support.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cones__struct.h \
+ /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cones__functions.h

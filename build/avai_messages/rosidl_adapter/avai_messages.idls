@@ -9,3 +9,5 @@
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/ClusteredLidarData.idl
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Position.idl
 /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Target.idl
+/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Cone.idl
+/home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_adapter/avai_messages:msg/Cones.idl

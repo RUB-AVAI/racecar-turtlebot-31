@@ -77,6 +77,8 @@ CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Clus
 CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/ClusteredLidarData.msg
 CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Position.msg
 CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Target.msg
+CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Cone.msg
+CMakeFiles/avai_messages: /home/ubuntu/turtlebot-avai/src/avai_messages/msg/Cones.msg
 CMakeFiles/avai_messages: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 CMakeFiles/avai_messages: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 CMakeFiles/avai_messages: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl

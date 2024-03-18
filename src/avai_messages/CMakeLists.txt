@@ -49,6 +49,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ClusteredLidarData.msg"
   "msg/Position.msg"
   "msg/Target.msg"
+  "msg/Cone.msg"
+  "msg/Cones.msg"
   DEPENDENCIES geometry_msgs std_msgs
 )
 

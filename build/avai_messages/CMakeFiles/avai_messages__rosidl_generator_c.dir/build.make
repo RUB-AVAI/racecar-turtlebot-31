@@ -93,6 +93,8 @@ rosidl_generator_c/avai_messages/msg/vector3_sensor.h: rosidl_adapter/avai_messa
 rosidl_generator_c/avai_messages/msg/vector3_sensor.h: rosidl_adapter/avai_messages/msg/ClusteredLidarData.idl
 rosidl_generator_c/avai_messages/msg/vector3_sensor.h: rosidl_adapter/avai_messages/msg/Position.idl
 rosidl_generator_c/avai_messages/msg/vector3_sensor.h: rosidl_adapter/avai_messages/msg/Target.idl
+rosidl_generator_c/avai_messages/msg/vector3_sensor.h: rosidl_adapter/avai_messages/msg/Cone.idl
+rosidl_generator_c/avai_messages/msg/vector3_sensor.h: rosidl_adapter/avai_messages/msg/Cones.idl
 rosidl_generator_c/avai_messages/msg/vector3_sensor.h: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_generator_c/avai_messages/msg/vector3_sensor.h: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_generator_c/avai_messages/msg/vector3_sensor.h: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -286,6 +288,30 @@ rosidl_generator_c/avai_messages/msg/detail/target__struct.h: rosidl_generator_c
 rosidl_generator_c/avai_messages/msg/detail/target__type_support.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/target__type_support.h
 
+rosidl_generator_c/avai_messages/msg/cone.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/cone.h
+
+rosidl_generator_c/avai_messages/msg/detail/cone__functions.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cone__functions.h
+
+rosidl_generator_c/avai_messages/msg/detail/cone__struct.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cone__struct.h
+
+rosidl_generator_c/avai_messages/msg/detail/cone__type_support.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cone__type_support.h
+
+rosidl_generator_c/avai_messages/msg/cones.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/cones.h
+
+rosidl_generator_c/avai_messages/msg/detail/cones__functions.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cones__functions.h
+
+rosidl_generator_c/avai_messages/msg/detail/cones__struct.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cones__struct.h
+
+rosidl_generator_c/avai_messages/msg/detail/cones__type_support.h: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cones__type_support.h
+
 rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c
 
@@ -318,6 +344,12 @@ rosidl_generator_c/avai_messages/msg/detail/position__functions.c: rosidl_genera
 
 rosidl_generator_c/avai_messages/msg/detail/target__functions.c: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/target__functions.c
+
+rosidl_generator_c/avai_messages/msg/detail/cone__functions.c: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cone__functions.c
+
+rosidl_generator_c/avai_messages/msg/detail/cones__functions.c: rosidl_generator_c/avai_messages/msg/vector3_sensor.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/avai_messages/msg/detail/cones__functions.c
 
 CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c.o: CMakeFiles/avai_messages__rosidl_generator_c.dir/flags.make
 CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c.o: rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c
@@ -473,6 +505,34 @@ CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_message
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/target__functions.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/target__functions.c -o CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/target__functions.c.s
 
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o: CMakeFiles/avai_messages__rosidl_generator_c.dir/flags.make
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o: rosidl_generator_c/avai_messages/msg/detail/cone__functions.c
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o: CMakeFiles/avai_messages__rosidl_generator_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o -MF CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o.d -o CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c
+
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c > CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.i
+
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c -o CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.s
+
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o: CMakeFiles/avai_messages__rosidl_generator_c.dir/flags.make
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o: rosidl_generator_c/avai_messages/msg/detail/cones__functions.c
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o: CMakeFiles/avai_messages__rosidl_generator_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o -MF CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o.d -o CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c
+
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c > CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.i
+
+CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c -o CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.s
+
 # Object files for target avai_messages__rosidl_generator_c
 avai_messages__rosidl_generator_c_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/vector3_sensor__functions.c.o" \
@@ -485,7 +545,9 @@ avai_messages__rosidl_generator_c_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cluster__functions.c.o" \
 "CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__functions.c.o" \
 "CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/position__functions.c.o" \
-"CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/target__functions.c.o"
+"CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/target__functions.c.o" \
+"CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o" \
+"CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o"
 
 # External object files for target avai_messages__rosidl_generator_c
 avai_messages__rosidl_generator_c_EXTERNAL_OBJECTS =
@@ -501,6 +563,8 @@ libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_genera
 libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__functions.c.o
 libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/position__functions.c.o
 libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/target__functions.c.o
+libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cone__functions.c.o
+libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_generator_c.dir/rosidl_generator_c/avai_messages/msg/detail/cones__functions.c.o
 libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_generator_c.dir/build.make
 libavai_messages__rosidl_generator_c.so: /opt/ros/humble/lib/libgeometry_msgs__rosidl_generator_c.so
 libavai_messages__rosidl_generator_c.so: /opt/ros/humble/lib/libstd_msgs__rosidl_generator_c.so
@@ -508,7 +572,7 @@ libavai_messages__rosidl_generator_c.so: /opt/ros/humble/lib/libbuiltin_interfac
 libavai_messages__rosidl_generator_c.so: /opt/ros/humble/lib/librosidl_runtime_c.so
 libavai_messages__rosidl_generator_c.so: /opt/ros/humble/lib/librcutils.so
 libavai_messages__rosidl_generator_c.so: CMakeFiles/avai_messages__rosidl_generator_c.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking C shared library libavai_messages__rosidl_generator_c.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking C shared library libavai_messages__rosidl_generator_c.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/avai_messages__rosidl_generator_c.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -522,6 +586,8 @@ CMakeFiles/avai_messages__rosidl_generator_c.dir/clean:
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/bounding_box.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/cluster.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/clustered_lidar_data.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/cone.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/cones.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.c
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/bounding_box__functions.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/bounding_box__struct.h
@@ -534,6 +600,14 @@ CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__functions.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__struct.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/clustered_lidar_data__type_support.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cone__functions.c
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cone__functions.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cone__struct.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cone__type_support.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cones__functions.c
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cones__functions.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cones__struct.h
+CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/cones__type_support.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/melody__functions.c
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/melody__functions.h
 CMakeFiles/avai_messages__rosidl_generator_c.dir/depend: rosidl_generator_c/avai_messages/msg/detail/melody__struct.h

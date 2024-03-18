@@ -88,6 +88,8 @@ rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosi
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: rosidl_adapter/avai_messages/msg/ClusteredLidarData.idl
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: rosidl_adapter/avai_messages/msg/Position.idl
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: rosidl_adapter/avai_messages/msg/Target.idl
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: rosidl_adapter/avai_messages/msg/Cone.idl
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: rosidl_adapter/avai_messages/msg/Cones.idl
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/Accel.idl
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/AccelStamped.idl
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/AccelWithCovariance.idl
@@ -182,6 +184,12 @@ rosidl_typesupport_introspection_c/avai_messages/msg/detail/position__rosidl_typ
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__rosidl_typesupport_introspection_c.h: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__rosidl_typesupport_introspection_c.h
 
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__rosidl_typesupport_introspection_c.h: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__rosidl_typesupport_introspection_c.h
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__rosidl_typesupport_introspection_c.h: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__rosidl_typesupport_introspection_c.h
+
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c
 
@@ -214,6 +222,12 @@ rosidl_typesupport_introspection_c/avai_messages/msg/detail/position__type_suppo
 
 rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c
+
+rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__rosidl_typesupport_introspection_c.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c
 
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c.o: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/flags.make
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c.o: rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c
@@ -369,6 +383,34 @@ CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c -o CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c.s
 
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/flags.make
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o: rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o -MF CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o.d -o CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c
+
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c > CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.i
+
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c -o CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.s
+
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/flags.make
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o: rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o -MF CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o.d -o CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o -c /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c
+
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c > CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.i
+
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/ubuntu/turtlebot-avai/build/avai_messages/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c -o CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.s
+
 # Object files for target avai_messages__rosidl_typesupport_introspection_c
 avai_messages__rosidl_typesupport_introspection_c_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/vector3_sensor__type_support.c.o" \
@@ -381,7 +423,9 @@ avai_messages__rosidl_typesupport_introspection_c_OBJECTS = \
 "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cluster__type_support.c.o" \
 "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/clustered_lidar_data__type_support.c.o" \
 "CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/position__type_support.c.o" \
-"CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c.o"
+"CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c.o" \
+"CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o" \
+"CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o"
 
 # External object files for target avai_messages__rosidl_typesupport_introspection_c
 avai_messages__rosidl_typesupport_introspection_c_EXTERNAL_OBJECTS =
@@ -397,6 +441,8 @@ libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_message
 libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/clustered_lidar_data__type_support.c.o
 libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/position__type_support.c.o
 libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/target__type_support.c.o
+libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c.o
+libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c.o
 libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/build.make
 libavai_messages__rosidl_typesupport_introspection_c.so: libavai_messages__rosidl_generator_c.so
 libavai_messages__rosidl_typesupport_introspection_c.so: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_introspection_c.so
@@ -409,7 +455,7 @@ libavai_messages__rosidl_typesupport_introspection_c.so: /opt/ros/humble/lib/lib
 libavai_messages__rosidl_typesupport_introspection_c.so: /opt/ros/humble/lib/librosidl_runtime_c.so
 libavai_messages__rosidl_typesupport_introspection_c.so: /opt/ros/humble/lib/librcutils.so
 libavai_messages__rosidl_typesupport_introspection_c.so: CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking C shared library libavai_messages__rosidl_typesupport_introspection_c.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/turtlebot-avai/build/avai_messages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking C shared library libavai_messages__rosidl_typesupport_introspection_c.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -426,6 +472,10 @@ CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/cluster__type_support.c
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/clustered_lidar_data__rosidl_typesupport_introspection_c.h
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/clustered_lidar_data__type_support.c
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__rosidl_typesupport_introspection_c.h
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/cone__type_support.c
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__rosidl_typesupport_introspection_c.h
+CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/cones__type_support.c
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__rosidl_typesupport_introspection_c.h
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/melody__type_support.c
 CMakeFiles/avai_messages__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/avai_messages/msg/detail/motor__rosidl_typesupport_introspection_c.h
