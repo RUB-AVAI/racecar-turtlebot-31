@@ -293,6 +293,23 @@ class Map:
                 # self.last_seen_idx = (self.last_seen_idx + 1) % self.last_seen_size
                 # self.last_seen[self.last_seen_idx % self.last_seen_size] = (hit[0], hit[1])
                 
+                # data_entry = np.copy(self.data[hit[0], hit[1]])
+            
+                # # correct cone position
+                # new_x = (data_entry[1] * hit[0] + 1 * x) / (data_entry[1] + 1) 
+                # new_y = (data_entry[1] * hit[1] + 1 * y) / (data_entry[1] + 1) 
+                
+                # new_x = round(new_x)
+                # new_y = round(new_y)
+                
+                # print(f"old coordinates: {hits}, new coordinates {new_x} {new_y}")
+                
+                
+                # data_entry[1] += 1
+                # self.data[new_x, new_y, :] = data_entry
+                # print(f"new entry: {self.data[new_x, new_y]}")
+                # self.data[hit[0], hit[1], :] = [-1, 0]
+                
                 if self.data[hit[0], hit[1], 0] == BLUE:
                     self.last_blue = (hit[0], hit[1])
                 elif self.data[hit[0], hit[1], 0] == YELLOW:

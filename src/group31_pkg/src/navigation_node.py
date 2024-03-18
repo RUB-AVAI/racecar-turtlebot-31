@@ -95,11 +95,11 @@ class NavigationNode(Node):
         self.MIN_LAMBDA = 25
         self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
-        self.MIN_VELOCITY = -20
+        self.MIN_VELOCITY = -150
 
         # Parameters for weighting of force-lets of obstacle avoidance
-        self.beta_1 = 20
-        self.beta_2 = 85
+        self.beta_1 = 30
+        self.beta_2 = 80
         
         # Parameters for weighting of force-lets for velocity control
         self.alpha_1 = 120 #160
