@@ -23,7 +23,7 @@ POSITION = 1
 YOLO = 2
 LOG_INFO = False
 TARGET_UPDATES_PER_SECOND = 10
-VISUALISATION = True
+VISUALISATION = False
 
 
 class DataFusionNode(Node):
@@ -36,7 +36,7 @@ class DataFusionNode(Node):
         self.target_publisher = self.create_publisher(Target, "/target_position", qos_profile=rclpy.qos.qos_profile_services_default)
         # self.target_updater = self.create_timer(1 / TARGET_UPDATES_PER_SECOND, self.update_target)
         
-        self.map = Map(size=25000, min_hist=MIN_HISTORY, epsilon=10)
+        self.map = Map(size=40000, min_hist=MIN_HISTORY, epsilon=10)
         
         self.init_time = time()
         
@@ -239,11 +239,15 @@ class DataFusionNode(Node):
                 if dist < min_distance:
                     min_distance = dist
             
+            print(f"min distance: {min_distance}")
             if min_distance > 1500:
                 return
             
-            self.init_time = time()        
-            print("round 1 started")
+            self.init_time = time()
+            self.map = Map(size=40000, min_hist=MIN_HISTORY, epsilon=10)        
+            print("new round started")
+            
+            
             # np.save(f"data/map{time()}", self.map)
         
             target = Target()
