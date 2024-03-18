@@ -23,7 +23,7 @@ POSITION = 1
 YOLO = 2
 LOG_INFO = False
 TARGET_UPDATES_PER_SECOND = 10
-VISUALISATION = False
+VISUALISATION = True
 
 
 class DataFusionNode(Node):
@@ -226,27 +226,34 @@ class DataFusionNode(Node):
         
         if len(self.map.orange_cones) >= 4:
             min_distance = np.inf
+            pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
+            if pos is None:
+                pos = self.default_position
+            
             for (x,y) in self.map.orange_cones:
-                pos = self.pos_msgs[self.pos_msgs_idx % self.buffer_size]
-                if pos is None:
-                    pos = self.default_position
+                x *= self.map.discretization_steps
+                y *= self.map.discretization_steps
+                x -= self.map.size / 2
+                y -= self.map.size / 2
                 dist = distance(x, y, pos.x_position, pos.y_position)
                 if dist < min_distance:
                     min_distance = dist
             
-            print(min_distance)
-            if min_distance > 2500:
-                return        
+            if min_distance > 1500:
+                return
+            
+            self.init_time = time()        
             print("round 1 started")
-            np.save(f"data/map{time()}", self.map)
-            self.round == 2
+            # np.save(f"data/map{time()}", self.map)
         
             target = Target()
             target.header.stamp = self.get_clock().now().to_msg()
             target.round = 0
             
-            target.x_position = [self.map.last_target[0] - 1500]
-            target.y_position = [self.map.last_target[1]]
+            self.map.last_target = (float(self.map.last_target[0] - 2000), float(self.map.last_target[1]))
+            
+            target.x_position = [float(self.map.last_target[0] - 2000)]
+            target.y_position = [float(self.map.last_target[1])]
             target.turn_angle = 0.0
             
             
