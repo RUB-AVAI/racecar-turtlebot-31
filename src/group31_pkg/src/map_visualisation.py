@@ -18,8 +18,8 @@ class MapVisualisation_Node(Node):
     def __init__(self):
         super().__init__("map_visualisation_node")
         self.cone_subsciber = self.create_subscription(Cones, "/cone_visualisation", self.cone_callback, qos_profile=rclpy.qos.qos_profile_services_default)
-        self.position_subsciber = self.create_subscription(Cones, "/position", self.position_callback, qos_profile=rclpy.qos.qos_profile_sensor_data)
-        self.target_subscriber = self.create_subscription(Cones, "/target_position", self.target_callback, qos_profile=rclpy.qos.qos_profile_services_default)
+        self.position_subsciber = self.create_subscription(Position, "/position", self.position_callback, qos_profile=rclpy.qos.qos_profile_sensor_data)
+        self.target_subscriber = self.create_subscription(Target, "/target_position", self.target_callback, qos_profile=rclpy.qos.qos_profile_services_default)
         
         # self.create_timer(0.2, self.update_plot)
         

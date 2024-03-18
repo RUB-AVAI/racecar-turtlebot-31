@@ -274,6 +274,9 @@ class Map:
         # assuming that a facing direction of 180 is the front
         x_delta, y_delta = rotate_point_around_origin(x_position_cone, y_position_cone, facing_direction_t)
         
+        ret = [x_position_t + x_delta, y_position_t + y_delta]
+        
+        
         glob_x_cone = glob_x_t + x_delta
         glob_y_cone = glob_y_t + y_delta
         
@@ -330,6 +333,9 @@ class Map:
         else:
             self.data[x, y, 0] = cone
             self.data[x, y, 1] = 1
+        
+        # return for visualisation    
+        return ret
             
             
     def estimate_new_target(self, turtlebot_x, turtlebot_y, max_distance=1800):

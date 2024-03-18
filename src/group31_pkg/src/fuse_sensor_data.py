@@ -205,12 +205,12 @@ class DataFusionNode(Node):
             # compute x and y position of cluster
             cone_x_pos, cone_y_pos = average_cluster_position(cluster)
             
-            self.map.set(position_msg.x_position, position_msg.y_position, position_msg.facing_direction, 
+            position = self.map.set(position_msg.x_position, position_msg.y_position, position_msg.facing_direction, 
                          cone_x_pos, cone_y_pos, label) 
             
             cone = Cone()
-            cone.x_position = cone_x_pos
-            cone.y_position = cone_y_pos
+            cone.x_position = position[0]
+            cone.y_position = position[1]
             cone.color = label
             cones.append(cone)
             
