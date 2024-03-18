@@ -52,8 +52,10 @@ class NavigationNode(Node):
         # Set if live visualization should be created
         self.VISUALIZATION = False
         
+        self.DEACTIVATE_TURNING = False
+        
         # Target parameter
-        self.TARGET_RADIUS = 300
+        self.TARGET_RADIUS = 500
         if not self.GET_TARGETS:
             self.TARGETS_X = [-1000] #[0, 1000, 1000, 0]
             self.TARGETS_Y = [0] #[1000, 1000, 0, 0]
@@ -129,7 +131,7 @@ class NavigationNode(Node):
 
         # Velocity parameter
         self.LAMBDA = 200
-        self.LAMBDA_TAR = np.pi
+        self.LAMBDA_TAR = 2*np.pi
         self.MAX_VELOCITY = 255
         self.MIN_VELOCITY = -100
 
@@ -300,7 +302,7 @@ class NavigationNode(Node):
         return np.arctan(np.tan(1/2) + (self.RADIUS_ROBOT / (self.RADIUS_ROBOT + d)))
     
 
-    def getDirection(self): #same
+    def getDirection(self):
         """
         Calculates the heading direction
         """
@@ -320,6 +322,10 @@ class NavigationNode(Node):
         else:
             self.v_l = int(np.clip(omega+self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
             self.v_r = int(np.clip(-omega+self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
+            
+        if self.DEACTIVATE_TURNING:
+            self.v_l = int(np.clip(self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
+            self.v_r = int(np.clip(self.LAMBDA, self.MIN_VELOCITY, self.MAX_VELOCITY))
 
         new_motor_command = Motors()
         new_motor_command.motors = [
@@ -372,7 +378,7 @@ class NavigationNode(Node):
         current_position.x_position = self.x
         current_position.y_position = self.y
         current_position.facing_direction = np.rad2deg(self.phi) % 360
-        print(f"published facing direction: {np.rad2deg(self.phi) % 360}")
+        print(f"published facing direction: {self.x}, {self.y}, {np.rad2deg(self.phi) % 360}")
         
         #self.get_logger().info(f'Published position')
         self.position_publisher.publish(current_position)
@@ -384,6 +390,9 @@ class NavigationNode(Node):
         self.setVelocity()
         self.LEFT_MOVED, self.RIGHT_MOVED = msg_motor.motors[0].position, msg_motor.motors[1].position
         self.updateMovement()
+        
+        if self.LAMBDA > self.MIN_LAMBDA:
+            self.DEACTIVATE_TURNING = True
         
         if self.LAMBDA > self.MIN_LAMBDA and distance(self.x, self.y, self.TARGET_X, self.TARGET_Y) < self.DECAY_MIN_DISTANCE:
             self.LAMBDA = self.LAMBDA * self.DECAY
@@ -429,6 +438,7 @@ class NavigationNode(Node):
         self.get_logger().info("Target Received")
         
         self.LAMBDA = self.ORIGINAL_LAMBDA
+        self.DEACTIVATE_TURNING = False
         
         if msg.round == 0 and msg.x_position:
             self.TARGET_X = msg.x_position[0]
